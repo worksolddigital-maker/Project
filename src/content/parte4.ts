@@ -21,8 +21,8 @@ export const abertura: Page[] = [
         'O **menu** no canto superior abre todos os capítulos; o botão **Índice** leva ao sumário completo.',
         'A barra no topo mostra o **progresso de leitura**. Páginas já visitadas aparecem marcadas no menu e no índice.',
         'Links sublinhados no texto levam a assuntos relacionados em outros capítulos.',
-        'Tudo o que você marca e escreve fica **salvo neste dispositivo e neste navegador**. Nada é enviado para a internet.',
-        'Para imprimir ou gerar um PDF, use a opção **Imprimir / PDF** no menu.',
+        'Tudo o que você marca e escreve é **salvo automaticamente**: na sua conta, quando você abre o e-book conectado, ou neste navegador. Seus registros são privados e ninguém mais os vê.',
+        'A opção **Leitura contínua** (ou **Imprimir / PDF**, conforme a versão) no menu reúne o e-book inteiro em uma única página.',
       ),
       H('Um ritmo sugerido', 'Recomendação'),
       Steps(

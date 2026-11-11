@@ -42,7 +42,7 @@ export function PageView({ page, anchor }: { page: Page; anchor?: string }) {
     root.current?.querySelector<HTMLElement>('[data-page-title]')?.focus({ preventScroll: true })
   }, [page.id])
 
-  // Âncoras internas (#/pagina/ancora) e destaque do alvo
+  // Âncoras internas (#pagina--ancora) e destaque do alvo
   useEffect(() => {
     if (!anchor) return
     const t = window.setTimeout(() => {

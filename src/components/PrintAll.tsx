@@ -3,6 +3,7 @@ import { href } from '../lib/router'
 import { Blocks, PrintCtx } from './Blocks'
 import { imgUrl } from './Picture'
 import { Icon } from './ui'
+import { CAN_PRINT } from '../lib/env'
 
 /** Versão contínua do e-book para impressão ou exportação em PDF (Ctrl/Cmd + P → "Salvar como PDF"). */
 export function PrintAll() {
@@ -12,8 +13,10 @@ export function PrintAll() {
       <div className="printall">
         <div className="printall__bar no-print">
           <a className="btn btn--text" href={href('indice')}>{Icon.back}<span>Voltar ao e-book</span></a>
-          <p>Versão para impressão. No diálogo, escolha <b>Salvar como PDF</b> para exportar.</p>
-          <button type="button" className="btn btn--primary" onClick={() => window.print()}>{Icon.print}<span>Imprimir / salvar PDF</span></button>
+          {CAN_PRINT ? <>
+            <p>Versão para impressão. No diálogo, escolha <b>Salvar como PDF</b> para exportar.</p>
+            <button type="button" className="btn btn--primary" onClick={() => window.print()}>{Icon.print}<span>Imprimir / salvar PDF</span></button>
+          </> : <p>Leitura contínua: todo o conteúdo do e-book em uma única página.</p>}
         </div>
         <section className="printall__cover">
           <img src={imgUrl('capa.webp')} width={1024} height={1536} alt="Capa do e-book RECOMEÇO: transforme sua vida" />

@@ -6,6 +6,8 @@ import { lockScroll } from '../lib/motion'
 import { href } from '../lib/router'
 import { actions, useStore } from '../lib/store'
 import { Icon, Magnetic } from './ui'
+import { CAN_PRINT } from '../lib/env'
+import { useSyncMode } from '../lib/store'
 
 export const pageLabel = (p: Page) => p.short ?? p.title
 
@@ -43,6 +45,7 @@ export function TopBar({ page, onMenu }: { page: Page; onMenu: () => void }) {
 export function Drawer({ open, onClose, current }: { open: boolean; onClose: () => void; current: Page }) {
   const visited = useStore((s) => s.visited)
   const { n, total, ratio } = useReadingProgress()
+  const sync = useSyncMode()
   const [confirm, setConfirm] = useState(false)
   const panel = useRef<HTMLDivElement>(null)
 
@@ -75,6 +78,7 @@ export function Drawer({ open, onClose, current }: { open: boolean; onClose: () 
               <div>
                 <p className="drawer__brand">RECOME<span>ÇO</span></p>
                 <p className="drawer__meta">{n} de {total} páginas · {Math.round(ratio * 100)}% lido</p>
+                <p className="drawer__meta">{sync === 'conta' ? 'Progresso salvo na sua conta' : 'Progresso salvo neste navegador'}</p>
               </div>
               <button type="button" className="iconbtn" onClick={onClose} aria-label="Fechar menu">{Icon.close}</button>
             </div>
@@ -97,7 +101,7 @@ export function Drawer({ open, onClose, current }: { open: boolean; onClose: () 
               ))}
             </nav>
             <div className="drawer__foot">
-              <a className="btn btn--outline btn--sm" href={href('imprimir')} onClick={onClose}>{Icon.print}<span>Imprimir / PDF</span></a>
+              <a className="btn btn--outline btn--sm" href={href('imprimir')} onClick={onClose}>{Icon.print}<span>{CAN_PRINT ? 'Imprimir / PDF' : 'Leitura contínua'}</span></a>
               {confirm ? (
                 <div className="drawer__confirm" role="alert">
                   <p>Apagar todas as marcações, textos e progresso deste dispositivo?</p>

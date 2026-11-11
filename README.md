@@ -14,8 +14,15 @@ npm run preview   # serve a pasta dist/ localmente
 ```
 
 O resultado de `npm run build` é um site estático (`dist/`) com caminhos relativos e rotas por
-hash (`#/pagina`), então funciona em qualquer hospedagem estática ou subpasta, sem configuração
+hash (`#pagina`), então funciona em qualquer hospedagem estática ou subpasta, sem configuração
 de servidor.
+
+### Versão hospedada no claude.ai
+
+`VITE_ARTIFACT=1 npx vite build --outDir dist-artifact` gera a variante publicada como Artifact.
+Ela esconde os botões de impressão (o visualizador não abre o diálogo de impressão; o menu oferece
+"Leitura contínua") e salva o progresso de cada leitor em um documento privado na conta dele
+(`data/users/<id>/estado`), com o navegador como reserva.
 
 ## Estrutura
 
@@ -67,7 +74,8 @@ Cada página é um objeto em `src/content/parte*.ts`, formado por uma lista de b
 ## Dados do leitor
 
 Marcações, textos, notas, hábitos e progresso ficam em `localStorage` (chave `recomeco:v1`),
-somente no navegador do leitor. Nada é enviado para servidores. O menu oferece "Redefinir meus
+no navegador do leitor. Na versão hospedada no claude.ai, também são sincronizados com um
+documento privado da conta do leitor, que nem o dono do e-book consegue ler. O menu oferece "Redefinir meus
 dados". As chaves iniciadas por `prog:` pertencem ao ciclo atual e são arquivadas ao iniciar um
 novo ciclo de 90 dias.
 

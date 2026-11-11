@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import { refs } from '../content'
 import { CheckBox, Icon, Meter, Ring } from '../components/ui'
 import { actions, AREAS, useStore } from '../lib/store'
+import { href } from '../lib/router'
+import { CAN_PRINT } from '../lib/env'
 
 /* ---------- utilidades ---------- */
 function useJsonField<T>(key: string, fallback: T): [T, (v: T) => void] {
@@ -45,7 +47,7 @@ export function RatingGrid({ prefix, compareTo }: { prefix: string; compareTo?: 
       </ul>
       <p className="rating__sum" aria-live="polite">
         {filled.length === AREAS.length
-          ? <>Média geral: <b>{avg.toFixed(1).replace('.', ',')}</b> de 10. Suas notas estão salvas e aparecem no <a className="link" href="#/painel">painel</a>.</>
+          ? <>Média geral: <b>{avg.toFixed(1).replace('.', ',')}</b> de 10. Suas notas estão salvas e aparecem no <a className="link" href={href('painel')}>painel</a>.</>
           : <>Arraste cada controle para dar a nota. Faltam {AREAS.length - filled.length} de {AREAS.length} áreas.</>}
       </p>
     </div>
@@ -310,7 +312,7 @@ export function TabelaRotina() {
           <button type="button" className="btn btn--outline" onClick={() => setRows([...rows, { h: '', a: '' }])}>{Icon.plus}<span>Adicionar linha</span></button>
           {rows.length > 1 && <button type="button" className="btn btn--text" onClick={() => setRows([...rows].sort((a, b) => a.h.localeCompare(b.h)))}>Ordenar por horário</button>}
         </div>
-        <button type="button" className="btn btn--text" onClick={() => window.print()}>{Icon.print}<span>Imprimir</span></button>
+        {CAN_PRINT && <button type="button" className="btn btn--text" onClick={() => window.print()}>{Icon.print}<span>Imprimir</span></button>}
       </div>
     </section>
   )

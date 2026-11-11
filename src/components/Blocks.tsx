@@ -36,7 +36,7 @@ export function Checklist({ id, title, items, log, hint }: { id: string; title: 
       <footer className="checklist__foot">
         {complete
           ? <motion.p className="checklist__done" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>{Icon.check} Lista concluída</motion.p>
-          : <p className="checklist__hint">{hint ?? 'Suas marcações ficam salvas neste dispositivo.'}</p>}
+          : <p className="checklist__hint">{hint ?? 'Suas marcações são salvas automaticamente.'}</p>}
         {done > 0 && <button type="button" className="btn btn--text no-print" onClick={clear}>Limpar</button>}
       </footer>
     </section>
@@ -50,7 +50,7 @@ export function FieldBox({ id, label, placeholder, rows = 3 }: { id: string; lab
     <div className="field">
       <label htmlFor={uid} className="field__label">{label}</label>
       <textarea id={uid} className="field__input" rows={rows} value={value} placeholder={placeholder} onChange={(e) => actions.setField(id, e.target.value)} />
-      <span className="field__status" aria-hidden="true">{value ? 'Salvo neste dispositivo' : 'Seu texto é salvo automaticamente'}</span>
+      <span className="field__status" aria-hidden="true">{value ? 'Salvo' : 'Seu texto é salvo automaticamente'}</span>
     </div>
   )
 }

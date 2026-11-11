@@ -198,3 +198,7 @@ input[type='time'], input[type='date'] { color-scheme: dark; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
+
+/* Barra fixa abaixo da área segura do celular (entalhe / barra de status) */
+.topbar { height: calc(var(--bar) + env(safe-area-inset-top, 0px)); padding-top: env(safe-area-inset-top, 0px); }
+.drawer__panel { padding-top: env(safe-area-inset-top, 0px); }

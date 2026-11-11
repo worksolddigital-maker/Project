@@ -6,9 +6,12 @@ import './styles/components.css'
 import './styles/widgets.css'
 import './styles/print.css'
 import App from './App'
+import { initCloud } from './lib/store'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
   </StrictMode>,
 )
+
+initCloud()

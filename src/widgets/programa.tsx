@@ -5,6 +5,7 @@ import { CheckBox, fmtDate, Icon, Meter, Ring } from '../components/ui'
 import { href, navigate } from '../lib/router'
 import { actions, AREAS, currentDay, dayRatio, isDayDone, PHASES, phaseOfDay, stats, todayISO, TOTAL_DAYS, useStore, type State } from '../lib/store'
 import { ui } from '../lib/ui'
+import { CAN_PRINT } from '../lib/env'
 import { RatingGrid } from './basic'
 
 const useAll = () => useStore((s) => s)
@@ -571,7 +572,7 @@ export function Certificado() {
         </div>
       </motion.article>
       <div className="btnrow no-print cert__actions">
-        <button type="button" className="btn btn--primary" onClick={print}>{Icon.print}<span>Imprimir ou salvar em PDF</span></button>
+        {CAN_PRINT && <button type="button" className="btn btn--primary" onClick={print}>{Icon.print}<span>Imprimir ou salvar em PDF</span></button>}
         <a className="btn btn--outline" href={href('painel')}>Revisar minhas metas</a>
       </div>
     </div>

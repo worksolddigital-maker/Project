@@ -22,6 +22,8 @@ export interface State {
   cycle: number
   archive: CycleArchive[]
   lastPage: string
+  /** momento da última alteração (ms), usado para escolher a cópia mais recente entre conta e navegador */
+  updatedAt: number
 }
 
 const KEY = 'recomeco:v1'
@@ -37,7 +39,7 @@ export const DEFAULT_HABITS: Habit[] = [
 
 const initial = (): State => ({
   v: 1, name: '', visited: {}, checks: {}, fields: {}, ratings: {}, log: [],
-  habits: DEFAULT_HABITS, startDate: null, cycle: 1, archive: [], lastPage: 'capa',
+  habits: DEFAULT_HABITS, startDate: null, cycle: 1, archive: [], lastPage: 'capa', updatedAt: 0,
 })
 
 function load(): State {
@@ -61,11 +63,67 @@ function persist() {
     try { localStorage.setItem(KEY, JSON.stringify(state)) } catch { /* cota cheia ou modo privado */ }
   }, 120)
 }
-function set(next: State) {
-  state = next
+function set(next: State, touch = true) {
+  state = touch ? { ...next, updatedAt: Date.now() } : next
   persist()
+  cloudSave()
   listeners.forEach((l) => l())
 }
+
+/* ---------- Sincronização com a conta (versão hospedada no claude.ai) ----------
+ * Cada leitor tem um documento privado em data/users/<id>/estado, invisível para
+ * qualquer outra pessoa. Sem conta (ou fora do claude.ai) o e-book usa só o navegador. */
+type DocRef = { get(): Promise<{ exists: boolean; data(): Record<string, unknown> | undefined }>; set(d: Record<string, unknown>): Promise<void> }
+type ClaudeHost = { use(name: string): Promise<unknown> }
+let cloud: DocRef | null = null
+let syncMode: 'local' | 'conta' = 'local'
+const syncListeners = new Set<() => void>()
+let cloudTimer: number | undefined
+let writing = false
+let dirty = false
+
+function cloudSave() {
+  if (!cloud) return
+  window.clearTimeout(cloudTimer)
+  cloudTimer = window.setTimeout(flushCloud, 1500)
+}
+async function flushCloud() {
+  if (!cloud) return
+  if (writing) { dirty = true; return }
+  writing = true
+  try {
+    await cloud.set(JSON.parse(JSON.stringify(state)))
+  } catch (e) {
+    const code = (e as { code?: string })?.code
+    if (code === 'unavailable') { dirty = true } else if (code !== 'resource_exhausted') { cloud = null; setSync('local') }
+  } finally {
+    writing = false
+    if (dirty) { dirty = false; cloudSave() }
+  }
+}
+function setSync(m: 'local' | 'conta') { syncMode = m; syncListeners.forEach((l) => l()) }
+
+export async function initCloud() {
+  const host = (window as unknown as { claude?: ClaudeHost }).claude
+  if (!host?.use) return
+  try {
+    const [db, user] = (await Promise.all([host.use('db'), host.use('user')])) as [
+      { doc(p: string): DocRef } | null, { id(): Promise<string | null> } | null]
+    const id = db && user ? await user.id() : null
+    if (!db || !id) return
+    const ref = db.doc(`data/users/${id}/estado`)
+    const snap = await ref.get()
+    const remote = snap.exists ? (snap.data() as Partial<State>) : undefined
+    cloud = ref
+    setSync('conta')
+    if (remote && remote.v === 1 && (remote.updatedAt ?? 0) > state.updatedAt) {
+      set({ ...initial(), ...remote } as State, false)
+    } else if (state.updatedAt > 0 && state.updatedAt !== remote?.updatedAt) {
+      cloudSave()
+    }
+  } catch { cloud = null }
+}
+export const useSyncMode = () => useSyncExternalStore((l) => { syncListeners.add(l); return () => { syncListeners.delete(l) } }, () => syncMode)
 // grava imediatamente ao sair da página
 if (typeof window !== 'undefined') {
   window.addEventListener('pagehide', () => {
@@ -87,7 +145,8 @@ export const todayISO = () => {
 export const actions = {
   visit(id: string) {
     if (state.visited[id] && state.lastPage === id) return
-    set({ ...state, visited: { ...state.visited, [id]: true }, lastPage: id })
+    // visitar uma página já lida só muda a página atual: não conta como alteração para a sincronização
+    set({ ...state, visited: { ...state.visited, [id]: true }, lastPage: id }, !state.visited[id])
   },
   /** Marca/desmarca um item. Se `label` vier, o item entra no histórico de metas concluídas. */
   toggle(key: string, label?: string) {
