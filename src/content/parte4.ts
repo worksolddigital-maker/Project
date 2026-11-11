@@ -1,0 +1,297 @@
+import { Cards, Check, Cta, Field, H, Note, P, Quote, Steps, Table, UL, W, type Page } from './types'
+
+/* Abertura, programa de 90 dias, ferramentas e encerramento */
+export const abertura: Page[] = [
+  { id: 'capa', group: 'abertura', title: 'Capa', special: 'capa', blocks: [] },
+  { id: 'indice', group: 'abertura', title: 'Índice', special: 'indice', blocks: [] },
+  {
+    id: 'como-usar', group: 'abertura', img: 'jornada',
+    title: 'Como usar este e-book',
+    lead: 'Este não é um livro para ler de uma vez e guardar. É um programa guiado: você lê, aplica, registra e volta.',
+    blocks: [
+      H('Três partes, um percurso', 'Visão geral'),
+      Cards(3,
+        ['1 · Aprender', 'Nove capítulos explicam como funcionam hábitos, corpo, alimentação, sono, foco, procrastinação, dependências, saúde mental e rotina. Cada um termina com exercício, metas e resumo.', 'Capítulos 1 a 9'],
+        ['2 · Praticar', 'O programa de 90 dias organiza a prática em quatro fases progressivas, cada uma com metas e uma avaliação de conclusão.', 'Programa'],
+        ['3 · Acompanhar', 'O painel reúne checklist diário, rastreador de hábitos, calendário, planejamento semanal, objetivos e reflexões.', 'Ferramentas'],
+      ),
+      H('Como navegar', 'Orientações'),
+      UL(
+        'Use os botões **Voltar** e **Avançar** no fim de cada página, ou as setas ← → do teclado.',
+        'O **menu** no canto superior abre todos os capítulos; o botão **Índice** leva ao sumário completo.',
+        'A barra no topo mostra o **progresso de leitura**. Páginas já visitadas aparecem marcadas no menu e no índice.',
+        'Links sublinhados no texto levam a assuntos relacionados em outros capítulos.',
+        'Tudo o que você marca e escreve é **salvo automaticamente**: na sua conta, quando você abre o e-book conectado, ou neste navegador. Seus registros são privados e ninguém mais os vê.',
+        'A opção **Leitura contínua** (ou **Imprimir / PDF**, conforme a versão) no menu reúne o e-book inteiro em uma única página.',
+      ),
+      H('Um ritmo sugerido', 'Recomendação'),
+      Steps(
+        ['Semana de preparação', 'Leia os capítulos 1 e 9 e faça a [autoavaliação inicial](c1-autoavaliacao). Depois, inicie a [Fase 1](fase-1).'],
+        ['Dias 8 a 30', 'Leia um capítulo a cada dois ou três dias, na ordem das suas maiores necessidades, enquanto pratica a Fase 2.'],
+        ['Dias 31 a 90', 'Releia os capítulos ligados às suas dificuldades e use o painel diariamente.'],
+      ),
+      Note('atencao', 'Aviso importante', 'Este material tem **finalidade educativa**. Ele não faz diagnóstico, não prescreve tratamento e **não substitui acompanhamento médico, nutricional ou psicológico**. Se você tem alguma condição de saúde, usa medicamentos, está grávida ou tem dúvidas sobre o que é seguro para você, converse com um profissional antes de mudar alimentação, exercícios ou o uso de qualquer substância. As fontes consultadas estão listadas em [Referências](referencias).'),
+      Note('nota', 'Sobre promessas', 'Este e-book não promete transformação instantânea. Ele oferece método, e o resultado vem da repetição ao longo de semanas. Vá no seu ritmo.'),
+      Cta('Começar pelo capítulo 1', 'c1-dificuldade'),
+    ],
+  },
+]
+
+const metasF1 = [
+  'Realizar a autoavaliação inicial',
+  'Identificar três hábitos que precisam mudar',
+  'Organizar meus horários (acordar, refeições, dormir)',
+  'Definir meus objetivos pessoais',
+  'Estabelecer uma rotina básica',
+]
+const metasF2 = [
+  'Criar uma rotina de sono',
+  'Melhorar gradualmente a alimentação',
+  'Iniciar ou organizar a prática de exercícios',
+  'Diminuir distrações',
+  'Aplicar técnicas contra a procrastinação',
+  'Acompanhar os hábitos diariamente',
+]
+const metasF3 = [
+  'Manter uma rotina sustentável',
+  'Melhorar a organização pessoal',
+  'Aumentar a consistência dos exercícios',
+  'Desenvolver maior controle sobre distrações',
+  'Trabalhar os comportamentos prejudiciais',
+  'Revisar os objetivos e as dificuldades',
+]
+const metasF4 = [
+  'Consolidar hábitos saudáveis',
+  'Melhorar a autonomia',
+  'Aprender a lidar com imprevistos',
+  'Reconhecer gatilhos de recaída',
+  'Estabelecer novos objetivos',
+  'Criar um planejamento para os próximos 90 dias',
+]
+
+export const programa: Page[] = [
+  {
+    id: 'programa', group: 'programa', img: 'programa',
+    title: 'Programa de transformação em 90 dias',
+    short: 'Visão geral do programa',
+    lead: 'Quatro fases progressivas. Cada uma prepara a seguinte, e nenhuma exige perfeição: exige presença.',
+    blocks: [
+      H('Por que 90 dias', 'Como funciona'),
+      P('Hábitos novos levam semanas ou meses para se tornarem automáticos, com grande variação entre pessoas ([Lally e colaboradores, 2010](ref:lally2010)). Noventa dias dão tempo para instalar poucos hábitos, atravessar ao menos alguns períodos difíceis e chegar ao ponto em que manter custa menos do que custava começar.'),
+      W('iniciarPrograma'),
+      H('As quatro fases', 'Percurso'),
+      W('fases'),
+      H('Regras do jogo', 'Orientações'),
+      Steps(
+        ['Poucos hábitos por vez', 'A Fase 2 começa com sono e mais um ou dois hábitos. Os demais entram quando esses estiverem estáveis.'],
+        ['Registro diário', 'Marque seus hábitos todos os dias em [Hoje](hoje). Leva um minuto e é o que torna o progresso visível.'],
+        ['Nunca dois dias seguidos', 'Falhou hoje? Amanhã você faz a versão mínima. Sem compensar e sem se punir.'],
+        ['Revisão semanal', 'Uma vez por semana, use o [planejamento e a avaliação semanal](semana).'],
+        ['Encerramento de fase', 'Ao final de cada fase, preencha a avaliação e marque a fase como concluída.'],
+      ),
+      Note('nota', 'Se você atrasar', 'As datas são uma referência, não uma prova. Se uma fase precisar de mais tempo, permaneça nela. Avançar com a base frágil custa mais do que esperar uma semana.'),
+      Cta('Abrir a Fase 1', 'fase-1'),
+    ],
+  },
+  {
+    id: 'fase-1', group: 'programa', img: 'programa',
+    title: 'Fase 1 · Consciência e organização',
+    short: 'Fase 1 · Dias 1 a 7',
+    lead: 'Dias 1 a 7. Objetivo: identificar problemas, organizar o ambiente e estabelecer metas. Nesta semana você ainda não precisa mudar nada, só enxergar com clareza e preparar o terreno.',
+    blocks: [
+      H('O que fazer nesta semana', 'Dia a dia'),
+      Table(['Dia', 'Tarefa', 'Onde'], [
+        ['1', 'Ler o capítulo 1 e fazer a autoavaliação', '[Autoavaliação inicial](c1-autoavaliacao)'],
+        ['2', 'Observar o dia sem mudar nada; anotar comportamentos automáticos', '[Por que mudar é tão difícil](c1-dificuldade)'],
+        ['3', 'Escolher três hábitos que precisam mudar', 'Campo abaixo'],
+        ['4', 'Definir horários de acordar, refeições e dormir', '[Monte a sua rotina](c9-tabela)'],
+        ['5', 'Escrever até três objetivos de processo', '[Objetivos realistas](c1-objetivos)'],
+        ['6', 'Organizar o ambiente: quarto, cozinha, mesa de trabalho, celular', '[Gatilhos e ambiente](c7-gatilhos)'],
+        ['7', 'Revisar a semana e concluir a fase', 'Checklist abaixo'],
+      ]),
+      H('Metas da fase', 'Marque ao concluir'),
+      Check('prog:f1:meta', 'Metas da Fase 1', metasF1, { log: 'Fase 1' }),
+      Field('prog:f1:habitos', 'Os três hábitos que preciso mudar', '1. …\n2. …\n3. …', 3),
+      H('Conclusão da fase', 'Checklist de preparação'),
+      Check('prog:f1:prep', 'Estou pronto para a Fase 2', [
+        'Sei quais são minhas áreas mais frágeis e mais fortes',
+        'Tenho horários definidos para acordar e dormir',
+        'Meus objetivos estão escritos de forma específica',
+        'Preparei o quarto para dormir melhor',
+        'Organizei a cozinha e fiz uma compra planejada',
+        'Reduzi notificações e tirei distrações da mesa de trabalho',
+        'Escolhi os hábitos que vou acompanhar diariamente',
+        'Contei meu plano a pelo menos uma pessoa',
+      ]),
+      W('avaliacaoFase', 'f1'),
+      Cta('Seguir para a Fase 2', 'fase-2'),
+    ],
+  },
+  {
+    id: 'fase-2', group: 'programa', img: 'programa',
+    title: 'Fase 2 · Construção de hábitos',
+    short: 'Fase 2 · Dias 8 a 30',
+    lead: 'Dias 8 a 30. Objetivo: começar a desenvolver hábitos saudáveis. O foco é repetir ações pequenas até que deixem de exigir esforço.',
+    blocks: [
+      H('Como conduzir a fase', 'Semana a semana'),
+      Table(['Período', 'Foco principal', 'Apoio'], [
+        ['Dias 8 a 14', 'Sono: fixar a hora de acordar e a rotina noturna', '[Sua rotina noturna](c4-rotina-noturna)'],
+        ['Dias 15 a 21', 'Movimento: três sessões curtas na semana. Alimentação: uma troca', '[Rotinas semanais](c2-rotina) · [Substituições](c3-organizacao)'],
+        ['Dias 22 a 30', 'Foco: um bloco diário sem distrações; desafio de sete dias', '[Blocos de tempo](c5-prioridades) · [Desafio](c6-desafio)'],
+      ]),
+      P('Durante toda a fase, marque seus hábitos diariamente em [Hoje](hoje). A meta não é marcar tudo todos os dias, e sim **não ficar dois dias seguidos sem marcar nada**.'),
+      H('Metas da fase', 'Marque ao concluir'),
+      Check('prog:f2:meta', 'Metas da Fase 2', metasF2, { log: 'Fase 2' }),
+      Note('nota', 'Se estiver pesado', 'Reduza o tamanho dos hábitos, não a quantidade de dias. Cinco minutos todos os dias instalam o hábito melhor do que uma hora de vez em quando.'),
+      H('Conclusão da fase', 'Avaliação dos primeiros 30 dias'),
+      P('Reavalie as mesmas áreas da autoavaliação inicial e registre o que mudou. O resultado aparece comparado ao ponto de partida no seu [painel](painel).'),
+      W('avaliacaoFase', 'f2'),
+      Cta('Seguir para a Fase 3', 'fase-3'),
+    ],
+  },
+  {
+    id: 'fase-3', group: 'programa', img: 'programa',
+    title: 'Fase 3 · Consistência e evolução',
+    short: 'Fase 3 · Dias 31 a 60',
+    lead: 'Dias 31 a 60. Objetivo: fortalecer os hábitos e melhorar a disciplina. A novidade passou; agora o trabalho é manter e aprofundar.',
+    blocks: [
+      H('Como conduzir a fase', 'Orientações'),
+      Steps(
+        ['Proteja o que já funciona', 'Antes de acrescentar algo, confirme que sono, movimento e alimentação estão estáveis na maioria dos dias.'],
+        ['Aumente um elemento por vez', 'Mais dez minutos de treino, um bloco de foco maior, uma nova troca alimentar. Nunca tudo junto.'],
+        ['Enfrente o hábito prejudicial', 'Escolha um dos três da Fase 1 e aplique o [mapa de gatilhos](c7-gatilhos), a mudança de ambiente e a substituição.'],
+        ['Fortaleça a organização', 'Rituais de abertura e fechamento do dia e revisão semanal fixa.'],
+        ['Revise objetivos', 'Na metade da fase, releia seus objetivos e ajuste o que estiver irreal ou fácil demais.'],
+      ),
+      Note('atencao', 'O vale do meio', 'É comum sentir queda de motivação por volta da quinta à sétima semana. Isso é esperado. Volte às versões mínimas, releia seu [motivo](c1-disciplina) e apoie-se na sua rede.'),
+      H('Metas da fase', 'Marque ao concluir'),
+      Check('prog:f3:meta', 'Metas da Fase 3', metasF3, { log: 'Fase 3' }),
+      Field('prog:f3:dificuldades', 'Principais dificuldades até aqui e o que vou ajustar', undefined, 4),
+      H('Conclusão da fase', 'Relatório de evolução dos 60 dias'),
+      P('Reavalie as áreas e escreva seu relatório. Compare com as notas do início e dos 30 dias no [painel](painel).'),
+      W('avaliacaoFase', 'f3'),
+      Cta('Seguir para a Fase 4', 'fase-4'),
+    ],
+  },
+  {
+    id: 'fase-4', group: 'programa', img: 'programa',
+    title: 'Fase 4 · Consolidação',
+    short: 'Fase 4 · Dias 61 a 90',
+    lead: 'Dias 61 a 90. Objetivo: transformar as mudanças em um estilo de vida sustentável. Você sai do modo "programa" e passa a decidir sozinho.',
+    blocks: [
+      H('Como conduzir a fase', 'Orientações'),
+      Steps(
+        ['Teste sua autonomia', 'Passe a planejar a semana sem consultar os modelos. Use o e-book só para tirar dúvidas.'],
+        ['Ensaie imprevistos', 'Defina o que fazer em viagens, doenças, semanas de muito trabalho e festas: qual é a versão mínima de cada hábito?'],
+        ['Mapeie gatilhos de recaída', 'Liste as situações que mais ameaçam seus hábitos e escreva um plano "se–então" para cada uma ([Impulsos e risco](c7-impulsos)).'],
+        ['Simplifique o registro', 'Mantenha no rastreador apenas os hábitos que ainda exigem esforço.'],
+        ['Planeje o próximo ciclo', 'Escolha novos objetivos, mais ambiciosos ou em outra área.'],
+      ),
+      H('Metas da fase', 'Marque ao concluir'),
+      Check('prog:f4:meta', 'Metas da Fase 4', metasF4, { log: 'Fase 4' }),
+      Field('prog:f4:imprevistos', 'Meu plano para imprevistos (viagem, doença, excesso de trabalho, festas)', 'Se [imprevisto], então mantenho [versão mínima].', 4),
+      Field('prog:f4:recaida', 'Meus gatilhos de recaída e como vou responder', undefined, 4),
+      H('Conclusão da fase', 'Avaliação final e plano de continuidade'),
+      P('Faça a última avaliação e registre seu plano para os próximos 90 dias.'),
+      W('avaliacaoFase', 'f4'),
+      Cta('Ir para a conclusão: Sua nova jornada', 'jornada'),
+    ],
+  },
+]
+
+export const ferramentas: Page[] = [
+  {
+    id: 'painel', group: 'ferramentas', img: 'metas',
+    title: 'Painel de metas',
+    lead: 'Sua evolução em um só lugar: dias concluídos, consistência dos hábitos, metas de cada fase e a comparação entre as avaliações.',
+    blocks: [
+      W('painel'),
+      H('Calendário de 90 dias', 'Visão completa', 'calendario'),
+      P('Cada quadrado é um dia do programa. A cor fica mais forte conforme mais hábitos são marcados; o contorno indica dia concluído. Toque em um dia para abrir o registro.'),
+      W('calendario'),
+      H('Meus objetivos', 'Registro'),
+      W('objetivos'),
+    ],
+  },
+  {
+    id: 'hoje', group: 'ferramentas', img: 'metas',
+    title: 'Hoje: checklist e hábitos',
+    short: 'Checklist diário e rastreador',
+    lead: 'Um minuto por dia. Marque o que fez, feche o dia e siga. É o registro que transforma esforço em evidência.',
+    blocks: [
+      W('hoje'),
+      Note('nota', 'Dica', 'Mantenha no máximo seis hábitos ao mesmo tempo. Quando um deles ficar automático, troque por outro. Para ver todos os dias de uma vez, abra o [calendário de 90 dias](painel/calendario).'),
+    ],
+  },
+  {
+    id: 'semana', group: 'ferramentas', img: 'metas',
+    title: 'Planejamento e avaliação semanal',
+    short: 'Planejamento semanal',
+    lead: 'Vinte minutos por semana para olhar para trás, ajustar e decidir o que vem a seguir.',
+    blocks: [
+      W('semana'),
+    ],
+  },
+  {
+    id: 'diario', group: 'ferramentas', img: 'rotina',
+    title: 'Dificuldades e reflexões',
+    short: 'Dificuldades e reflexões pessoais',
+    lead: 'Escrever organiza o pensamento. Use este espaço para registrar obstáculos, aprendizados e o que você quiser lembrar.',
+    blocks: [
+      H('Dificuldades', 'Registro'),
+      Field('prog:dificuldades', 'O que tem sido mais difícil, e em que situações?', 'Ser específico ajuda a encontrar o ajuste: horário, lugar, emoção, pessoas.', 4),
+      Field('prog:ajustes', 'O que posso ajustar no meu sistema?', 'Ambiente, tamanho do hábito, horário, apoio.', 3),
+      H('Reflexões pessoais', 'Diário'),
+      W('diario'),
+    ],
+  },
+]
+
+export const final: Page[] = [
+  {
+    id: 'jornada', group: 'final', img: 'jornada',
+    title: 'Sua nova jornada',
+    lead: 'Você chegou ao fim do e-book. O percurso, esse continua.',
+    blocks: [
+      H('O que realmente mudou', 'Conclusão'),
+      P('Se você praticou ao menos parte do que leu, algo já é diferente, ainda que não apareça no espelho nem na balança: você passou a perceber seus gatilhos, a planejar em vez de reagir, a retomar depois de um dia ruim. Essas habilidades valem mais do que qualquer resultado isolado, porque são elas que produzem todos os resultados seguintes.'),
+      P('Nada do que está aqui promete uma transformação instantânea, e desconfie de quem promete. O que existe é mais modesto e mais sólido: escolhas pequenas, repetidas por tempo suficiente, mudam a direção de uma vida.'),
+      Cards(2,
+        ['Consistência', 'O que você faz na maioria dos dias importa mais do que o que faz nos melhores dias. Regularidade moderada vence intensidade esporádica.'],
+        ['Seu próprio ritmo', 'Não há prazo universal. Comparar-se com os outros tira o foco da única comparação útil: você hoje e você há três meses.'],
+        ['Recomeçar', 'Dificuldades, pausas e recaídas vão acontecer. Quem evolui não é quem nunca cai, e sim quem demora menos para voltar.'],
+        ['Manutenção', 'Hábitos consolidados ainda precisam de cuidado: ambiente favorável, revisão periódica e atenção aos sinais de desgaste.'],
+      ),
+      H('Novos objetivos', 'Próximos passos'),
+      Steps(
+        ['Reconheça o que você construiu', 'Releia sua autoavaliação inicial e compare com a final no [painel](painel).'],
+        ['Mantenha o essencial', 'Escolha os três hábitos que mais fizeram diferença e trate-os como inegociáveis.'],
+        ['Escolha a próxima fronteira', 'Uma área que ficou para depois, ou um degrau acima em algo que já funciona.'],
+        ['Inicie um novo ciclo', 'Noventa dias com novos objetivos e a experiência do primeiro.'],
+      ),
+      Quote('Você não precisa mudar tudo em um dia. Precisa construir, todos os dias, as escolhas que deseja levar para o resto da vida.'),
+      W('novoCiclo'),
+      Cta('Ver meu certificado de conclusão', 'certificado'),
+    ],
+  },
+  {
+    id: 'certificado', group: 'final', img: 'jornada',
+    title: 'Certificado de conclusão',
+    lead: 'Um registro simbólico do compromisso que você assumiu consigo mesmo.',
+    blocks: [
+      W('certificado'),
+      Note('nota', 'Sobre este certificado', 'Ele é simbólico e pessoal: não tem validade acadêmica nem profissional. Serve para marcar o encerramento de um ciclo e lembrar você do que é capaz de sustentar.'),
+    ],
+  },
+  {
+    id: 'referencias', group: 'final', img: 'jornada',
+    title: 'Referências e fontes',
+    lead: 'As informações deste e-book foram baseadas em diretrizes de organismos de saúde e em publicações científicas. Consulte os originais sempre que quiser se aprofundar.',
+    blocks: [
+      Note('atencao', 'Finalidade educativa', 'Este material é informativo e **não substitui acompanhamento médico, nutricional ou psicológico**. Recomendações de saúde são atualizadas periodicamente; consulte as fontes originais e profissionais habilitados para decisões sobre a sua saúde.'),
+      W('referencias'),
+      H('Fotografias', 'Créditos'),
+      P('A imagem de capa é a arte original do projeto. As demais fotografias foram obtidas no Unsplash, sob a [Licença Unsplash](https://unsplash.com/license), e os autores estão creditados nas legendas de cada imagem.'),
+    ],
+  },
+]

@@ -1,0 +1,65 @@
+/* ============ Versão para impressão / PDF ============ */
+.printall { --text: #1c2024; --text-2: #3a4047; --text-3: #5d646c; --white: #101214; --line: rgba(16, 18, 20, 0.16); --line-2: rgba(16, 18, 20, 0.34); --surface: rgba(16, 18, 20, 0.03); --surface-2: rgba(16, 18, 20, 0.05); --sage-hi: #47603f; --azure-hi: #0d4f9a; --azure: #1c6fcd; --warn: #8a5a0a; --danger: #a33a2a; --ink-2: #fff;
+  background: #fff; color: var(--text); min-height: 100vh; color-scheme: light; }
+.printall__bar { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; align-items: center; justify-content: space-between; padding: 0.7rem var(--gutter); background: #101214; color: #ece7de; font-size: 0.9rem; }
+.printall__bar .btn--text { color: #ece7de; }
+.printall__bar p { flex: 1; min-width: 14rem; }
+.printall__cover { display: grid; place-items: center; padding: 2rem; background: #101214; }
+.printall__cover img { max-height: 92vh; width: auto; }
+.printall__page { max-width: 52rem; margin: 0 auto; padding: 3rem var(--gutter); border-bottom: 1px solid var(--line); }
+.printall__page > h1 { font-family: var(--display); font-weight: 400; font-size: 2.4rem; line-height: 1.15; }
+.printall__kicker { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--azure-hi); margin-bottom: 0.4rem; }
+.printall__lead, .printall__sub { font-size: 1.15rem; color: var(--text-2); margin: 0.8rem 0 1.5rem; }
+.printall__toc { columns: 2; gap: 2rem; font-size: 0.9rem; list-style: decimal inside; }
+.printall__toc li { break-inside: avoid; padding: 0.15rem 0; }
+.printall__toc span { color: var(--text-3); font-size: 0.75rem; }
+.printall .article { padding: 0; }
+.printall .blk, .printall .blk--wide { max-width: none; }
+.printall .blk--h { margin-top: 2.2rem; }
+.printall .input, .printall .field__input { background: #fff; }
+.printall .table thead th { background: rgba(16, 18, 20, 0.06); }
+.printall .table { min-width: 0; }
+.printall .check__box { color: #fff; }
+.printall .callout--exemplo, .printall .summary { background: #f3efe7; }
+.printall .no-print { display: none; }
+.printall .printall__bar.no-print { display: flex; }
+.printall .figure__frame { aspect-ratio: 16 / 8; }
+.printall .dot { box-shadow: 0 0 0 2px #fff; }
+.printall .dot--3 { background: #1f3320; } .printall .dot--2 { background: #47603f; } .printall .dot--1 { background: #789477; } .printall .dot--0 { background: #b9cbb8; }
+.printall .cert { box-shadow: none; border: 1px solid var(--line-2); }
+.printall .ring__big, .printall .tile__v { color: #101214; }
+.printall input[type='time'], .printall input[type='date'] { color-scheme: light; }
+
+@page { size: A4; margin: 16mm 14mm; }
+@media print {
+  html, body { background: #fff !important; }
+  body { font-size: 10.5pt; line-height: 1.5; }
+  .no-print, .topbar, .drawer, .pagenav, .cursor, .curtain, .skip, .cta { display: none !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-shadow: none !important; }
+  a { text-decoration: none !important; }
+  .printall__cover { height: 100vh; padding: 0; break-after: page; }
+  .printall__cover img { max-height: 100vh; }
+  .printall__page { padding: 0; border: 0; break-before: page; max-width: none; }
+  .printall__page:first-of-type { break-before: auto; }
+  .blk--h { break-after: avoid; }
+  .card, .callout, .steps__item, .mistakes__row, .checklist, .panel, .figure, tr, .summary li, .apoio__item, .refs__list li, .fase, .desafio__day { break-inside: avoid; }
+  .tablewrap__scroll { overflow: visible; }
+  .fases { display: grid !important; grid-template-columns: 1fr 1fr; margin: 0; padding: 0; }
+  textarea.field__input { min-height: 3.5rem; }
+
+  /* Páginas interativas impressas diretamente (ex.: rotina, painel): tema claro */
+  .page { --text: #1c2024; --text-2: #3a4047; --text-3: #5d646c; --white: #101214; --line: rgba(16, 18, 20, 0.16); --line-2: rgba(16, 18, 20, 0.34); --surface: transparent; --surface-2: transparent; --sage-hi: #47603f; --azure-hi: #0d4f9a; --ink-2: #fff; color: var(--text); background: #fff; }
+  .page .hero { min-height: 0; padding: 0 0 1rem; display: block; }
+  .page .hero__media, .page .hero::after { display: none; }
+  .page .hero__title { font-size: 26pt; max-width: none; }
+  .page .article { padding: 0; }
+  .page .input, .page .field__input { background: #fff; }
+  .page [data-reveal], .page .hero__body, .page .hero__title * { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+  .page .figure__frame { clip-path: none !important; }
+
+  /* Imprimir somente o certificado */
+  html.print-cert .hero, html.print-cert .blk:not(.blk--widget), html.print-cert .callout { display: none !important; }
+  html.print-cert .cert { break-inside: avoid; }
+  html.print-cert .cert.is-preview .cert__inner > * { opacity: 1; }
+  @page { margin: 14mm; }
+}
