@@ -1,0 +1,68 @@
+---
+/**
+ * Botão com microinterações: preenchimento que sobe, texto que "rola",
+ * ícone que avança e efeito magnético (data-magnetic, ativado via JS
+ * apenas em dispositivos com ponteiro fino).
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'primary' | 'ghost' | 'light' | 'mint';
+  size?: 'sm' | 'md' | 'lg';
+  icon?: 'arrow' | 'arrow-up-right' | 'arrow-down' | 'whatsapp' | 'route' | 'instagram' | null;
+  iconFirst?: boolean;
+  external?: boolean;
+  magnetic?: boolean;
+  class?: string;
+  ariaLabel?: string;
+  cursor?: string;
+  [key: `data-${string}`]: string | undefined;
+}
+
+const {
+  href,
+  label,
+  variant = 'primary',
+  size = 'md',
+  icon = 'arrow',
+  iconFirst = false,
+  external = false,
+  magnetic = true,
+  class: className,
+  ariaLabel,
+  cursor,
+  ...rest
+} = Astro.props;
+
+const classes = [
+  'btn',
+  variant !== 'primary' && `btn--${variant}`,
+  size !== 'md' && `btn--${size}`,
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+
+const isExternal = external || /^https?:\/\//.test(href);
+---
+
+<a
+  class={classes}
+  href={href}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener' : undefined}
+  aria-label={ariaLabel}
+  data-magnetic={magnetic ? '' : undefined}
+  data-cursor={cursor}
+  {...rest}
+>
+  <span class="btn__fill" aria-hidden="true"></span>
+  {icon && iconFirst && <Icon name={icon} class="btn__icon" />}
+  <span class="btn__label" data-magnetic-inner>
+    <span class="btn__text">{label}</span>
+    <span class="btn__text btn__text--clone" aria-hidden="true">{label}</span>
+  </span>
+  {icon && !iconFirst && <Icon name={icon} class="btn__icon" />}
+</a>

@@ -1,0 +1,83 @@
+---
+/**
+ * Cursor personalizado: um anel que acompanha o ponteiro com leve atraso
+ * e reage a elementos interativos. O cursor nativo continua visível
+ * (usabilidade). Ativado apenas com ponteiro fino e sem movimento reduzido.
+ */
+---
+
+<div class="cursor" aria-hidden="true" data-cursor-el>
+  <div class="cursor__ring" data-cursor-ring>
+    <span class="cursor__label" data-cursor-label></span>
+  </div>
+</div>
+
+<style>
+  .cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9800;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+  }
+  :global(html.has-cursor) .cursor {
+    opacity: 1;
+  }
+  :global(html.cursor-hidden) .cursor {
+    opacity: 0;
+  }
+  .cursor__ring {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: -1.125rem 0 0 -1.125rem;
+    border-radius: 50%;
+    border: 1px solid rgba(47, 62, 60, 0.55);
+    display: grid;
+    place-items: center;
+    transition:
+      width 0.55s var(--ease-out),
+      height 0.55s var(--ease-out),
+      margin 0.55s var(--ease-out),
+      background-color 0.55s var(--ease-out),
+      border-color 0.55s var(--ease-out);
+  }
+  .cursor__label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--petrol-ink);
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity 0.4s var(--ease-out),
+      transform 0.5s var(--ease-out);
+  }
+  :global(html.cursor-link) .cursor__ring {
+    width: 3.4rem;
+    height: 3.4rem;
+    margin: -1.7rem 0 0 -1.7rem;
+    background: rgba(189, 219, 209, 0.35);
+    border-color: rgba(47, 62, 60, 0.25);
+  }
+  :global(html.cursor-label) .cursor__ring {
+    width: 5.6rem;
+    height: 5.6rem;
+    margin: -2.8rem 0 0 -2.8rem;
+    background: var(--mint);
+    border-color: var(--mint);
+  }
+  :global(html.cursor-label) .cursor__label {
+    opacity: 1;
+    transform: none;
+  }
+  :global(html.cursor-dark) .cursor__ring {
+    border-color: rgba(251, 249, 241, 0.6);
+  }
+</style>

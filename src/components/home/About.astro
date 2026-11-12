@@ -1,0 +1,297 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from '../Icon.astro';
+import ambiente from '../../assets/images/site/sobre-ambiente.jpg';
+import serenidade from '../../assets/images/site/serenidade.jpg';
+import { site } from '../../data/site';
+
+/*
+ * Retrato da profissional: basta adicionar o arquivo
+ * src/assets/images/site/sobre-retrato.jpg (ou .png/.webp) que ele
+ * substitui automaticamente a imagem de ambientação.
+ */
+const portraits = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/images/site/sobre-retrato.{jpg,jpeg,png,webp}',
+  { eager: true },
+);
+const portraitModule = Object.values(portraits)[0];
+const hasPortrait = Boolean(portraitModule);
+const mainImage = portraitModule?.default ?? ambiente;
+const mainAlt = hasPortrait
+  ? 'Retrato de Letícia Orlandin em seu consultório'
+  : 'Ramo de eucalipto em vaso de vidro sob luz natural';
+
+const values = [
+  {
+    icon: 'person',
+    title: 'Atendimento individualizado',
+    text: 'Tempo e escuta dedicados a você, do primeiro contato ao acompanhamento.',
+  },
+  {
+    icon: 'compass',
+    title: 'Planejamento personalizado',
+    text: 'Cada etapa pensada a partir das suas características e dos seus objetivos.',
+  },
+  {
+    icon: 'leaf',
+    title: 'Naturalidade nos resultados',
+    text: 'Refinamento que respeita sua expressão, seus traços e sua identidade.',
+  },
+  {
+    icon: 'book',
+    title: 'Atualização profissional',
+    text: 'Busca constante por conhecimento e pelas boas práticas da estética avançada.',
+  },
+  {
+    icon: 'detail',
+    title: 'Cuidado com os detalhes',
+    text: 'Precisão em cada gesto e atenção a tudo o que faz diferença na sua experiência.',
+  },
+] as const;
+---
+
+<section class="about section" id="sobre" aria-labelledby="about-title">
+  <div class="about__grid container">
+    <div class="about__visual">
+      <figure class="about__portrait" data-clip-reveal>
+        <div class="about__portrait-inner" data-parallax-inner>
+          <Picture
+            src={mainImage}
+            alt={mainAlt}
+            widths={[480, 720, 960, 1280]}
+            sizes="(max-width: 900px) 88vw, 38vw"
+            formats={['avif', 'webp']}
+          />
+        </div>
+      </figure>
+      <figure class="about__detail" data-depth="0.16" aria-hidden="true">
+        <Picture src={serenidade} alt="" widths={[300, 480, 640]} sizes="(max-width: 900px) 40vw, 15vw" formats={['avif', 'webp']} />
+      </figure>
+      <p class="about__place" aria-hidden="true">Bento Gonçalves · RS</p>
+    </div>
+
+    <div class="about__content">
+      <p class="eyebrow" data-reveal>Sobre a profissional</p>
+      <h2 id="about-title" class="h1 about__title" data-split>Letícia <em>Orlandin</em></h2>
+
+      <div class="about__text prose" data-reveal>
+        <p class="lead">
+          À frente da Letícia Orlandin Estética Avançada, Letícia conduz cada atendimento com escuta atenta,
+          planejamento e atenção aos detalhes.
+        </p>
+        <p>
+          O cuidado começa muito antes de qualquer procedimento: no tempo dedicado a entender quem você é, o que
+          deseja e o que deve ser preservado. É dessa escuta que nascem tratamentos personalizados, construídos para
+          valorizar — nunca descaracterizar — a sua beleza.
+        </p>
+      </div>
+
+      <blockquote class="about__quote">
+        <span class="about__quote-mark" aria-hidden="true">“</span>
+        <p data-split>{site.philosophy}</p>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="container">
+    <ul class="values" role="list" aria-label="Valores" data-reveal-children>
+      {
+        values.map((v, i) => (
+          <li class="value">
+            <span class="value__num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="value__icon">
+              <Icon name={v.icon} />
+            </span>
+            <h3 class="value__title">{v.title}</h3>
+            <p class="value__text">{v.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(3rem, 7vw, 8rem);
+    align-items: center;
+  }
+  .about__visual {
+    position: relative;
+    padding-bottom: 4rem;
+  }
+  .about__portrait {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    aspect-ratio: 4 / 5;
+    background: var(--gray-soft);
+  }
+  .about__portrait-inner {
+    position: absolute;
+    inset: -8% 0;
+  }
+  .about__portrait-inner :global(picture),
+  .about__portrait-inner :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+  .about__portrait-inner :global(img) {
+    object-fit: cover;
+    object-position: 50% 40%;
+  }
+  .about__detail {
+    position: absolute;
+    right: clamp(-3.5rem, -4vw, -1rem);
+    bottom: 0;
+    width: 38%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 6px solid var(--offwhite);
+    box-shadow: var(--shadow-lift);
+  }
+  .about__detail :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 40% 50%;
+  }
+  .about__place {
+    position: absolute;
+    left: -0.2rem;
+    bottom: 0.4rem;
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .about__title {
+    margin-top: 1.4rem;
+  }
+  .about__text {
+    margin-top: 2rem;
+    max-width: 52ch;
+    color: var(--ink-2);
+  }
+  .about__text .lead {
+    color: var(--ink);
+  }
+  .about__quote {
+    position: relative;
+    margin-top: 3rem;
+    padding: 2.2rem 0 0 clamp(1.5rem, 3vw, 2.6rem);
+    border-top: 1px solid var(--line);
+    max-width: 30ch;
+  }
+  .about__quote p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 380;
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .about__quote-mark {
+    position: absolute;
+    left: -0.2rem;
+    top: 1.4rem;
+    font-family: var(--serif);
+    font-size: 4.8rem;
+    line-height: 1;
+    color: var(--mint);
+    -webkit-text-stroke: 1px var(--petrol);
+  }
+
+  .values {
+    margin: clamp(5rem, 9vw, 9rem) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+  .value {
+    position: relative;
+    padding: 2.2rem clamp(1rem, 1.6vw, 1.8rem) 0.5rem 0;
+    display: grid;
+    align-content: start;
+    gap: 0.9rem;
+  }
+  .value + .value {
+    padding-left: clamp(1rem, 1.6vw, 1.8rem);
+    border-left: 1px solid var(--line);
+  }
+  .value__num {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--ink-2);
+  }
+  .value__icon {
+    display: grid;
+    place-items: center;
+    width: 3.1rem;
+    height: 3.1rem;
+    border-radius: 50%;
+    background: var(--mint);
+    color: var(--petrol);
+    transition: transform 0.6s var(--ease-out), background-color 0.6s var(--ease-out);
+  }
+  .value__icon :global(svg) {
+    width: 1.45rem;
+    height: 1.45rem;
+  }
+  .value:hover .value__icon {
+    transform: translateY(-4px) rotate(-6deg);
+    background: var(--blue-light);
+  }
+  .value__title {
+    font-family: var(--serif);
+    font-weight: 450;
+    font-size: 1.45rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .value__text {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+
+  @media (max-width: 1100px) {
+    .values {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 0;
+      gap: 0 2rem;
+    }
+    .value,
+    .value + .value {
+      padding: 1.8rem 0;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+  }
+  @media (max-width: 900px) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+    .about__visual {
+      max-width: 34rem;
+      padding-right: 1.5rem;
+    }
+    .about__detail {
+      right: -0.25rem;
+    }
+  }
+  @media (max-width: 560px) {
+    .values {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

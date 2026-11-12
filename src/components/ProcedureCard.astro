@@ -1,0 +1,251 @@
+---
+import { Picture } from 'astro:assets';
+import Button from './Button.astro';
+import MappingLines from './MappingLines.astro';
+import type { Procedure } from '../data/procedimentos';
+import { categories } from '../data/procedimentos';
+import { whatsappFor } from '../data/site';
+
+interface Props {
+  procedure: Procedure;
+  layout?: 'card' | 'wide';
+  reverse?: boolean;
+  headingLevel?: 'h3' | 'h4';
+}
+
+const { procedure: p, layout = 'card', reverse = false, headingLevel = 'h4' } = Astro.props;
+const category = categories.find((c) => c.id === p.category);
+const Heading = headingLevel;
+const href = `/procedimentos/${p.slug}/`;
+
+// Fotos mais largas que a moldura são recortadas pela altura: pede-se uma
+// variante proporcionalmente maior para manter a nitidez.
+const frameRatio = layout === 'wide' ? 1.45 : 4 / 3;
+const crop = Math.max(1, p.image.width / p.image.height / frameRatio);
+const sizes =
+  layout === 'wide'
+    ? `(max-width: 900px) ${Math.round(90 * crop)}vw, ${Math.round(40 * crop)}vw`
+    : `(max-width: 900px) ${Math.round(90 * crop)}vw, ${Math.round(42 * crop)}vw`;
+const widths = [400, 640, 880, 1100, 1400, 1800].filter((w) => w <= p.image.width);
+---
+
+<div class:list={['pcard-wrap', `pcard-wrap--${layout}`]} data-reveal>
+  <article class:list={['pcard', `pcard--${layout}`, { 'pcard--reverse': reverse }]} data-tilt>
+    <a href={href} class="pcard__media" data-cursor="Ver" tabindex="-1" aria-hidden="true">
+      <div class="pcard__img" data-tilt-depth>
+        <Picture
+          src={p.image}
+          alt=""
+          widths={widths}
+          sizes={sizes}
+          formats={['avif', 'webp']}
+          style={`object-position:${p.focus}`}
+        />
+      </div>
+      {p.slug === 'avaliacao-e-mapeamento-facial' && <MappingLines />}
+      {p.badge && <span class="pcard__badge">{p.badge}</span>}
+    </a>
+
+    <div class="pcard__body">
+      {category && <p class="pcard__cat">{category.name}</p>}
+      <Heading class="pcard__title">
+        <a href={href}>{p.name}</a>
+      </Heading>
+      <p class="pcard__desc">{p.short}</p>
+
+      <div class="pcard__objective">
+        <span class="pcard__label">Objetivo do tratamento</span>
+        <p>{p.objective}</p>
+      </div>
+
+      <div class="pcard__actions">
+        <Button
+          href={href}
+          label="Saiba mais"
+          variant="ghost"
+          size="sm"
+          ariaLabel={`Saiba mais sobre ${p.name}`}
+        />
+        <Button
+          href={whatsappFor(p.whatsappName)}
+          label="Agendar avaliação"
+          size="sm"
+          icon="whatsapp"
+          iconFirst
+          ariaLabel={`Agendar avaliação para ${p.name} pelo WhatsApp`}
+          data-track={`card-whatsapp-${p.slug}`}
+        />
+      </div>
+    </div>
+  </article>
+</div>
+
+<style>
+  .pcard-wrap {
+    height: 100%;
+  }
+  .pcard {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0.65rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    box-shadow: var(--shadow-soft);
+    transform-style: preserve-3d;
+    transition: box-shadow 0.7s var(--ease-out);
+  }
+  .pcard:hover {
+    box-shadow: var(--shadow-lift);
+  }
+
+  .pcard__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    border-radius: calc(var(--radius-lg) - 0.45rem);
+    overflow: hidden;
+    background: var(--gray-soft);
+    isolation: isolate;
+  }
+  .pcard__img {
+    position: absolute;
+    inset: -4%;
+  }
+  .pcard__img :global(picture),
+  .pcard__img :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+  .pcard__img :global(img) {
+    object-fit: cover;
+    transform: scale(1.02);
+    transition: transform 1.4s var(--ease-out);
+  }
+  .pcard:hover .pcard__img :global(img) {
+    transform: scale(1.08);
+  }
+  .pcard__badge {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 3;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(251, 249, 241, 0.88);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--petrol);
+  }
+
+  .pcard__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+    padding: 1.6rem clamp(0.9rem, 1.5vw, 1.4rem) 1.1rem;
+  }
+  .pcard__cat {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .pcard__title {
+    font-family: var(--serif);
+    font-weight: 420;
+    font-size: clamp(1.75rem, 1.4rem + 1.1vw, 2.45rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .pcard__title a {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
+    transition: background-size 0.7s var(--ease-out);
+  }
+  .pcard__title a:hover {
+    background-size: 100% 1px;
+  }
+  .pcard__desc {
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+  .pcard__objective {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+  .pcard__label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--petrol);
+  }
+  .pcard__objective p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .pcard__actions {
+    margin-top: auto;
+    padding-top: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  /* Variação horizontal */
+  .pcard--wide {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    align-items: stretch;
+  }
+  .pcard--wide .pcard__media {
+    aspect-ratio: auto;
+    min-height: 100%;
+    height: 100%;
+    min-height: 26rem;
+  }
+  .pcard--wide .pcard__body {
+    padding: clamp(1.6rem, 3vw, 3.2rem);
+    justify-content: center;
+  }
+  .pcard--wide .pcard__title {
+    font-size: clamp(2.1rem, 1.5rem + 2vw, 3.4rem);
+  }
+  .pcard--wide.pcard--reverse .pcard__media {
+    order: 2;
+  }
+  @media (max-width: 900px) {
+    .pcard--wide {
+      grid-template-columns: 1fr;
+    }
+    .pcard--wide .pcard__media {
+      aspect-ratio: 4 / 3;
+      min-height: 0;
+    }
+    .pcard--wide.pcard--reverse .pcard__media {
+      order: 0;
+    }
+    .pcard--wide .pcard__body {
+      padding: 1.6rem 1rem 1.1rem;
+    }
+  }
+  @media (max-width: 420px) {
+    .pcard__actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+  }
+</style>

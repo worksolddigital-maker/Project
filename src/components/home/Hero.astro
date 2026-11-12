@@ -1,0 +1,264 @@
+---
+import { Picture } from 'astro:assets';
+import heroImg from '../../assets/images/site/hero.jpg';
+import Button from '../Button.astro';
+import { whatsapp } from '../../data/site';
+---
+
+<section class="hero" data-hero aria-labelledby="hero-title">
+  <div class="hero__grid container">
+    <div class="hero__content">
+      <p class="eyebrow hero__eyebrow" data-hero-eyebrow data-intro-hide>
+        Estética avançada · Bento Gonçalves/RS
+      </p>
+
+      <h1 id="hero-title" class="display hero__title" data-hero-title data-intro-hide>
+        <span class="hero__line">Refinar,</span>
+        <span class="hero__line hero__line--indent"><em>não transformar.</em></span>
+      </h1>
+
+      <p class="lead hero__sub" data-hero-sub data-intro-hide>
+        Estética avançada com planejamento, tecnologia e respeito à sua individualidade.
+      </p>
+
+      <div class="hero__actions" data-hero-actions data-intro-hide>
+        <Button href="#procedimentos" label="Conheça os procedimentos" variant="ghost" icon="arrow-down" />
+        <Button href={whatsapp()} label="Agende sua avaliação" icon="arrow" data-track="hero-whatsapp" />
+      </div>
+    </div>
+
+    <div class="hero__visual" data-hero-visual>
+      <div class="hero__frame" aria-hidden="true" data-hero-frame data-intro-hide></div>
+      <div class="hero__media" data-hero-media data-intro-hide>
+        <div class="hero__img" data-hero-img>
+          <Picture
+            src={heroImg}
+            alt="Retrato em close de pele natural sob luz suave, com olhar sereno"
+            widths={[480, 720, 960, 1280, 1600, 2000]}
+            sizes="(max-width: 900px) 92vw, 44vw"
+            formats={['avif', 'webp']}
+            priority
+          />
+        </div>
+      </div>
+      <p class="hero__caption" data-intro-hide data-hero-caption>
+        <span class="hero__caption-line" aria-hidden="true"></span>
+        Naturalidade como ponto de partida
+      </p>
+    </div>
+  </div>
+
+  <div class="hero__foot container" data-intro-hide data-hero-foot>
+    <a href="#manifesto" class="hero__scroll" data-hero-scroll>
+      <span class="hero__scroll-track" aria-hidden="true"><span></span></span>
+      Role para descobrir
+    </a>
+    <p class="hero__meta">Atendimento individualizado · Cidade Alta, Bento Gonçalves</p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding-top: calc(var(--header-h) + clamp(1rem, 3vh, 2.5rem));
+    padding-bottom: clamp(1.25rem, 3vh, 2rem);
+    overflow: clip;
+  }
+  .hero::before {
+    /* halo menta suave atrás da composição */
+    content: '';
+    position: absolute;
+    right: -12vw;
+    top: 8vh;
+    width: 62vw;
+    height: 62vw;
+    max-width: 980px;
+    max-height: 980px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(199, 231, 236, 0.75), rgba(189, 219, 209, 0.28) 55%, transparent 72%);
+    pointer-events: none;
+  }
+  .hero__grid {
+    position: relative;
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    gap: clamp(2rem, 4vw, 5rem);
+    align-items: center;
+  }
+  .hero__content {
+    position: relative;
+    z-index: 2;
+    margin-right: clamp(-6rem, -5vw, -1rem);
+  }
+  .hero__title {
+    margin-top: clamp(1.2rem, 3vh, 2rem);
+    /* Respeita a altura de telas de notebook: CTA sempre visível. */
+    font-size: min(var(--fs-display), 15.5vh);
+  }
+  .hero__line {
+    display: block;
+  }
+  .hero__line--indent {
+    padding-left: clamp(1.2rem, 8.5vw, 8.5rem);
+  }
+  .hero__sub {
+    margin-top: clamp(1.4rem, 3.5vh, 2.4rem);
+    max-width: 34ch;
+  }
+  .hero__actions {
+    margin-top: clamp(1.8rem, 4vh, 2.8rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .hero__visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .hero__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    max-height: calc(100svh - var(--header-h) - 9rem);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--gray-soft);
+    isolation: isolate;
+  }
+  .hero__img {
+    position: absolute;
+    inset: -6% 0;
+    will-change: transform;
+  }
+  .hero__img :global(picture),
+  .hero__img :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+  .hero__img :global(img) {
+    object-fit: cover;
+    object-position: 58% 40%;
+  }
+  .hero__frame {
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    right: 0;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    max-height: calc(100svh - var(--header-h) - 9rem);
+    transform: translate(-1.1rem, calc(-50% + 1.1rem));
+    border: 1px solid var(--line-strong);
+    border-radius: calc(var(--radius-lg) + 4px);
+    pointer-events: none;
+  }
+  .hero__caption {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.1rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink-2);
+  }
+  .hero__caption-line {
+    width: 2.5rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .hero__foot {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--ink-2);
+  }
+  .hero__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .hero__scroll-track {
+    position: relative;
+    width: 1px;
+    height: 2.6rem;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .hero__scroll-track span {
+    position: absolute;
+    inset: 0;
+    background: var(--petrol);
+    transform-origin: top;
+    animation: hero-scroll 2.6s var(--ease-in-out) infinite;
+  }
+  @keyframes hero-scroll {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    45% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    55% {
+      transform: scaleY(1);
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: auto;
+    }
+    .hero__grid {
+      grid-template-columns: 1fr;
+      gap: 2.6rem;
+    }
+    .hero__content {
+      margin-right: 0;
+    }
+    .hero__media,
+    .hero__frame {
+      max-height: none;
+    }
+    .hero__media {
+      aspect-ratio: 4 / 4.6;
+    }
+    .hero__frame {
+      aspect-ratio: 4 / 4.6;
+      transform: translate(-0.7rem, calc(-50% + 0.7rem));
+    }
+    .hero__visual {
+      margin-right: 0.3rem;
+    }
+    .hero__meta {
+      display: none;
+    }
+  }
+  @media (max-width: 480px) {
+    .hero__actions :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

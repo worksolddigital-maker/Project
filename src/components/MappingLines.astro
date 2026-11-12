@@ -1,0 +1,48 @@
+---
+/**
+ * Traçado decorativo de "mapeamento facial" sobre a foto.
+ * As linhas são desenhadas (DrawSVG) na revelação e ao passar o mouse.
+ * Puramente ilustrativo — não representa uma análise real.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={['mapping', className]}
+  viewBox="0 0 400 300"
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  data-mapping
+>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" vector-effect="non-scaling-stroke">
+    <path d="M24 92 H376" data-map-line />
+    <path d="M24 150 H376" data-map-line />
+    <path d="M24 210 H376" data-map-line />
+    <path d="M186 20 V286" data-map-line stroke-dasharray="2 6" />
+    <path d="M150 70 C150 70 132 128 156 186 C170 220 196 246 214 266" data-map-line />
+    <path d="M118 148 L238 204" data-map-line />
+  </g>
+  <g fill="currentColor">
+    <circle cx="186" cy="92" r="2.6" data-map-dot />
+    <circle cx="186" cy="150" r="2.6" data-map-dot />
+    <circle cx="186" cy="210" r="2.6" data-map-dot />
+    <circle cx="156" cy="186" r="2.6" data-map-dot />
+  </g>
+</svg>
+
+<style>
+  .mapping {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    color: rgba(251, 249, 241, 0.92);
+    stroke-width: 1;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+</style>

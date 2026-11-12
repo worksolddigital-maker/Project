@@ -1,0 +1,192 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from '../Icon.astro';
+import Button from '../Button.astro';
+import { instagramMedia } from '../../data/instagram';
+import { site } from '../../data/site';
+
+const handle = site.instagram.handle;
+const repeats = Array.from({ length: 4 });
+---
+
+<section class="insta" aria-labelledby="insta-title" data-insta>
+  <h2 id="insta-title" class="sr-only">Instagram {handle}</h2>
+
+  <a class="insta__marquee" href={site.instagram.url} target="_blank" rel="noopener" data-cursor="Seguir">
+    <span class="sr-only">Seguir {handle} no Instagram</span>
+    <span class="insta__track" data-marquee aria-hidden="true">
+      {
+        repeats.map(() => (
+          <span class="insta__chunk">
+            <span class="insta__word">{handle}</span>
+            <Icon name="sparkle" class="insta__star" />
+          </span>
+        ))
+      }
+    </span>
+  </a>
+
+  {
+    instagramMedia.length > 0 && (
+      <div class="insta__strip" data-insta-strip>
+        <ul class="insta__list" role="list" data-lenis-prevent-horizontal>
+          {instagramMedia.map((m) => (
+            <li class="insta__item">
+              <a href={site.instagram.url} target="_blank" rel="noopener" class="insta__link" data-cursor="Ver">
+                {m.type === 'video' && m.video ? (
+                  <video
+                    class="insta__video"
+                    muted
+                    loop
+                    playsinline
+                    preload="none"
+                    data-autoplay-in-view
+                    aria-label={m.alt}
+                  >
+                    <source src={m.video} type="video/mp4" />
+                  </video>
+                ) : null}
+                <Picture
+                  src={m.image}
+                  alt={m.type === 'video' ? '' : m.alt}
+                  widths={[320, 480, 720]}
+                  sizes="(max-width: 700px) 62vw, 22vw"
+                  formats={['avif', 'webp']}
+                  class="insta__img"
+                />
+                {m.type === 'video' && (
+                  <span class="insta__badge" aria-hidden="true">
+                    Reels
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  <div class="insta__foot container" data-reveal>
+    <p>Bastidores, cuidados e novidades do consultório.</p>
+    <Button href={site.instagram.url} label="Seguir no Instagram" variant="ghost" icon="instagram" iconFirst size="sm" />
+  </div>
+</section>
+
+<style>
+  .insta {
+    position: relative;
+    padding-block: clamp(4rem, 8vw, 7rem);
+    overflow: clip;
+    border-top: 1px solid var(--line);
+  }
+  .insta__marquee {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .insta__track {
+    display: inline-flex;
+    will-change: transform;
+  }
+  .insta__chunk {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 3.5rem);
+    padding-right: clamp(1.5rem, 3vw, 3.5rem);
+  }
+  .insta__word {
+    font-family: var(--serif);
+    font-weight: 330;
+    font-style: italic;
+    font-size: clamp(3.4rem, 1.5rem + 8vw, 10rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--petrol);
+    transition: color 0.6s var(--ease-out);
+  }
+  .insta__marquee:hover .insta__word {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--petrol);
+  }
+  .insta__star {
+    width: clamp(1.6rem, 3vw, 3.2rem);
+    height: clamp(1.6rem, 3vw, 3.2rem);
+    color: var(--petrol);
+    stroke-width: 1;
+  }
+
+  .insta__strip {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .insta__list {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0 var(--gutter) 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+  .insta__item {
+    flex: none;
+    width: clamp(13rem, 22vw, 20rem);
+    scroll-snap-align: start;
+  }
+  .insta__link {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--gray-soft);
+    isolation: isolate;
+    clip-path: inset(0 round var(--radius));
+  }
+  .insta__link :global(.insta__img),
+  .insta__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+  .insta__video {
+    z-index: 1;
+    opacity: 0;
+    transition:
+      opacity 0.6s var(--ease-out),
+      transform 1.2s var(--ease-out);
+  }
+  :global(.insta__video.is-playing) {
+    opacity: 1;
+  }
+  .insta__link:hover :global(.insta__img),
+  .insta__link:hover .insta__video {
+    transform: scale(1.05);
+  }
+  .insta__badge {
+    position: absolute;
+    left: 0.8rem;
+    top: 0.8rem;
+    z-index: 2;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(251, 249, 241, 0.88);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .insta__foot {
+    margin-top: clamp(1.6rem, 3vw, 2.4rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--ink-2);
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import FaqAccordion from '../react/FaqAccordion';
+import Button from '../Button.astro';
+import { faq } from '../../data/faq';
+import { whatsapp } from '../../data/site';
+---
+
+<section class="faq section" id="duvidas" aria-labelledby="faq-title">
+  <div class="faq__grid container">
+    <div class="faq__aside">
+      <p class="eyebrow" data-reveal>Perguntas frequentes</p>
+      <h2 id="faq-title" class="h1 faq__title" data-split>Dúvidas <em>frequentes</em></h2>
+      <p class="lead faq__lead" data-reveal>
+        Sobre avaliação, planejamento, procedimentos e agendamento. Se a sua dúvida não estiver aqui, é só chamar.
+      </p>
+      <div data-reveal>
+        <Button href={whatsapp('Olá, Letícia! Tenho uma dúvida sobre os procedimentos.')} label="Tirar uma dúvida" variant="ghost" icon="whatsapp" iconFirst />
+      </div>
+    </div>
+    <div class="faq__main">
+      <FaqAccordion client:visible items={faq} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: clamp(2.5rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .faq__aside {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    display: grid;
+    gap: 1.6rem;
+    justify-items: start;
+  }
+  .faq__title {
+    max-width: 10ch;
+    min-width: min-content;
+  }
+  .faq__lead {
+    max-width: 32ch;
+  }
+  @media (max-width: 900px) {
+    .faq__grid {
+      grid-template-columns: 1fr;
+    }
+    .faq__aside {
+      position: static;
+    }
+  }
+</style>

@@ -1,0 +1,177 @@
+---
+import { getImage } from 'astro:assets';
+import ResultsGallery from '../react/ResultsGallery';
+import type { ResultEntry } from '../react/ResultsGallery';
+import Button from '../Button.astro';
+import { results } from '../../data/resultados';
+import { site } from '../../data/site';
+
+const items: ResultEntry[] = await Promise.all(
+  results
+    .filter((r) => r.authorized === true)
+    .map(async (r) => {
+      const [b, a, bl, al] = await Promise.all([
+        getImage({ src: r.before, width: Math.min(900, r.before.width), format: 'webp', quality: 82 }),
+        getImage({ src: r.after, width: Math.min(900, r.after.width), format: 'webp', quality: 82 }),
+        getImage({ src: r.before, width: Math.min(1800, r.before.width), format: 'webp', quality: 86 }),
+        getImage({ src: r.after, width: Math.min(1800, r.after.width), format: 'webp', quality: 86 }),
+      ]);
+      return {
+        id: r.id,
+        alt: r.alt,
+        treatment: r.treatment ?? null,
+        note: r.note ?? null,
+        before: { src: b.src, large: bl.src, width: r.before.width, height: r.before.height },
+        after: { src: a.src, large: al.src, width: r.after.width, height: r.after.height },
+      };
+    }),
+);
+---
+
+<section class="results section" id="resultados" aria-labelledby="results-title">
+  <div class="container">
+    <header class="results__head">
+      <div>
+        <p class="eyebrow" data-reveal>Resultados e transformações</p>
+        <h2 id="results-title" class="h1 results__title" data-split>
+          Resultados reais, <em>no tempo de cada pele.</em>
+        </h2>
+      </div>
+      <p class="lead results__lead" data-reveal>
+        Registros publicados somente com autorização das pacientes, sem filtros ou retoques — porque confiança se
+        constrói com verdade.
+      </p>
+    </header>
+
+    {
+      items.length > 0 ? (
+        <ResultsGallery client:visible items={items} />
+      ) : (
+        <div class="results__empty" data-reveal>
+          <div class="results__empty-art" aria-hidden="true">
+            <span class="results__empty-half results__empty-half--a" />
+            <span class="results__empty-half results__empty-half--b" />
+            <span class="results__empty-line" />
+            <span class="results__empty-knob" />
+          </div>
+          <div class="results__empty-content">
+            <p class="results__empty-kicker">Galeria em curadoria</p>
+            <p class="results__empty-title">
+              Cada resultado tem o seu tempo — <em>e cada imagem, a sua autorização.</em>
+            </p>
+            <p class="results__empty-text">
+              Por respeito à privacidade das pacientes, esta galeria reúne apenas registros reais e autorizados.
+              Enquanto ela é preparada, acompanhe o dia a dia do consultório no Instagram.
+            </p>
+            <Button href={site.instagram.url} label="Acompanhar no Instagram" variant="ghost" icon="instagram" iconFirst />
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .results__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+    gap: 2rem clamp(2rem, 6vw, 7rem);
+    align-items: end;
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+  .results__title {
+    margin-top: 1.4rem;
+    max-width: 13ch;
+  }
+  .results__lead {
+    padding-bottom: 0.5rem;
+  }
+
+  .results__empty {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    box-shadow: var(--shadow-soft);
+  }
+  .results__empty-art {
+    position: relative;
+    aspect-ratio: 4 / 3.4;
+    border-radius: calc(var(--radius-lg) - 0.6rem);
+    overflow: hidden;
+  }
+  .results__empty-half {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+  .results__empty-half--a {
+    left: 0;
+    width: 50%;
+    background:
+      radial-gradient(circle at 70% 40%, rgba(255, 255, 255, 0.7), transparent 55%),
+      linear-gradient(160deg, var(--gray-soft), var(--blue-gray));
+  }
+  .results__empty-half--b {
+    right: 0;
+    width: 50%;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.75), transparent 55%),
+      linear-gradient(200deg, var(--blue-light), var(--mint));
+  }
+  .results__empty-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--offwhite);
+  }
+  .results__empty-knob {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--offwhite);
+    box-shadow: 0 10px 30px -10px rgba(29, 40, 38, 0.4);
+  }
+  .results__empty-content {
+    display: grid;
+    gap: 1.2rem;
+    justify-items: start;
+    padding: clamp(0.5rem, 2vw, 2rem) clamp(0.5rem, 2vw, 2rem) clamp(0.5rem, 2vw, 2rem) 0;
+  }
+  .results__empty-kicker {
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .results__empty-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 1.3rem + 1.8vw, 2.9rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    max-width: 22ch;
+  }
+  .results__empty-text {
+    color: var(--ink-2);
+    max-width: 52ch;
+  }
+
+  @media (max-width: 900px) {
+    .results__head,
+    .results__empty {
+      grid-template-columns: 1fr;
+    }
+    .results__empty-content {
+      padding: 0.5rem 0.5rem 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Manifesto from '../components/home/Manifesto.astro';
+import About from '../components/home/About.astro';
+import Procedures from '../components/home/Procedures.astro';
+import Process from '../components/home/Process.astro';
+import Results from '../components/home/Results.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import InstagramBand from '../components/home/InstagramBand.astro';
+import Faq from '../components/home/Faq.astro';
+import Contact from '../components/home/Contact.astro';
+import { faq } from '../data/faq';
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+---
+
+<BaseLayout intro jsonLd={[faqJsonLd]}>
+  <Hero />
+  <Manifesto />
+  <About />
+  <Procedures />
+  <Process />
+  <Results />
+  <Testimonials />
+  <InstagramBand />
+  <Faq />
+  <Contact />
+</BaseLayout>

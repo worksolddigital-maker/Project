@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProcedureCard from '../../components/ProcedureCard.astro';
+import Button from '../../components/Button.astro';
+import { categories, proceduresByCategory } from '../../data/procedimentos';
+import { whatsapp } from '../../data/site';
+
+const siteUrl = (Astro.site?.toString() ?? '').replace(/\/$/, '');
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${siteUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Procedimentos', item: `${siteUrl}/procedimentos/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Procedimentos estéticos em Bento Gonçalves"
+  description="Conheça os procedimentos da Letícia Orlandin Estética Avançada em Bento Gonçalves/RS: estética facial, Método SER, remoção de tatuagem e tratamentos capilares — sempre a partir de avaliação individual."
+  jsonLd={jsonLd}
+>
+  <section class="plist-hero" data-phero aria-labelledby="plist-title">
+    <div class="container">
+      <nav class="crumbs" aria-label="Você está em" data-phero-fade data-intro-hide>
+        <ol role="list">
+          <li><a href="/">Início</a></li>
+          <li aria-current="page">Procedimentos</li>
+        </ol>
+      </nav>
+      <p class="eyebrow plist-hero__eyebrow" data-phero-fade data-intro-hide>Procedimentos e tratamentos</p>
+      <h1 id="plist-title" class="display plist-hero__title" data-phero-title data-intro-hide>
+        Cuidado sob medida, <em>do rosto aos fios.</em>
+      </h1>
+      <p class="lead plist-hero__lead" data-phero-fade data-intro-hide>
+        Cada tratamento começa com uma avaliação individual. Conheça as possibilidades e agende uma conversa para
+        descobrir o que faz sentido para você.
+      </p>
+    </div>
+  </section>
+
+  {
+    categories.map((cat) => (
+      <section class="plist-cat" id={cat.anchor} aria-labelledby={`cat-${cat.id}`}>
+        <div class="container">
+          <header class="plist-cat__head">
+            <span class="plist-cat__num" aria-hidden="true">
+              {cat.number}
+            </span>
+            <h2 id={`cat-${cat.id}`} class="h2" data-split>
+              {cat.name}
+            </h2>
+            <p class="plist-cat__desc" data-reveal>
+              {cat.description}
+            </p>
+          </header>
+          <div class={`plist-grid plist-grid--${proceduresByCategory(cat.id).length > 1 ? 'multi' : 'single'}`}>
+            {proceduresByCategory(cat.id).map((p) => (
+              <ProcedureCard procedure={p} layout={proceduresByCategory(cat.id).length > 1 ? 'card' : 'wide'} headingLevel="h3" />
+            ))}
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="plist-end">
+    <div class="container plist-end__inner" data-reveal>
+      <p class="plist-end__text">Toda indicação nasce de uma <em>avaliação individual.</em></p>
+      <Button href={whatsapp()} label="Agendar minha avaliação" icon="whatsapp" iconFirst size="lg" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .plist-hero {
+    position: relative;
+    padding-top: calc(var(--header-h) + clamp(2rem, 6vh, 4rem));
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    overflow: clip;
+  }
+  .plist-hero::before {
+    content: '';
+    position: absolute;
+    right: -10vw;
+    top: -20vh;
+    width: 60vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(199, 231, 236, 0.6), rgba(189, 219, 209, 0.25) 55%, transparent 72%);
+    pointer-events: none;
+  }
+  .crumbs ol {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+    color: var(--ink-2);
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    opacity: 0.5;
+  }
+  .plist-hero__eyebrow {
+    position: relative;
+    margin-top: 2.4rem;
+  }
+  .plist-hero__title {
+    position: relative;
+    margin-top: 1.4rem;
+    max-width: 12ch;
+    font-size: clamp(3.2rem, 1.4rem + 6.4vw, 8.6rem);
+  }
+  .plist-hero__lead {
+    position: relative;
+    margin-top: 2rem;
+    max-width: 46ch;
+  }
+  .plist-cat {
+    padding-block: clamp(3rem, 6vw, 5.5rem);
+  }
+  .plist-cat:nth-of-type(even) {
+    background: var(--blue-gray);
+  }
+  .plist-cat__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 0.8fr);
+    align-items: end;
+    gap: 1rem clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .plist-cat__num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--ink-2);
+  }
+  .plist-cat__desc {
+    color: var(--ink-2);
+    justify-self: end;
+    max-width: 42ch;
+  }
+  .plist-grid--multi {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+  .plist-end {
+    padding-block: var(--section);
+  }
+  .plist-end__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .plist-end__text {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 18ch;
+  }
+  @media (max-width: 900px) {
+    .plist-cat__head {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    .plist-cat__desc {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+    .plist-grid--multi {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

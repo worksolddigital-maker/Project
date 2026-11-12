@@ -1,0 +1,559 @@
+/* ==========================================================================
+   Letícia Orlandin | Estética Avançada — sistema visual
+   ========================================================================== */
+
+@import 'lenis/dist/lenis.css';
+
+:root {
+  /* Paleta oficial */
+  --petrol: #2f3e3c;
+  --petrol-deep: #243230;
+  --petrol-ink: #1d2826;
+  --mint: #bddbd1;
+  --mint-soft: #d6e9e2;
+  --gray-soft: #e7e9e3;
+  --offwhite: #fbf9f1;
+  --blue-gray: #e8f0f1;
+  --blue-light: #c7e7ec;
+  --white: #ffffff;
+
+  /* Papéis */
+  --bg: var(--offwhite);
+  --ink: var(--petrol);
+  --ink-2: #55635f;
+  --line: rgba(47, 62, 60, 0.14);
+  --line-strong: rgba(47, 62, 60, 0.28);
+  --shadow-soft: 0 1px 2px rgba(29, 40, 38, 0.04), 0 12px 40px -12px rgba(29, 40, 38, 0.14);
+  --shadow-lift: 0 2px 6px rgba(29, 40, 38, 0.05), 0 32px 70px -24px rgba(29, 40, 38, 0.28);
+
+  /* Tipografia */
+  --serif: 'Cormorant Garamond Variable', 'Cormorant Fallback', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans: 'Manrope Variable', 'Manrope Fallback', 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fs-display: clamp(3.35rem, 1.1rem + 9vw, 10.75rem);
+  --fs-h1: clamp(2.75rem, 1.5rem + 4.8vw, 6.4rem);
+  --fs-h2: clamp(2.35rem, 1.55rem + 3.3vw, 4.75rem);
+  --fs-h3: clamp(1.65rem, 1.35rem + 1.1vw, 2.35rem);
+  --fs-h4: clamp(1.35rem, 1.2rem + 0.55vw, 1.65rem);
+  --fs-lead: clamp(1.1rem, 1rem + 0.42vw, 1.36rem);
+  --fs-body: clamp(1rem, 0.965rem + 0.15vw, 1.08rem);
+  --fs-small: 0.875rem;
+  --fs-eyebrow: 0.72rem;
+
+  /* Espaçamento e grid */
+  --gutter: clamp(1.25rem, 0.6rem + 3.2vw, 4rem);
+  --max: 1440px;
+  --section: clamp(5.5rem, 3.5rem + 8vw, 11rem);
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+
+  /* Movimento */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+
+  --header-h: 84px;
+
+  color-scheme: light;
+}
+
+/* Fallbacks métricos para reduzir saltos de layout enquanto as fontes carregam */
+@font-face {
+  font-family: 'Cormorant Fallback';
+  src: local('Times New Roman'), local('Times'), local('Liberation Serif');
+  size-adjust: 92%;
+  ascent-override: 98%;
+  descent-override: 30%;
+}
+@font-face {
+  font-family: 'Manrope Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 104%;
+  ascent-override: 103%;
+  descent-override: 29%;
+}
+
+/* ---------- Reset essencial ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: clip;
+}
+
+img,
+picture,
+video,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+blockquote,
+figure,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+::selection {
+  background: var(--mint);
+  color: var(--petrol-ink);
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Tipografia ---------- */
+.display,
+.h1,
+.h2,
+.h3,
+.h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.display {
+  font-size: var(--fs-display);
+  font-weight: 350;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+.h1 {
+  font-size: var(--fs-h1);
+  font-weight: 350;
+  letter-spacing: -0.03em;
+  line-height: 0.96;
+}
+.h2 {
+  font-size: var(--fs-h2);
+  font-weight: 380;
+  letter-spacing: -0.025em;
+}
+.h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.08;
+}
+.h4 {
+  font-size: var(--fs-h4);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+}
+
+.display em,
+.h1 em,
+.h2 em,
+.h3 em,
+.italic {
+  font-style: italic;
+  font-weight: 330;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85em;
+  font-family: var(--sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.eyebrow::before {
+  content: '';
+  width: 2.2em;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+.eyebrow--plain::before {
+  display: none;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  color: var(--ink-2);
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+.muted {
+  color: var(--ink-2);
+}
+
+.prose p + p {
+  margin-top: 1.1em;
+}
+.prose p {
+  text-wrap: pretty;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section);
+}
+
+.bg-offwhite {
+  background: var(--offwhite);
+}
+.bg-mint {
+  background: var(--mint);
+}
+.bg-bluegray {
+  background: var(--blue-gray);
+}
+.bg-gray {
+  background: var(--gray-soft);
+}
+.bg-petrol {
+  background: var(--petrol);
+  color: var(--offwhite);
+  --ink: var(--offwhite);
+  --ink-2: rgba(251, 249, 241, 0.74);
+  --line: rgba(251, 249, 241, 0.16);
+  --line-strong: rgba(251, 249, 241, 0.32);
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  background: var(--petrol);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transform: translateY(-160%);
+  transition: transform 0.3s var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  --btn-bg: var(--petrol);
+  --btn-fg: var(--white);
+  --btn-fill: var(--petrol-ink);
+  --btn-fill-fg: var(--white);
+  --btn-border: transparent;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75em;
+  min-height: 3.35rem;
+  padding: 0.95em 1.65em;
+  border-radius: 999px;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    color 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
+  will-change: transform;
+}
+.btn__fill {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--btn-fill);
+  transform: translateY(102%);
+  transition: transform 0.65s var(--ease-out);
+}
+.btn__label {
+  position: relative;
+  display: inline-grid;
+  overflow: hidden;
+  line-height: 1.25;
+}
+.btn__text {
+  grid-area: 1 / 1;
+  display: block;
+  transition: transform 0.65s var(--ease-out);
+}
+.btn__text--clone {
+  transform: translateY(105%);
+}
+.btn__icon {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+  transition: transform 0.65s var(--ease-out);
+}
+@media (hover: hover) {
+  .btn:hover {
+    color: var(--btn-fill-fg);
+  }
+  .btn:hover .btn__fill {
+    transform: translateY(0);
+  }
+  .btn:hover .btn__text {
+    transform: translateY(-105%);
+  }
+  .btn:hover .btn__text--clone {
+    transform: translateY(0);
+  }
+  .btn:hover .btn__icon {
+    transform: translateX(0.25em);
+  }
+}
+.btn:active {
+  box-shadow: inset 0 0 0 999px rgba(0, 0, 0, 0.06);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-fill: var(--petrol);
+  --btn-fill-fg: var(--white);
+  --btn-border: var(--line-strong);
+}
+.btn--light {
+  --btn-bg: var(--offwhite);
+  --btn-fg: var(--petrol);
+  --btn-fill: var(--mint);
+  --btn-fill-fg: var(--petrol-ink);
+}
+.btn--mint {
+  --btn-bg: var(--mint);
+  --btn-fg: var(--petrol-ink);
+  --btn-fill: var(--offwhite);
+  --btn-fill-fg: var(--petrol-ink);
+}
+.bg-petrol .btn--ghost {
+  --btn-fill: var(--offwhite);
+  --btn-fill-fg: var(--petrol);
+}
+.btn--sm {
+  min-height: 2.75rem;
+  padding: 0.75em 1.25em;
+  font-size: 0.84rem;
+}
+.btn--lg {
+  min-height: 3.9rem;
+  padding: 1.15em 2em;
+  font-size: 1rem;
+}
+
+/* Link de texto com sublinhado animado */
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding-block: 0.3em;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  transition: background-size 0.6s var(--ease-out);
+}
+@media (hover: hover) {
+  .link:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+}
+.link svg {
+  width: 1em;
+  height: 1em;
+  transition: transform 0.5s var(--ease-out);
+}
+.link:hover svg {
+  transform: translateX(0.2em);
+}
+
+/* ---------- Imagens com moldura e revelação ---------- */
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--gray-soft);
+  isolation: isolate;
+}
+.media img,
+.media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.media__inner {
+  position: absolute;
+  inset: -8% 0;
+  will-change: transform;
+}
+
+/* Textura sutil de grão — acabamento editorial */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.24 0 0 0 0 0.23 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* Linhas finas decorativas */
+.hairline {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 0;
+}
+
+/* ---------- Estados de movimento ----------
+   Elementos só ficam ocultos quando o JavaScript de animação está ativo
+   (classe .motion no <html>), garantindo conteúdo visível sem JS. */
+.motion [data-reveal],
+.motion [data-reveal-children] > * {
+  opacity: 0;
+}
+.motion.reduced [data-reveal],
+.motion.reduced [data-reveal-children] > * {
+  opacity: 1;
+}
+
+/* Antes da abertura assumir, elementos do topo ficam ocultos (sem salto). */
+.is-loading [data-intro-hide] {
+  visibility: hidden;
+}
+/* Exceto a foto do hero quando há abertura: ela é revelada pela cortina. */
+.is-intro.is-loading [data-hero-media] {
+  visibility: visible;
+}
+
+.scroll-locked {
+  overflow: hidden;
+}
+
+/* SplitText: máscaras de linha (folga para descendentes do itálico) */
+.split-line-mask {
+  overflow: clip;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.display .split-line-mask {
+  padding-top: 0.04em;
+  margin-top: -0.04em;
+  padding-bottom: 0.24em;
+  margin-bottom: -0.24em;
+}
+
+/* ---------- Acessibilidade: movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

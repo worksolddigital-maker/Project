@@ -1,0 +1,639 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import MappingLines from '../../components/MappingLines.astro';
+import FaqAccordion from '../../components/react/FaqAccordion';
+import { procedures, categories, getProcedure } from '../../data/procedimentos';
+import { site, whatsappFor, fullAddress, links } from '../../data/site';
+
+export function getStaticPaths() {
+  return procedures.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const p = getProcedure(slug!)!;
+const category = categories.find((c) => c.id === p.category)!;
+const others = procedures.filter((o) => o.slug !== p.slug);
+const siteUrl = (Astro.site?.toString() ?? '').replace(/\/$/, '');
+const pageUrl = `${siteUrl}/procedimentos/${p.slug}/`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: p.name,
+    serviceType: p.name,
+    description: p.short,
+    url: pageUrl,
+    provider: { '@id': `${siteUrl}/#negocio` },
+    areaServed: { '@type': 'City', name: `${site.address.city}, ${site.address.state}` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Início', item: `${siteUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Procedimentos', item: `${siteUrl}/procedimentos/` },
+      { '@type': 'ListItem', position: 3, name: p.name, item: pageUrl },
+    ],
+  },
+  ...(p.faq.length
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: p.faq.map((f) => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        },
+      ]
+    : []),
+];
+
+const faqItems = p.faq.map((f) => ({ ...f, topic: p.name }));
+
+/*
+ * A moldura do hero é vertical (4:5, com folga de parallax ≈ 0,71).
+ * Fotos horizontais são recortadas pela altura, então precisam de uma
+ * variante proporcionalmente mais larga para continuarem nítidas.
+ */
+const frameRatio = 0.71;
+const cropScale = Math.max(1, p.image.width / p.image.height / frameRatio);
+const heroSizes = `(max-width: 900px) ${Math.round(92 * cropScale)}vw, ${Math.round(46 * cropScale)}vw`;
+const heroWidths = [480, 720, 960, 1280, 1600, 2000, 2200].filter((w) => w <= p.image.width);
+/** Palavras longas ("Preenchimentos") pedem um corpo de título menor. */
+const longestWord = Math.max(...p.name.split(/\s+/).map((w) => w.length));
+/** Nome do procedimento para uso no meio da frase. */
+const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
+---
+
+<BaseLayout title={p.seoTitle} description={p.seoDescription} ogImage={`/og/${p.slug}.jpg`} jsonLd={jsonLd}>
+  <article class="proc">
+    <section class="phero" data-phero aria-labelledby="phero-title">
+      <div class="phero__grid container">
+        <div class="phero__content">
+          <nav class="crumbs" aria-label="Você está em" data-phero-fade data-intro-hide>
+            <ol role="list">
+              <li><a href="/">Início</a></li>
+              <li><a href="/procedimentos/">Procedimentos</a></li>
+              <li aria-current="page">{p.name}</li>
+            </ol>
+          </nav>
+          <p class="eyebrow phero__eyebrow" data-phero-fade data-intro-hide>
+            {category.number} · {category.name}
+          </p>
+          <h1
+            id="phero-title"
+            class:list={['display', 'phero__title', { 'phero__title--long': longestWord >= 11 }]}
+            data-phero-title
+            data-intro-hide
+          >
+            {p.name}
+          </h1>
+          {p.badge && <p class="phero__badge" data-phero-fade data-intro-hide>{p.badge}</p>}
+          <p class="lead phero__lead" data-phero-fade data-intro-hide>{p.short}</p>
+          <div class="phero__actions" data-phero-fade data-intro-hide>
+            <Button href={whatsappFor(p.whatsappName)} label="Agendar avaliação" icon="whatsapp" iconFirst data-track={`page-whatsapp-${p.slug}`} />
+            <Button href="/#procedimentos" label="Todos os procedimentos" variant="ghost" icon="arrow" />
+          </div>
+        </div>
+        <div class="phero__visual">
+          <div class="phero__media" data-phero-media data-intro-hide>
+            <div class="phero__img" data-parallax-inner>
+              <Picture
+                src={p.image}
+                alt={p.imageAlt}
+                widths={heroWidths}
+                sizes={heroSizes}
+                formats={['avif', 'webp']}
+                priority
+                style={`object-position:${p.focus}`}
+              />
+            </div>
+            {p.slug === 'avaliacao-e-mapeamento-facial' && <MappingLines />}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pintro section" aria-labelledby="pintro-title">
+      <div class="pintro__grid container">
+        <div class="pintro__objective" data-reveal>
+          <p class="pintro__label">Objetivo do tratamento</p>
+          <p id="pintro-title" class="pintro__quote">{p.objective}</p>
+        </div>
+        <div class="pintro__text prose" data-reveal>
+          {p.intro.map((para, i) => <p class={i === 0 ? 'lead' : undefined}>{para}</p>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="psteps bg-mint section" aria-labelledby="psteps-title">
+      <div class="container">
+        <header class="psteps__head">
+          <p class="eyebrow" data-reveal>Como acontece</p>
+          <h2 id="psteps-title" class="h2" data-split>Cada etapa no <em>seu tempo.</em></h2>
+        </header>
+        <ol class="psteps__list" role="list" data-reveal-children>
+          {
+            p.steps.map((s, i) => (
+              <li class="pstep-card">
+                <span class="pstep-card__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="pstep-card__title">{s.title}</h3>
+                <p class="pstep-card__text">{s.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="pnotes section" aria-labelledby="pnotes-title">
+      <div class="pnotes__grid container">
+        <div>
+          <p class="eyebrow" data-reveal>Pontos importantes</p>
+          <h2 id="pnotes-title" class="h2 pnotes__title" data-split>Transparência <em>desde o início.</em></h2>
+        </div>
+        <div>
+          <ul class="pnotes__list" role="list" data-reveal-children>
+            {
+              p.notes.map((n) => (
+                <li>
+                  <Icon name="leaf" />
+                  <span>{n}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="pnotes__disclaimer" data-reveal>
+            As informações desta página têm caráter informativo e não substituem uma avaliação individual. A indicação
+            de qualquer procedimento depende das características e do histórico de cada pessoa.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {
+      faqItems.length > 0 && (
+        <section class="pfaq section bg-bluegray" aria-labelledby="pfaq-title">
+          <div class="pfaq__grid container">
+            <div>
+              <p class="eyebrow" data-reveal>
+                Dúvidas
+              </p>
+              <h2 id="pfaq-title" class="h2" data-split>
+                Sobre {nameRef}
+              </h2>
+            </div>
+            <FaqAccordion client:visible items={faqItems} filters={false} initialOpen={null} />
+          </div>
+        </section>
+      )
+    }
+
+    <section class="pcta" aria-labelledby="pcta-title">
+      <div class="container">
+        <div class="pcta__panel bg-petrol" data-reveal>
+          <div>
+            <p class="eyebrow">Próximo passo</p>
+            <h2 id="pcta-title" class="display pcta__title" data-split>Vamos <em>conversar?</em></h2>
+            <p class="lead pcta__lead">
+              Agende sua avaliação para conversarmos sobre {nameRef} e sobre o que faz sentido para você.
+            </p>
+          </div>
+          <div class="pcta__side">
+            <Button href={whatsappFor(p.whatsappName)} label="Agendar pelo WhatsApp" variant="mint" size="lg" icon="whatsapp" iconFirst />
+            <a class="pcta__address" href={links.route} target="_blank" rel="noopener">
+              <Icon name="pin" />
+              <span>{fullAddress}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pmore section" aria-labelledby="pmore-title">
+      <div class="container">
+        <header class="pmore__head">
+          <h2 id="pmore-title" class="h2" data-split>Outros <em>tratamentos</em></h2>
+          <Button href="/procedimentos/" label="Ver todos" variant="ghost" icon="arrow" size="sm" />
+        </header>
+        <ul class="pmore__list" role="list" data-reveal-children>
+          {
+            others.map((o) => (
+              <li>
+                <a class="pmore__item" href={`/procedimentos/${o.slug}/`} data-cursor="Ver">
+                  <span class="pmore__thumb">
+                    <Picture src={o.image} alt="" widths={[200, 360]} sizes="120px" formats={['avif', 'webp']} style={`object-position:${o.focus}`} />
+                  </span>
+                  <span class="pmore__text">
+                    <span class="pmore__cat">{categories.find((c) => c.id === o.category)?.name}</span>
+                    <span class="pmore__name">{o.name}</span>
+                  </span>
+                  <span class="pmore__arrow" aria-hidden="true">
+                    <Icon name="arrow" />
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  /* ---------- Hero ---------- */
+  .phero {
+    position: relative;
+    padding-top: calc(var(--header-h) + clamp(1.5rem, 4vh, 3rem));
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    overflow: clip;
+  }
+  .phero::before {
+    content: '';
+    position: absolute;
+    left: -15vw;
+    top: -10vh;
+    width: 55vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(199, 231, 236, 0.6), rgba(189, 219, 209, 0.22) 55%, transparent 72%);
+    pointer-events: none;
+  }
+  .phero__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+    min-height: calc(100svh - var(--header-h) - 6rem);
+  }
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+    color: var(--ink-2);
+  }
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    opacity: 0.5;
+  }
+  .crumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .phero__eyebrow {
+    margin-top: 2.2rem;
+  }
+  .phero__title {
+    margin-top: 1.2rem;
+    font-size: clamp(3rem, 1.4rem + 5.6vw, 7.6rem);
+    max-width: 11ch;
+    min-width: min-content;
+  }
+  .phero__title--long {
+    font-size: clamp(2.5rem, 1.2rem + 4.1vw, 5.6rem);
+    max-width: 13ch;
+  }
+  .phero__badge {
+    display: inline-block;
+    margin-top: 1.2rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: var(--mint);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .phero__lead {
+    margin-top: 1.6rem;
+    max-width: 40ch;
+  }
+  .phero__actions {
+    margin-top: 2.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .phero__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-height: calc(100svh - var(--header-h) - 5rem);
+    width: 100%;
+    margin-left: auto;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--gray-soft);
+    isolation: isolate;
+  }
+  .phero__img {
+    position: absolute;
+    inset: -6% 0;
+  }
+  .phero__img :global(picture),
+  .phero__img :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+  .phero__img :global(img) {
+    object-fit: cover;
+  }
+
+  /* ---------- Introdução ---------- */
+  .pintro__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: start;
+  }
+  .pintro__label {
+    font-size: var(--fs-eyebrow);
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .pintro__quote {
+    margin-top: 1.2rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 380;
+    font-size: clamp(1.9rem, 1.3rem + 2vw, 3.2rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+  }
+  .pintro__text {
+    color: var(--ink-2);
+    max-width: 58ch;
+  }
+  .pintro__text :global(.lead) {
+    color: var(--ink);
+  }
+
+  /* ---------- Etapas ---------- */
+  .psteps__head {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .psteps__head .h2 {
+    margin-top: 1.2rem;
+  }
+  .psteps__list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.8rem, 1.5vw, 1.25rem);
+  }
+  .pstep-card {
+    display: grid;
+    align-content: start;
+    gap: 0.9rem;
+    padding: clamp(1.4rem, 2.4vw, 2rem);
+    border-radius: var(--radius-lg);
+    background: rgba(251, 249, 241, 0.72);
+    border: 1px solid rgba(47, 62, 60, 0.1);
+    transition: transform 0.7s var(--ease-out), background-color 0.7s var(--ease-out);
+  }
+  .pstep-card:hover {
+    transform: translateY(-6px);
+    background: var(--offwhite);
+  }
+  .pstep-card__num {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 3.6rem;
+    line-height: 0.9;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--petrol);
+  }
+  .pstep-card__title {
+    font-family: var(--serif);
+    font-weight: 430;
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+  .pstep-card__text {
+    font-size: 0.95rem;
+    color: var(--ink);
+    opacity: 0.85;
+  }
+
+  /* ---------- Pontos importantes ---------- */
+  .pnotes__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2.5rem, 7vw, 8rem);
+  }
+  .pnotes__title {
+    margin-top: 1.2rem;
+    max-width: 14ch;
+    min-width: min-content;
+  }
+  .pnotes__list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .pnotes__list li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.3rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
+    line-height: 1.3;
+  }
+  .pnotes__list :global(svg) {
+    flex: none;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-top: 0.3rem;
+    color: var(--petrol);
+  }
+  .pnotes__disclaimer {
+    margin-top: 1.8rem;
+    font-size: 0.86rem;
+    color: var(--ink-2);
+    padding: 1.2rem 1.4rem;
+    border-radius: var(--radius);
+    background: var(--gray-soft);
+  }
+
+  /* ---------- FAQ ---------- */
+  .pfaq__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: start;
+  }
+  .pfaq__grid .h2 {
+    margin-top: 1.2rem;
+  }
+
+  /* ---------- CTA ---------- */
+  .pcta {
+    padding-top: var(--section);
+  }
+  .pcta__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 2.5rem clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    padding: clamp(2rem, 5vw, 4.5rem);
+    border-radius: clamp(1.4rem, 3vw, 2.4rem);
+  }
+  .pcta__title {
+    margin-top: 1.2rem;
+    font-size: clamp(3rem, 1.5rem + 5vw, 6.8rem);
+    color: var(--offwhite);
+  }
+  .pcta__title em {
+    color: var(--mint);
+  }
+  .pcta__lead {
+    margin-top: 1.4rem;
+    max-width: 40ch;
+  }
+  .pcta__side {
+    display: grid;
+    gap: 1.6rem;
+    justify-items: start;
+  }
+  .pcta__address {
+    display: flex;
+    gap: 0.6rem;
+    font-size: 0.92rem;
+    color: rgba(251, 249, 241, 0.82);
+    line-height: 1.5;
+  }
+  .pcta__address :global(svg) {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.15rem;
+    color: var(--mint);
+  }
+  .pcta__address:hover {
+    color: var(--offwhite);
+  }
+
+  /* ---------- Outros ---------- */
+  .pmore__head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .pmore__list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 clamp(1.5rem, 4vw, 4rem);
+    border-top: 1px solid var(--line);
+  }
+  .pmore__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .pmore__thumb {
+    width: 4.6rem;
+    height: 4.6rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--gray-soft);
+  }
+  .pmore__thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--ease-out);
+  }
+  .pmore__item:hover .pmore__thumb :global(img) {
+    transform: scale(1.12);
+  }
+  .pmore__text {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .pmore__cat {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .pmore__name {
+    font-family: var(--serif);
+    font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.75rem);
+    line-height: 1.1;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .pmore__item:hover .pmore__name {
+    transform: translateX(0.4rem);
+  }
+  .pmore__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    transition: background-color 0.5s var(--ease-out), color 0.5s var(--ease-out);
+  }
+  .pmore__arrow :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+  .pmore__item:hover .pmore__arrow {
+    background: var(--petrol);
+    color: var(--offwhite);
+  }
+
+  @media (max-width: 1024px) {
+    .psteps__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 900px) {
+    .phero__grid,
+    .pintro__grid,
+    .pnotes__grid,
+    .pfaq__grid,
+    .pcta__panel {
+      grid-template-columns: 1fr;
+    }
+    .phero__grid {
+      min-height: 0;
+    }
+    .phero__media {
+      max-height: none;
+      aspect-ratio: 4 / 4.4;
+    }
+    .pmore__list {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .psteps__list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

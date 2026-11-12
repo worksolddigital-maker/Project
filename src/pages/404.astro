@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { whatsapp } from '../data/site';
+---
+
+<BaseLayout title="Página não encontrada" noindex>
+  <section class="nf" data-phero aria-labelledby="nf-title">
+    <div class="container nf__inner">
+      <p class="eyebrow" data-phero-fade data-intro-hide>Erro 404</p>
+      <h1 id="nf-title" class="display nf__title" data-phero-title data-intro-hide>
+        Esta página <em>não existe.</em>
+      </h1>
+      <p class="lead nf__lead" data-phero-fade data-intro-hide>
+        O endereço pode ter mudado. Volte ao início ou fale diretamente pelo WhatsApp.
+      </p>
+      <div class="nf__actions" data-phero-fade data-intro-hide>
+        <Button href="/" label="Voltar ao início" />
+        <Button href={whatsapp()} label="Falar pelo WhatsApp" variant="ghost" icon="whatsapp" iconFirst />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    padding-top: var(--header-h);
+  }
+  .nf__title {
+    margin-top: 1.4rem;
+    max-width: 10ch;
+  }
+  .nf__lead {
+    margin-top: 1.6rem;
+    max-width: 40ch;
+  }
+  .nf__actions {
+    margin-top: 2.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

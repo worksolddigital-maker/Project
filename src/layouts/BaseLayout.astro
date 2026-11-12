@@ -1,0 +1,199 @@
+---
+import '@fontsource-variable/cormorant-garamond';
+import '@fontsource-variable/cormorant-garamond/wght-italic.css';
+import '@fontsource-variable/manrope';
+import '../styles/global.css';
+
+import cormorantLatin from '@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2?url';
+import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Curtain from '../components/Curtain.astro';
+import Cursor from '../components/Cursor.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import Preloader from '../components/Preloader.astro';
+import { site, seo, links, fullAddress } from '../data/site';
+import { procedures } from '../data/procedimentos';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Caminho público da imagem Open Graph (1200×630). */
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  /** Exibe a abertura cinematográfica (apenas na página inicial). */
+  intro?: boolean;
+  /** JSON-LD adicional específico da página. */
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+  /** Tom do cabeçalho sobre o topo da página. */
+  headerTone?: 'dark' | 'light';
+}
+
+const {
+  title,
+  description = seo.description,
+  ogImage = '/og/og-default.jpg',
+  ogType = 'website',
+  intro = false,
+  jsonLd = [],
+  noindex = false,
+  headerTone = 'dark',
+} = Astro.props;
+
+const siteUrl = (Astro.site?.toString() ?? 'https://www.leticiaorlandin.com.br/').replace(/\/$/, '');
+const pageTitle = title ? seo.titleTemplate.replace('%s', title) : seo.defaultTitle;
+const canonical = new URL(Astro.url.pathname, siteUrl + '/').toString();
+const ogImageUrl = new URL(ogImage, siteUrl + '/').toString();
+
+const streetAddress = `${site.address.street}, ${site.address.complement} - ${site.address.district}`;
+
+const business: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'HealthAndBeautyBusiness',
+  '@id': `${siteUrl}/#negocio`,
+  name: site.brand,
+  alternateName: 'Letícia Orlandin Estética Avançada',
+  description: seo.description,
+  slogan: site.slogan,
+  url: `${siteUrl}/`,
+  telephone: site.phone.e164,
+  image: ogImageUrl,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress,
+    addressLocality: site.address.city,
+    addressRegion: site.address.state,
+    addressCountry: site.address.country,
+    ...(site.address.postalCode ? { postalCode: site.address.postalCode } : {}),
+  },
+  areaServed: { '@type': 'City', name: `${site.address.city}, ${site.address.state}` },
+  hasMap: links.maps,
+  sameAs: [site.instagram.url],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Procedimentos e tratamentos',
+    itemListElement: procedures.map((p) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: p.name,
+        description: p.short,
+        url: `${siteUrl}/procedimentos/${p.slug}/`,
+        areaServed: `${site.address.city}, ${site.address.state}`,
+      },
+    })),
+  },
+};
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#site`,
+  url: `${siteUrl}/`,
+  name: site.brand,
+  inLanguage: 'pt-BR',
+  publisher: { '@id': `${siteUrl}/#negocio` },
+};
+
+const structured = [business, website, ...jsonLd];
+---
+
+<!doctype html>
+<html lang="pt-BR" data-intro={intro ? 'true' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#FBF9F1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- SEO local -->
+    <meta name="geo.region" content="BR-RS" />
+    <meta name="geo.placename" content={`${site.address.city}, ${site.address.state}`} />
+
+    <!-- Open Graph / redes sociais -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content={seo.locale} />
+    <meta property="og:site_name" content={site.brand} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.brand} — ${site.slogan}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Ícones -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fontes (auto-hospedadas) -->
+    <link rel="preload" href={cormorantLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structured)} />
+
+    <!-- Estado inicial de movimento: aplicado antes da primeira pintura -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) { d.classList.add('rm'); return; }
+        try {
+          if (sessionStorage.getItem('lo:transition')) {
+            d.classList.add('is-entering');
+            sessionStorage.removeItem('lo:transition');
+          } else if (d.dataset.intro === 'true' && !location.hash && !sessionStorage.getItem('lo:intro')) {
+            d.classList.add('is-intro');
+          }
+        } catch (e) {}
+        d.classList.add('is-loading');
+        // Segurança: o conteúdo nunca fica oculto se algo falhar.
+        window.__loFailsafe = setTimeout(function () {
+          d.classList.remove('is-loading', 'is-intro', 'is-entering');
+        }, 4500);
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <div class="grain" aria-hidden="true"></div>
+    {intro && <Preloader />}
+    <Curtain />
+    <Cursor />
+
+    <Header tone={headerTone} />
+
+    <main id="conteudo" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer />
+    <WhatsAppFloat />
+
+    <noscript>
+      <style>
+        .preloader, .curtain { display: none !important; }
+      </style>
+    </noscript>
+
+    <script>
+      import '../scripts/app';
+    </script>
+  </body>
+</html>

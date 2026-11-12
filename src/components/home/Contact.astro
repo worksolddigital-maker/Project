@@ -1,0 +1,307 @@
+---
+import { Picture } from 'astro:assets';
+import WhatsAppForm from '../react/WhatsAppForm';
+import Button from '../Button.astro';
+import Icon from '../Icon.astro';
+import folhas from '../../assets/images/site/detalhe-folhas.jpg';
+import { site, links, whatsapp } from '../../data/site';
+import { procedures } from '../../data/procedimentos';
+
+const procedureNames = procedures.map((p) => p.name);
+---
+
+<section class="contact section" id="contato" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="contact__panel bg-petrol" data-reveal>
+      <div class="contact__info">
+        <p class="eyebrow">Contato e agendamento</p>
+        <h2 id="contact-title" class="display contact__title" data-split>
+          Agende sua <em>avaliação.</em>
+        </h2>
+        <p class="lead contact__lead">
+          O primeiro passo é uma conversa. Envie uma mensagem e receba as orientações para o seu atendimento.
+        </p>
+
+        <Button
+          href={whatsapp()}
+          label="Conversar pelo WhatsApp"
+          variant="mint"
+          size="lg"
+          icon="whatsapp"
+          iconFirst
+          class="contact__wa"
+          data-track="contact-whatsapp"
+        />
+
+        <dl class="contact__list">
+          <div class="contact__row">
+            <dt><Icon name="whatsapp" /> WhatsApp</dt>
+            <dd><a href={links.tel} class="contact__link">{site.phone.display}</a></dd>
+          </div>
+          <div class="contact__row">
+            <dt><Icon name="pin" /> Endereço</dt>
+            <dd>
+              {site.address.street}<br />
+              {site.address.complement} — {site.address.district}<br />
+              {site.address.city}/{site.address.state}
+            </dd>
+          </div>
+          <div class="contact__row">
+            <dt><Icon name="clock" /> Atendimento</dt>
+            <dd>
+              {
+                site.hours.length > 0 ? (
+                  site.hours.map((h) => (
+                    <span class="contact__hour">
+                      {h.days}: {h.hours}
+                    </span>
+                  ))
+                ) : (
+                  <span>Consulte os horários disponíveis pelo WhatsApp.</span>
+                )
+              }
+            </dd>
+          </div>
+          <div class="contact__row">
+            <dt><Icon name="instagram" /> Instagram</dt>
+            <dd>
+              <a href={site.instagram.url} target="_blank" rel="noopener" class="contact__link">{site.instagram.handle}</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="contact__form">
+        <WhatsAppForm client:visible phone={site.phone.digits} procedures={procedureNames} />
+      </div>
+
+      <figure class="contact__leaf" aria-hidden="true" data-depth="0.12">
+        <Picture src={folhas} alt="" widths={[300, 500]} sizes="16vw" formats={['avif', 'webp']} />
+      </figure>
+    </div>
+
+    <div class="contact__map" data-reveal>
+      <div class="map" data-map data-src={links.mapEmbed}>
+        <div class="map__placeholder">
+          <Icon name="pin" class="map__pin" />
+          <span>Carregando mapa…</span>
+        </div>
+      </div>
+      <div class="map__card">
+        <p class="map__kicker">Como chegar</p>
+        <p class="map__address">
+          {site.address.street}, {site.address.complement}<br />
+          {site.address.district} · {site.address.city}/{site.address.state}
+        </p>
+        <div class="map__actions">
+          <Button href={links.route} label="Abrir rota no Google Maps" icon="route" iconFirst size="sm" data-track="route" />
+          <Button href={links.maps} label="Ver no mapa" variant="ghost" icon="arrow-up-right" size="sm" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact__panel {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2.5rem, 5vw, 5rem);
+    padding: clamp(2rem, 5vw, 5rem);
+    border-radius: clamp(1.4rem, 3vw, 2.4rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .contact__panel::before {
+    content: '';
+    position: absolute;
+    right: -20%;
+    top: -40%;
+    width: 70%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(189, 219, 209, 0.22), transparent 70%);
+    z-index: -1;
+  }
+  .contact__title {
+    margin-top: 1.4rem;
+    font-size: clamp(3rem, 1.5rem + 5.5vw, 7.4rem);
+    color: var(--offwhite);
+  }
+  .contact__title em {
+    color: var(--mint);
+  }
+  .contact__lead {
+    margin-top: 1.6rem;
+    max-width: 38ch;
+  }
+  .contact__info :global(.contact__wa) {
+    margin-top: 2.2rem;
+  }
+  .contact__list {
+    margin-top: 2.8rem;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .contact__row {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .contact__row dt {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mint);
+  }
+  .contact__row dt :global(svg) {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+  .contact__row dd {
+    color: var(--offwhite);
+    line-height: 1.55;
+  }
+  .contact__hour {
+    display: block;
+  }
+  .contact__link {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.6s var(--ease-out);
+  }
+  .contact__link:hover {
+    background-size: 0 1px;
+    background-position: 100% 100%;
+  }
+  .contact__form {
+    align-self: center;
+  }
+  .contact__leaf {
+    position: absolute;
+    right: 38%;
+    bottom: -3.5rem;
+    width: clamp(6rem, 11vw, 10rem);
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius);
+    overflow: hidden;
+    opacity: 0.18;
+    z-index: -1;
+    mix-blend-mode: luminosity;
+  }
+  .contact__leaf :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .contact__map {
+    position: relative;
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .map {
+    position: relative;
+    height: clamp(22rem, 42vw, 32rem);
+    border-radius: clamp(1.4rem, 3vw, 2.4rem);
+    overflow: hidden;
+    background: var(--gray-soft);
+  }
+  .map :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(0.55) sepia(0.12) hue-rotate(118deg) saturate(0.85) contrast(0.95);
+    opacity: 0;
+    transition: opacity 0.8s var(--ease-out);
+  }
+  .map :global(iframe.is-loaded) {
+    opacity: 1;
+  }
+  .map__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.6rem;
+    color: var(--ink-2);
+    font-size: 0.9rem;
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 48px 48px,
+      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 48px 48px,
+      var(--blue-gray);
+  }
+  .map__pin {
+    width: 2rem;
+    height: 2rem;
+    color: var(--petrol);
+  }
+  .map__card {
+    position: absolute;
+    left: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    display: grid;
+    gap: 0.9rem;
+    max-width: min(26rem, calc(100% - 2rem));
+    padding: 1.5rem 1.6rem;
+    border-radius: var(--radius);
+    background: rgba(251, 249, 241, 0.94);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-lift);
+  }
+  .map__kicker {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .map__address {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+  .map__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .contact__panel {
+      grid-template-columns: 1fr;
+    }
+    .contact__leaf {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .contact__row {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+    .map {
+      height: 24rem;
+    }
+    .map__card {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      max-width: none;
+      margin-top: -5rem;
+      margin-inline: 0.75rem;
+    }
+  }
+</style>

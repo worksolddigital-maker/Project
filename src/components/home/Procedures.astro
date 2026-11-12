@@ -1,0 +1,493 @@
+---
+import { getImage } from 'astro:assets';
+import ProcedureCard from '../ProcedureCard.astro';
+import Button from '../Button.astro';
+import { categories, proceduresByCategory, getProcedure } from '../../data/procedimentos';
+import { whatsapp, whatsappFor } from '../../data/site';
+
+const facial = proceduresByCategory('facial');
+const tatuagem = proceduresByCategory('tatuagem');
+const capilar = proceduresByCategory('capilar');
+const metodo = getProcedure('metodo-ser')!;
+
+const metodoImage = await getImage({ src: metodo.image, width: 1100, format: 'webp', quality: 82 });
+
+const catFacial = categories.find((c) => c.id === 'facial')!;
+const catMetodo = categories.find((c) => c.id === 'metodo')!;
+const catTatuagem = categories.find((c) => c.id === 'tatuagem')!;
+const catCapilar = categories.find((c) => c.id === 'capilar')!;
+
+const blobs = {
+  a: 'M250,18 C366,14 468,96 478,236 C488,382 448,560 282,598 C122,634 28,500 22,338 C16,178 132,22 250,18 Z',
+  b: 'M276,26 C410,40 494,162 474,306 C454,452 382,604 230,592 C86,580 6,452 26,296 C46,140 150,14 276,26 Z',
+  c: 'M238,10 C380,-2 466,116 474,268 C484,428 404,606 252,612 C104,618 18,494 24,336 C30,168 104,20 238,10 Z',
+};
+---
+
+<section class="procedures bg-bluegray" id="procedimentos" aria-labelledby="proc-title" data-procedures>
+  <header class="procedures__head container">
+    <div>
+      <p class="eyebrow" data-reveal>Procedimentos e tratamentos</p>
+      <h2 id="proc-title" class="h1 procedures__title" data-split>
+        Tratamentos pensados para <em>você</em> — não para um padrão.
+      </h2>
+    </div>
+    <div class="procedures__intro" data-reveal>
+      <p class="lead">
+        Cada procedimento é indicado a partir de uma avaliação individual e faz parte de um planejamento, nunca de
+        uma fórmula pronta.
+      </p>
+      <p class="procedures__note">
+        Indicações, número de sessões e resultados variam de pessoa para pessoa.
+      </p>
+    </div>
+  </header>
+
+  <div class="procedures__body">
+    <div class="pnav" data-pnav>
+      <nav class="pnav__bar" aria-label="Categorias de procedimentos" data-pnav-bar>
+        <span class="pnav__indicator" aria-hidden="true" data-pnav-indicator></span>
+        {
+          categories.map((c) => (
+            <a href={`#${c.anchor}`} class="pnav__item" data-pnav-item={c.id}>
+              <span class="pnav__num">{c.number}</span>
+              {c.name}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <!-- 01 — Estética facial -->
+    <div class="pcat container" id={catFacial.anchor} data-pcat="facial">
+      <header class="pcat__head">
+        <span class="pcat__num" aria-hidden="true">{catFacial.number}</span>
+        <h3 class="pcat__title h2" data-split>{catFacial.name}</h3>
+        <p class="pcat__desc" data-reveal>{catFacial.description}</p>
+      </header>
+      <div class="pgrid">
+        {facial.map((p) => <ProcedureCard procedure={p} />)}
+      </div>
+    </div>
+
+    <!-- 02 — Método SER -->
+    <div class="metodo bg-petrol" id={catMetodo.anchor} data-pcat="metodo" data-metodo>
+      <p class="metodo__ghost" aria-hidden="true"><span data-metodo-ghost>SER</span></p>
+      <div class="metodo__grid container">
+        <div class="metodo__visual">
+          <svg class="metodo__svg" viewBox="0 0 500 620" role="img" aria-label={metodo.imageAlt} data-metodo-svg>
+            <defs>
+              <clipPath id="metodo-clip">
+                <path d={blobs.a} data-metodo-clip data-shape-b={blobs.b} data-shape-c={blobs.c} />
+              </clipPath>
+            </defs>
+            <g clip-path="url(#metodo-clip)">
+              <rect width="500" height="620" fill="#3c4d4a"></rect>
+              <image
+                href={metodoImage.src}
+                x="0"
+                y="0"
+                width="500"
+                height="620"
+                preserveAspectRatio="xMidYMid slice"
+                data-metodo-image
+              />
+            </g>
+            <path class="metodo__outline" d={blobs.b} data-metodo-outline data-shape-b={blobs.c} data-shape-c={blobs.a} />
+          </svg>
+          <p class="metodo__caption" aria-hidden="true">Planejamento por etapas</p>
+        </div>
+
+        <div class="metodo__content">
+          <p class="eyebrow" data-reveal><span class="metodo__num">{catMetodo.number}</span> Método SER</p>
+          <h3 class="metodo__title display" data-split>Método <em>SER</em></h3>
+          <p class="lead metodo__lead" data-reveal>{metodo.short}</p>
+
+          <p class="metodo__kinetic" data-metodo-kinetic aria-hidden="true">
+            <span>Sem pressa.</span> <em>Sem excessos.</em>
+          </p>
+          <p class="sr-only">Sem pressa. Sem excessos.</p>
+
+          <ul class="metodo__pillars" role="list" data-reveal-children>
+            <li>Planejamento por etapas</li>
+            <li>Acompanhamento da evolução</li>
+            <li>Respeito ao tempo de cada paciente</li>
+          </ul>
+
+          <div class="metodo__objective" data-reveal>
+            <span class="metodo__label">Objetivo</span>
+            <p>{metodo.objective}</p>
+          </div>
+
+          <div class="metodo__actions" data-reveal>
+            <Button href="/procedimentos/metodo-ser/" label="Saiba mais" variant="light" ariaLabel="Saiba mais sobre o Método SER" />
+            <Button
+              href={whatsappFor(metodo.whatsappName)}
+              label="Agendar avaliação"
+              variant="ghost"
+              icon="whatsapp"
+              iconFirst
+              ariaLabel="Agendar avaliação para o Método SER pelo WhatsApp"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 — Remoção de tatuagem -->
+    <div class="pcat container" id={catTatuagem.anchor} data-pcat="tatuagem">
+      <header class="pcat__head">
+        <span class="pcat__num" aria-hidden="true">{catTatuagem.number}</span>
+        <h3 class="pcat__title h2" data-split>{catTatuagem.name}</h3>
+        <p class="pcat__desc" data-reveal>{catTatuagem.description}</p>
+      </header>
+      {tatuagem.map((p) => <ProcedureCard procedure={p} layout="wide" />)}
+    </div>
+
+    <!-- 04 — Tratamentos capilares -->
+    <div class="pcat container" id={catCapilar.anchor} data-pcat="capilar">
+      <header class="pcat__head">
+        <span class="pcat__num" aria-hidden="true">{catCapilar.number}</span>
+        <h3 class="pcat__title h2" data-split>{catCapilar.name}</h3>
+        <p class="pcat__desc" data-reveal>{catCapilar.description}</p>
+      </header>
+      {capilar.map((p) => <ProcedureCard procedure={p} layout="wide" reverse />)}
+    </div>
+  </div>
+
+  <div class="procedures__end container" data-reveal>
+    <p class="procedures__end-text">
+      Não sabe por onde começar? <em>Toda indicação nasce de uma avaliação.</em>
+    </p>
+    <Button href={whatsapp()} label="Agendar minha avaliação" icon="whatsapp" iconFirst />
+  </div>
+</section>
+
+<style>
+  .procedures {
+    position: relative;
+    padding-top: var(--section);
+    padding-bottom: var(--section);
+  }
+  .procedures__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    gap: 2rem clamp(2rem, 6vw, 7rem);
+    align-items: end;
+  }
+  .procedures__title {
+    margin-top: 1.4rem;
+    max-width: 14ch;
+  }
+  .procedures__intro {
+    display: grid;
+    gap: 1.2rem;
+    padding-bottom: 0.6rem;
+  }
+  .procedures__note {
+    font-size: 0.85rem;
+    color: var(--ink-2);
+    padding-left: 1rem;
+    border-left: 1px solid var(--line-strong);
+  }
+
+  .procedures__body {
+    position: relative;
+    margin-top: clamp(3.5rem, 6vw, 6rem);
+  }
+
+  /* ---------- Navegação de categorias ---------- */
+  .pnav {
+    position: sticky;
+    top: 0.85rem;
+    z-index: 30;
+    display: flex;
+    justify-content: center;
+    padding-inline: var(--gutter);
+    pointer-events: none;
+    transform: translateY(var(--header-h));
+    transition: transform 0.7s var(--ease-out);
+  }
+  :global(html.header-hidden) .pnav {
+    transform: none;
+  }
+  .pnav__bar {
+    pointer-events: auto;
+    position: relative;
+    display: inline-flex;
+    gap: 0.2rem;
+    max-width: 100%;
+    padding: 0.35rem;
+    border-radius: 999px;
+    background: rgba(251, 249, 241, 0.86);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    backdrop-filter: saturate(140%) blur(14px);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-soft);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .pnav__bar::-webkit-scrollbar {
+    display: none;
+  }
+  .pnav__indicator {
+    position: absolute;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    left: 0;
+    width: 0;
+    border-radius: 999px;
+    background: var(--petrol);
+    opacity: 0;
+    transition:
+      transform 0.75s var(--ease-out),
+      width 0.75s var(--ease-out),
+      opacity 0.4s var(--ease-out);
+  }
+  .pnav__item {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.72rem 1.15rem;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--ink-2);
+    transition: color 0.5s var(--ease-out);
+  }
+  .pnav__item:hover {
+    color: var(--ink);
+  }
+  .pnav__num {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+  :global(.pnav__item.is-active) {
+    color: var(--offwhite);
+  }
+  :global(.pnav__item.is-active):hover {
+    color: var(--offwhite);
+  }
+
+  /* ---------- Categorias ---------- */
+  .pcat {
+    padding-top: clamp(5rem, 9vw, 8.5rem);
+  }
+  .pcat:first-of-type {
+    padding-top: clamp(4.5rem, 7vw, 6.5rem);
+  }
+  .pcat__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 0.8fr);
+    align-items: end;
+    gap: 1rem clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: clamp(2rem, 4vw, 3.2rem);
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .pcat__num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 2rem);
+    color: var(--ink-2);
+    align-self: start;
+    padding-top: 0.4rem;
+  }
+  .pcat__desc {
+    color: var(--ink-2);
+    max-width: 42ch;
+    justify-self: end;
+  }
+  .pgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  /* ---------- Método SER ---------- */
+  .metodo {
+    position: relative;
+    margin-top: clamp(5rem, 9vw, 8.5rem);
+    padding-block: clamp(5rem, 9vw, 9rem);
+    overflow: clip;
+    background: var(--petrol);
+  }
+  .metodo__ghost {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(14rem, 42vw, 46rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(189, 219, 209, 0.14);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+  .metodo__ghost span {
+    display: inline-block;
+    will-change: transform;
+  }
+  .metodo__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(3rem, 7vw, 8rem);
+    align-items: center;
+  }
+  .metodo__visual {
+    position: relative;
+  }
+  .metodo__svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .metodo__outline {
+    fill: none;
+    stroke: var(--mint);
+    stroke-width: 1;
+    opacity: 0.7;
+    vector-effect: non-scaling-stroke;
+  }
+  .metodo__caption {
+    position: absolute;
+    right: 0;
+    bottom: 4%;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--mint);
+  }
+  .metodo__num {
+    color: var(--mint);
+    letter-spacing: 0.1em;
+  }
+  .metodo__title {
+    margin-top: 1.2rem;
+    color: var(--offwhite);
+  }
+  .metodo__title em {
+    color: var(--mint);
+  }
+  .metodo__lead {
+    margin-top: 1.8rem;
+    max-width: 38ch;
+  }
+  .metodo__kinetic {
+    margin-top: 2.4rem;
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 1.3rem + 2vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--offwhite);
+  }
+  .metodo__kinetic em {
+    color: var(--mint);
+  }
+  .metodo__pillars {
+    margin: 2.2rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .metodo__pillars li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.62rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--offwhite);
+  }
+  .metodo__pillars li::before {
+    content: '';
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--mint);
+  }
+  .metodo__objective {
+    margin-top: 2.2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+    max-width: 44ch;
+  }
+  .metodo__label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mint);
+  }
+  .metodo__objective p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    color: var(--offwhite);
+  }
+  .metodo__actions {
+    margin-top: 2.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .procedures__end {
+    margin-top: clamp(5rem, 9vw, 8rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.6rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .procedures__end-text {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    max-width: 30ch;
+  }
+
+  @media (max-width: 1024px) {
+    .procedures__head {
+      grid-template-columns: 1fr;
+    }
+    .pcat__head {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    .pcat__desc {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+  }
+  @media (max-width: 900px) {
+    .pgrid {
+      grid-template-columns: 1fr;
+    }
+    .metodo__grid {
+      grid-template-columns: 1fr;
+    }
+    .metodo__visual {
+      max-width: 26rem;
+    }
+    .pnav {
+      justify-content: flex-start;
+    }
+  }
+</style>

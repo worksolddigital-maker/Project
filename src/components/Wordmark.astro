@@ -1,0 +1,59 @@
+---
+/**
+ * Assinatura tipográfica da marca.
+ * Substitua por um SVG do logotipo oficial quando disponível.
+ */
+interface Props {
+  tone?: 'dark' | 'light';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+const { tone = 'dark', size = 'md', class: className } = Astro.props;
+---
+
+<span class:list={['wordmark', `wordmark--${tone}`, `wordmark--${size}`, className]}>
+  <span class="wordmark__name">Letícia Orlandin</span>
+  <span class="wordmark__tag">Estética Avançada</span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+    color: var(--petrol);
+    white-space: nowrap;
+  }
+  .wordmark--light {
+    color: var(--offwhite);
+  }
+  .wordmark__name {
+    font-family: var(--serif);
+    font-weight: 450;
+    font-size: 1.62rem;
+    letter-spacing: -0.01em;
+  }
+  .wordmark__tag {
+    margin-top: 0.42em;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.56rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    padding-left: 0.1em;
+  }
+  .wordmark--sm .wordmark__name {
+    font-size: 1.35rem;
+  }
+  .wordmark--sm .wordmark__tag {
+    font-size: 0.5rem;
+  }
+  .wordmark--lg .wordmark__name {
+    font-size: 2.2rem;
+  }
+  .wordmark--lg .wordmark__tag {
+    font-size: 0.66rem;
+  }
+</style>

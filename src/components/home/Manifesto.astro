@@ -1,0 +1,116 @@
+---
+import { Picture } from 'astro:assets';
+import toque from '../../assets/images/site/toque.jpg';
+import folhas from '../../assets/images/site/detalhe-folhas.jpg';
+---
+
+<section class="manifesto" id="manifesto" aria-label="Filosofia" data-manifesto>
+  <div class="manifesto__inner container">
+    <p class="eyebrow manifesto__eyebrow" data-reveal>Filosofia</p>
+
+    <p class="manifesto__text" data-manifesto-text>
+      Não se trata de mudar quem você é. <em>Trata-se de valorizar sua individualidade.</em>
+    </p>
+
+    <p class="manifesto__sign" data-reveal>Letícia Orlandin</p>
+
+    <figure class="manifesto__img manifesto__img--a" data-depth="-0.18" aria-hidden="true">
+      <Picture src={toque} alt="" widths={[320, 520, 760]} sizes="(max-width: 900px) 34vw, 16vw" formats={['avif', 'webp']} />
+    </figure>
+    <figure class="manifesto__img manifesto__img--b" data-depth="0.22" aria-hidden="true">
+      <Picture src={folhas} alt="" widths={[320, 520, 760]} sizes="(max-width: 900px) 30vw, 14vw" formats={['avif', 'webp']} />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .manifesto {
+    position: relative;
+    padding-block: clamp(6rem, 4rem + 10vw, 13rem);
+    overflow: clip;
+  }
+  .manifesto__inner {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+  .manifesto__text {
+    position: relative;
+    z-index: 2;
+    margin-top: 2.2rem;
+    max-width: 17ch;
+    font-family: var(--serif);
+    font-weight: 360;
+    font-size: clamp(2.5rem, 1.2rem + 5.4vw, 7.2rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .manifesto__text em {
+    font-weight: 320;
+  }
+  /* Linhas preenchidas pela rolagem (JS): o texto "acende" da esquerda
+     para a direita. Folga vertical para acentos e descendentes. */
+  .manifesto__text :global(.manifesto__line) {
+    width: fit-content;
+    margin-inline: auto;
+    padding-block: 0.14em 0.24em;
+    margin-block: -0.14em -0.24em;
+    color: transparent;
+    background-image: linear-gradient(90deg, var(--petrol) 50%, rgba(47, 62, 60, 0.17) 50%);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .manifesto__sign {
+    margin-top: 2.6rem;
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .manifesto__img {
+    position: absolute;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+  }
+  .manifesto__img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .manifesto__img--a {
+    left: max(0px, calc(var(--gutter) - 1rem));
+    top: -2%;
+    width: clamp(7.5rem, 15vw, 15.5rem);
+    aspect-ratio: 3 / 4;
+  }
+  .manifesto__img--a :global(img) {
+    object-position: 50% 30%;
+  }
+  .manifesto__img--b {
+    right: var(--gutter);
+    bottom: -6%;
+    width: clamp(6.5rem, 13vw, 13rem);
+    aspect-ratio: 4 / 5;
+  }
+  @media (max-width: 900px) {
+    .manifesto__img--a {
+      top: -4.5rem;
+      opacity: 0.9;
+    }
+    .manifesto__img--b {
+      bottom: -5rem;
+      opacity: 0.9;
+    }
+    .manifesto {
+      padding-block: 9rem;
+    }
+  }
+</style>

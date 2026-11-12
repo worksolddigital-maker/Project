@@ -1,0 +1,93 @@
+---
+import TestimonialsCarousel from '../react/TestimonialsCarousel';
+import Button from '../Button.astro';
+import { testimonials } from '../../data/depoimentos';
+import { whatsapp } from '../../data/site';
+
+const items = testimonials
+  .filter((t) => t.authorized === true)
+  .map(({ name, text, treatment, source }) => ({ name, text, treatment, source }));
+
+const shareLink = whatsapp(
+  'Olá, Letícia! Sou sua paciente e gostaria de compartilhar minha experiência com o atendimento.',
+);
+---
+
+<section class="testimonials section bg-bluegray" id="depoimentos" aria-labelledby="testimonials-title">
+  <div class="testimonials__grid container">
+    <div class="testimonials__aside">
+      <p class="eyebrow" data-reveal>Depoimentos</p>
+      <h2 id="testimonials-title" class="h2 testimonials__title" data-split>
+        A experiência de quem <em>já passou por aqui.</em>
+      </h2>
+      <p class="testimonials__policy" data-reveal>
+        Publicamos somente relatos reais, compartilhados com autorização.
+      </p>
+    </div>
+
+    <div class="testimonials__main">
+      {
+        items.length > 0 ? (
+          <TestimonialsCarousel client:visible items={items} />
+        ) : (
+          <div class="testimonials__invite" data-reveal>
+            <p class="testimonials__invite-title">
+              Já é paciente? <em>Sua experiência pode inspirar outras pessoas.</em>
+            </p>
+            <p class="testimonials__invite-text">
+              Conte como foi o seu atendimento. Com a sua autorização, o relato poderá ser publicado aqui — do jeito que
+              você escreveu.
+            </p>
+            <Button href={shareLink} label="Compartilhar minha experiência" variant="ghost" icon="whatsapp" iconFirst />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2.5rem, 6vw, 7rem);
+    align-items: start;
+  }
+  .testimonials__title {
+    margin-top: 1.4rem;
+    max-width: 14ch;
+  }
+  .testimonials__policy {
+    margin-top: 1.6rem;
+    font-size: 0.88rem;
+    color: var(--ink-2);
+    padding-left: 1rem;
+    border-left: 1px solid var(--line-strong);
+    max-width: 34ch;
+  }
+  .testimonials__invite {
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+    padding: clamp(1.8rem, 4vw, 3.4rem);
+    border-radius: var(--radius-lg);
+    background: var(--offwhite);
+    border: 1px solid var(--line);
+  }
+  .testimonials__invite-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 1.3rem + 1.8vw, 2.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 22ch;
+  }
+  .testimonials__invite-text {
+    color: var(--ink-2);
+    max-width: 50ch;
+  }
+  @media (max-width: 900px) {
+    .testimonials__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

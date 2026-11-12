@@ -1,0 +1,59 @@
+---
+/** Cortina das transições cinematográficas entre páginas. */
+---
+
+<div class="curtain" aria-hidden="true" data-curtain>
+  <div class="curtain__panel" data-curtain-panel></div>
+  <div class="curtain__mark" data-curtain-mark>
+    <span class="curtain__name">Letícia Orlandin</span>
+    <span class="curtain__line"></span>
+  </div>
+</div>
+
+<style>
+  .curtain {
+    position: fixed;
+    inset: 0;
+    z-index: 9600;
+    pointer-events: none;
+    visibility: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .curtain__panel {
+    position: absolute;
+    inset: 0;
+    background: var(--petrol);
+    clip-path: inset(100% 0 0 0);
+  }
+  .curtain__mark {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    color: var(--offwhite);
+    opacity: 0;
+  }
+  .curtain__name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 330;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: -0.02em;
+  }
+  .curtain__line {
+    width: 3.5rem;
+    height: 1px;
+    background: var(--mint);
+  }
+  /* Ao chegar de uma transição, a cortina já cobre a tela na primeira pintura. */
+  :global(html.is-entering) .curtain {
+    visibility: visible;
+  }
+  :global(html.is-entering) .curtain__panel {
+    clip-path: inset(0 0 0 0);
+  }
+  :global(html.is-entering) .curtain__mark {
+    opacity: 1;
+  }
+</style>

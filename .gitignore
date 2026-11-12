@@ -1,0 +1,17 @@
+# build
+dist/
+.astro/
+
+# dependências
+node_modules/
+
+# mídia bruta (export do Instagram e originais) — não versionar
+media-raw/
+media-inbox/
+
+# logs e sistema
+npm-debug.log*
+.DS_Store
+.env
+.env.*
+!.env.example
