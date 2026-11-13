@@ -1,12 +1,15 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
 import { SmoothScroll } from '@/lib/smooth'
 import { Pages } from '@/routes'
 import NotFound from '@/pages/NotFound'
 
+// No build standalone (arquivo aberto do disco) as rotas usam hash: banco-inter.html#/cartoes
+const Router = import.meta.env.MODE === 'standalone' ? HashRouter : BrowserRouter
+
 export function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <SmoothScroll>
         <Routes>
           <Route element={<Layout />}>
@@ -20,6 +23,6 @@ export function App() {
           </Route>
         </Routes>
       </SmoothScroll>
-    </BrowserRouter>
+    </Router>
   )
 }

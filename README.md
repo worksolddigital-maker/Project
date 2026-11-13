@@ -14,7 +14,12 @@ npm install
 npm run dev        # http://localhost:5173
 npm run build      # typecheck + build de produção em dist/ (gera 404.html para hosts estáticos)
 npm run preview    # serve o build em http://localhost:4173
+npm run build:standalone   # gera dist-standalone/banco-inter.html: arquivo único que abre com duplo clique
 ```
+
+O build *standalone* embute JS, CSS e favicon em um só HTML e usa rotas por hash (`banco-inter.html#/cartoes`),
+para visualizar o projeto sem servidor. As fontes (Google Fonts) carregam quando há internet; sem conexão, usa as
+fontes do sistema.
 
 Requer Node 20+.
 
