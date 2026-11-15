@@ -8,7 +8,7 @@
 import type { ImageMetadata } from 'astro';
 import { generatedMedia } from './instagram.generated';
 import sobreMim from '../assets/images/instagram/sobre-mim.jpg';
-import retrato from '../assets/images/site/sobre-retrato.jpg';
+import essenza from '../assets/images/linha/essenza.jpg';
 import kit from '../assets/images/linha/kit.jpg';
 import luce from '../assets/images/linha/luce.jpg';
 import glossUso from '../assets/images/linha/gloss-uso.jpg';
@@ -37,10 +37,11 @@ export const curatedMedia: InstagramMedia[] = [
     alt: 'Publicação “Sobre mim”: Letícia Orlandin sentada em poltrona clara, de camisa branca e jeans',
   },
   {
-    id: 'consultorio',
+    id: 'essenza',
     type: 'image',
-    image: retrato,
-    alt: 'Letícia Orlandin no consultório, diante da frase “A sua essência, em sua melhor forma.”',
+    image: essenza,
+    alt: 'Essenza Espuma Facial da linha Letícia Orlandin sobre bancada de mármore',
+    caption: 'Uma pele bem cuidada começa por uma boa limpeza.',
   },
   {
     id: 'aurora',

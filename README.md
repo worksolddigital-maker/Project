@@ -66,18 +66,18 @@ public/            ícones, imagens de compartilhamento
 
 ## Antes de publicar — confirmar com a profissional
 
-- [ ] **Fotos próprias** (hero, retrato da Letícia, procedimentos) — as atuais são provisórias.
-- [x] Retrato, formação (do "sobre mim" publicado por ela), linha de produtos e dois casos de antes e depois — integrados.
-- [ ] **Fotos dos procedimentos e do hero** — ainda provisórias (banco de imagens).
+- [x] Retratos (abertura e "Sobre"), formação, linha de produtos completa e três casos de antes e depois — integrados.
+- [ ] **Fotos dos cards de procedimento** e imagem do Método SER — ainda provisórias (banco de imagens).
+- [ ] Confirmar que a foto de **detalhe dos lábios** é da mesma paciente das fotos frontal e três quartos (foram agrupadas no caso do Método SER: mesmas roupas e acessórios).
 - [ ] Nome oficial da universidade (ela escreve "Universidade de Santa Maria").
 - [ ] **Textos dos procedimentos e respostas do FAQ** (`src/data/procedimentos.ts`, `src/data/faq.ts`).
 - [ ] O que é o **Studio Face** e se **SER** é uma sigla.
-- [ ] Linha de produtos: tipo do **Essenza** (rótulo parcialmente coberto na foto), nome do **gloss**, frases de benefício (normas da Anvisa) e forma de venda.
+- [ ] Linha de produtos: nome do **gloss**, frases de benefício (normas da Anvisa) e forma de venda.
 - [ ] **Autorização por escrito** das pacientes dos antes e depois para uso no site (LGPD) e regras de publicidade do **Conselho Federal de Farmácia**.
 - [ ] **Horários de atendimento** (`site.hours` em `src/data/site.ts`).
 - [ ] **CEP** (um diretório informa 95700-342) e **domínio** definitivo.
 - [ ] **Depoimentos** reais, com autorização.
-- [ ] Logotipo oficial em SVG (o site reproduz o estilo tipográfico dele; o símbolo das quatro pétalas e o favicon ainda não são os oficiais).
+- [ ] Logotipo oficial em SVG (o site reproduz o estilo tipográfico dele; o símbolo da marca e o favicon ainda não são os oficiais).
 
 O site não inventa formação, certificações, preços, tecnologias, indicações
 clínicas, resultados, nomes ou avaliações.

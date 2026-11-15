@@ -18,7 +18,7 @@ const portraitModule = Object.values(portraits)[0];
 const hasPortrait = Boolean(portraitModule);
 const mainImage = portraitModule?.default ?? ambiente;
 const mainAlt = hasPortrait
-  ? `Letícia Orlandin sentada em uma poltrona no consultório, diante da frase “${site.clinicMotto}”`
+  ? 'Letícia Orlandin em pé no consultório, ao lado do símbolo iluminado da marca'
   : 'Ramo de eucalipto em vaso de vidro sob luz natural';
 // Com o retrato, o eucalipto vira o detalhe sobreposto (nada de outra pessoa ao lado dela).
 const detailImage = hasPortrait ? ambiente : folhas;
@@ -163,11 +163,11 @@ const values = [
   }
   .about__portrait-inner :global(img) {
     object-fit: cover;
-    object-position: 32% 30%;
+    object-position: 60% 40%;
   }
   .about__detail {
     position: absolute;
-    right: clamp(-3.5rem, -4vw, -1rem);
+    left: clamp(-3.5rem, -4vw, -1rem);
     bottom: 0;
     width: 38%;
     aspect-ratio: 3 / 4;
@@ -184,8 +184,9 @@ const values = [
   }
   .about__place {
     position: absolute;
-    left: -0.2rem;
+    right: -0.2rem;
     bottom: 0.4rem;
+    text-align: right;
     font-size: var(--fs-eyebrow);
     font-weight: 600;
     letter-spacing: 0.28em;
@@ -349,10 +350,10 @@ const values = [
     }
     .about__visual {
       max-width: 34rem;
-      padding-right: 1.5rem;
+      padding-left: 1.5rem;
     }
     .about__detail {
-      right: -0.25rem;
+      left: -0.25rem;
     }
   }
   @media (max-width: 560px) {

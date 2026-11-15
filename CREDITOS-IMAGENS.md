@@ -9,10 +9,11 @@ montagens de antes e depois) — sem filtros nem ajustes de cor.
 
 | Arquivo | Uso |
 | --- | --- |
-| `src/assets/images/site/sobre-retrato.jpg` | Retrato no "Sobre", imagem de compartilhamento e faixa do Instagram |
+| `src/assets/images/site/hero.jpg` | Abertura do site e imagem de compartilhamento (retrato sentada, com a frase na parede) |
+| `src/assets/images/site/sobre-retrato.jpg` | Seção "Sobre" (retrato ao lado do símbolo iluminado da marca) |
 | `src/assets/images/instagram/sobre-mim.jpg` | Faixa do Instagram |
-| `src/assets/images/linha/*.jpg` | Linha de produtos (kit, Aurora, Luce, gloss; Essenza e Elevare recortados da foto do kit) |
-| `src/assets/images/resultados/caso-0*-*.jpg` | Antes e depois (galeria e página do Método SER) |
+| `src/assets/images/linha/*.jpg` | Linha de produtos (kit, Essenza, Aurora, Luce, gloss; Elevare recortado da foto do kit) |
+| `src/assets/images/resultados/*.jpg` | Antes e depois — 3 pacientes, 5 ângulos (galeria e páginas do Método SER e da remoção de tatuagem) |
 
 ## Imagens provisórias (banco de imagens)
 
@@ -30,7 +31,6 @@ puxadas para o verde-petróleo) para unificar a direção de arte.
 
 | Arquivo (`src/assets/images/site/`) | Fonte |
 | --- | --- |
-| `hero.jpg` | https://www.pexels.com/photo/woman-s-face-3373716/ |
 | `mapeamento-facial.jpg` | https://www.pexels.com/photo/side-view-of-young-woman-breathing-air-17832444/ |
 | `toxina-botulinica.jpg` | https://www.pexels.com/photo/woman-getting-a-face-botox-3985311/ |
 | `preenchimentos.jpg` | https://www.pexels.com/photo/hands-with-syringe-touching-patient-face-9157201/ |

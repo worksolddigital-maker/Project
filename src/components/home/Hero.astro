@@ -33,8 +33,8 @@ import { site, whatsapp } from '../../data/site';
         <div class="hero__img" data-hero-img>
           <Picture
             src={heroImg}
-            alt="Retrato em close de pele natural sob luz suave, com olhar sereno"
-            widths={[480, 720, 960, 1280, 1600, 2000]}
+            alt={`Letícia Orlandin sentada em uma poltrona no consultório, diante da frase “${site.clinicMotto}”`}
+            widths={[480, 720, 960, heroImg.width].filter((w, i, all) => w <= heroImg.width && all.indexOf(w) === i)}
             sizes="(max-width: 900px) 92vw, 44vw"
             formats={['avif', 'webp']}
             priority
@@ -146,7 +146,7 @@ import { site, whatsapp } from '../../data/site';
   }
   .hero__img :global(img) {
     object-fit: cover;
-    object-position: 58% 40%;
+    object-position: 46% 35%;
   }
   .hero__frame {
     position: absolute;

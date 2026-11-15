@@ -49,6 +49,8 @@ export function initReveals() {
         y: 0,
         duration: 1.3,
         ease: 'lo',
+        // Sem transform residual: ancestrais transformados limitam position: fixed.
+        clearProps: 'transform',
         scrollTrigger: { trigger: el, start: 'top 89%', once: true },
       },
     );
@@ -65,6 +67,7 @@ export function initReveals() {
         duration: 1.2,
         stagger: 0.09,
         ease: 'lo',
+        clearProps: 'transform',
         scrollTrigger: { trigger: parent, start: 'top 88%', once: true },
       },
     );

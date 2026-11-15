@@ -3,8 +3,6 @@
  *
  * Fotos e textos vêm das publicações da profissional no Instagram
  * (@leticiaorlandin.estetica). TODO — confirmar com ela:
- *  - o tipo do Essenza ("Espuma Facial": o rótulo aparece parcialmente
- *    coberto na foto do kit);
  *  - o nome oficial do gloss (a publicação não traz um nome próprio);
  *  - as frases de benefício (alegações de cosméticos devem seguir as
  *    normas da Anvisa) e como os produtos são vendidos.
@@ -38,6 +36,15 @@ export const linha = {
   lifestyleAlt: 'Aplicação do gloss labial Letícia Orlandin',
   products: [
     {
+      id: 'essenza',
+      name: 'Essenza',
+      type: 'Espuma Facial',
+      text: 'Uma limpeza delicada, que remove impurezas sem deixar de lado o conforto e a naturalidade da pele — porque antes de tratar, hidratar ou regenerar, é preciso preparar a pele.',
+      image: essenza,
+      imageAlt: 'Frasco da Essenza Espuma Facial, 150 ml, sobre bancada de mármore junto à janela',
+      focus: '50% 45%',
+    },
+    {
       id: 'aurora',
       name: 'Aurora',
       type: 'Sérum Vitamina C',
@@ -62,14 +69,6 @@ export const linha = {
       text: 'Hidratação profunda e prolongada para lábios nutridos e protegidos — o aliado do cuidado diário contra o ressecamento. Toque sutil.',
       image: gloss,
       imageAlt: 'Gloss labial Letícia Orlandin sobre mármore',
-      focus: '50% 50%',
-    },
-    {
-      id: 'essenza',
-      name: 'Essenza',
-      type: 'Espuma Facial',
-      image: essenza,
-      imageAlt: 'Frasco da espuma facial Essenza',
       focus: '50% 50%',
     },
     {

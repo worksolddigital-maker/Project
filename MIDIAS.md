@@ -1,11 +1,12 @@
 # Fotos e vídeos do site
 
-**Já são reais** (enviadas pela profissional): o retrato da seção "Sobre",
-a linha de produtos, a faixa do Instagram e os dois casos de antes e depois.
+**Já são reais** (enviadas pela profissional): os retratos da abertura e da
+seção "Sobre", a linha de produtos, a faixa do Instagram e os três casos de
+antes e depois (organizados por paciente, com troca de ângulo).
 
 **Ainda provisórias** (banco de imagens com licença livre — ver
-[CREDITOS-IMAGENS.md](CREDITOS-IMAGENS.md)): a foto do hero, as fotos dos
-procedimentos, a imagem do Método SER e os detalhes decorativos. O ideal é
+[CREDITOS-IMAGENS.md](CREDITOS-IMAGENS.md)): as fotos dos cards de
+procedimento, a imagem do Método SER e os detalhes decorativos. O ideal é
 substituí-las por fotografias da própria Letícia, do Instagram
 [@leticiaorlandin.estetica](https://www.instagram.com/leticiaorlandin.estetica/)
 ou de uma sessão no consultório.
@@ -59,7 +60,7 @@ npm run media:slot -- sobre-retrato caminho/do/retrato.jpg
 
 | Posição (slot)          | Onde aparece                                   | Formato ideal |
 | ----------------------- | ---------------------------------------------- | ------------- |
-| `hero`                  | Abertura da página inicial                     | vertical 4:5  |
+| `hero`                  | Abertura da página inicial (já em uso)         | vertical 4:5  |
 | `sobre-retrato`         | Retrato da Letícia (já em uso)                 | vertical 3:4  |
 | `sobre-ambiente`        | Detalhe sobreposto na seção Sobre              | vertical 3:4  |
 | `toque`, `detalhe-folhas` | Imagens pequenas do manifesto/contato        | vertical      |
@@ -84,6 +85,12 @@ npm run build
 ambientação — **nunca** em antes e depois.
 
 ## 4. Antes e depois
+
+Os casos são organizados **por paciente**, cada um com um ou mais ângulos
+(ex.: Frontal, Três quartos, Detalhe). O primeiro caso da lista aparece em
+destaque na página inicial, com a legenda da publicação. Montagens do
+Instagram (antes | depois lado a lado, ou em cima/embaixo) devem ser
+separadas em dois arquivos com **o mesmo recorte e o mesmo tamanho**.
 
 Siga as instruções no topo de [`src/data/resultados.ts`](src/data/resultados.ts):
 

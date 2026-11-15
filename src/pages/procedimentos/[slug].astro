@@ -160,22 +160,29 @@ const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
     {
       relatedResults.length > 0 && (
         <section class="presults section" aria-labelledby="presults-title">
-          <div class="container presults__grid">
+          <div class="container">
             <header class="presults__head">
-              <p class="eyebrow" data-reveal>
-                Caso real
-              </p>
-              <h2 id="presults-title" class="h2" data-split>
-                {p.category === 'metodo' ? `O ${p.name}` : p.name} <em>na prática.</em>
-              </h2>
-              <p class="presults__lead" data-reveal>
-                Paciente real, divulgado com autorização. Arraste a linha para comparar antes e depois.
-              </p>
-              <p class="presults__disclaimer" data-reveal>
-                Os resultados variam de pessoa para pessoa e não representam promessa de resultado.
-              </p>
+              <div>
+                <p class="eyebrow" data-reveal>
+                  {relatedResults.length > 1 ? 'Casos reais' : 'Caso real'}
+                </p>
+                <h2 id="presults-title" class="h2" data-split>
+                  {p.category === 'metodo' ? `O ${p.name}` : p.name} <em>na prática.</em>
+                </h2>
+              </div>
+              <div class="presults__side" data-reveal>
+                <p class="presults__lead">
+                  {relatedResults.length > 1 ? 'Pacientes reais, divulgados' : 'Paciente real, divulgado'} com
+                  autorização. Arraste a linha para comparar antes e depois.
+                </p>
+                <p class="presults__disclaimer">
+                  Os resultados variam de pessoa para pessoa e não representam promessa de resultado.
+                </p>
+              </div>
             </header>
-            <ResultsGallery client:visible items={relatedResults} />
+            <div data-reveal>
+              <ResultsGallery client:visible items={relatedResults} showLinks={false} featuredLabel={null} />
+            </div>
           </div>
         </section>
       )
@@ -459,32 +466,31 @@ const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
   }
 
   /* ---------- Caso real ---------- */
-  .presults__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    gap: clamp(2rem, 6vw, 6rem);
-    align-items: center;
-  }
   .presults__head {
     display: grid;
-    gap: 1rem;
-    align-content: center;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 1.5rem clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .presults__head .h2 {
+    margin-top: 1.2rem;
+  }
+  .presults__side {
+    display: grid;
+    gap: 0.9rem;
   }
   .presults__lead,
   .presults__disclaimer {
     color: var(--ink-2);
   }
   .presults__disclaimer {
-    margin-top: 0.6rem;
     font-size: 0.84rem;
     padding-left: 1rem;
     border-left: 1px solid var(--line-strong);
   }
-  .presults :global(.results-grid) {
-    grid-template-columns: minmax(0, 1fr);
-  }
   @media (max-width: 900px) {
-    .presults__grid {
+    .presults__head {
       grid-template-columns: 1fr;
     }
   }

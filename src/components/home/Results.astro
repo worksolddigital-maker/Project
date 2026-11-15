@@ -19,14 +19,16 @@ const items = await buildResultEntries(results);
       </div>
       <p class="lead results__lead" data-reveal>
         Casos reais de pacientes, divulgados com autorização. Cada resultado é fruto de um plano individualizado —
-        arraste a linha para comparar.
+        arraste a linha para comparar e troque o ângulo quando houver mais de uma foto.
       </p>
     </header>
 
     {
       items.length > 0 ? (
         <>
-          <ResultsGallery client:visible items={items} />
+          <div data-reveal>
+            <ResultsGallery client:visible items={items} />
+          </div>
           <div class="results__foot" data-reveal>
             <p class="results__disclaimer">
               Os resultados variam de pessoa para pessoa e não representam promessa de resultado. A indicação de

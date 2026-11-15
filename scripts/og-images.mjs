@@ -20,7 +20,7 @@ const font = (file) =>
   pathToFileURL(join(root, 'node_modules/@fontsource-variable', file)).href;
 
 const pages = [
-  { out: 'og-default', kicker: 'Estética avançada · Bento Gonçalves/RS', title: 'Refinar, <em>não transformar.</em>', image: 'sobre-retrato.jpg', pos: '30% 30%' },
+  { out: 'og-default', kicker: 'Estética avançada · Bento Gonçalves/RS', title: 'Refinar, <em>não transformar.</em>', image: 'hero.jpg', pos: '30% 30%' },
   { out: 'toxina-botulinica', kicker: 'Estética facial', title: 'Toxina <em>botulínica</em>', image: 'toxina-botulinica.jpg', pos: '38% 30%' },
   { out: 'preenchimentos', kicker: 'Estética facial', title: '<em>Preenchimentos</em>', image: 'preenchimentos.jpg', pos: '58% 50%' },
   { out: 'avaliacao-e-mapeamento-facial', kicker: 'Estética facial · Studio Face', title: 'Avaliação e <em>mapeamento facial</em>', image: 'mapeamento-facial.jpg', pos: '45% 32%' },

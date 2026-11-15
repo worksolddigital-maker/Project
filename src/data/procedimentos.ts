@@ -350,8 +350,9 @@ export const procedures: Procedure[] = [
     imageAlt: 'Punho com tatuagem de traço fino sobre fundo verde-escuro',
     focus: '50% 84%',
     intro: [
-      'A remoção de tatuagem é um processo progressivo: acontece ao longo de sessões, com intervalos que respeitam a recuperação da pele.',
-      'A resposta ao tratamento depende de diversos fatores — como as características da tatuagem (cores, densidade e tempo de aplicação dos pigmentos), a região do corpo e as particularidades da sua pele. Por isso, tudo começa com uma avaliação individual, que orienta expectativas reais desde o início.',
+      // Conforme publicação da profissional no Instagram.
+      'A remoção de tatuagem é um processo que exige técnica, tecnologia e, principalmente, respeito ao tempo da pele. Os resultados acontecem de forma gradual, permitindo que o organismo elimine os pigmentos de maneira progressiva — cada sessão é um passo em direção ao resultado.',
+      'A resposta ao tratamento depende de diversos fatores — como as características da tatuagem (cores, densidade e tempo de aplicação dos pigmentos), a região do corpo e as particularidades da sua pele. Por isso, tudo começa com uma avaliação individual e um protocolo personalizado, com segurança e acompanhamento especializado.',
     ],
     steps: [
       {
@@ -380,7 +381,7 @@ export const procedures: Procedure[] = [
       },
       {
         q: 'A tatuagem sai completamente?',
-        a: 'Cada caso é único. O processo é progressivo e a resposta varia conforme a tatuagem e a pele. Na avaliação, você recebe uma orientação realista sobre o que esperar.',
+        a: 'Cada caso é único. O processo é progressivo — evolução, não imediatismo — e a resposta varia conforme a tatuagem e a pele. Na avaliação, você recebe uma orientação realista sobre o que esperar.',
       },
     ],
     seoTitle: 'Remoção de tatuagem em Bento Gonçalves',
