@@ -15,3 +15,6 @@ npm-debug.log*
 .env
 .env.*
 !.env.example
+
+# pré-visualização em HTML independente (npm run standalone)
+standalone/

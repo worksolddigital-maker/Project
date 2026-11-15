@@ -36,6 +36,7 @@ npm run media:import -- export-instagram.zip   # importa fotos/vídeos do Instag
 npm run media:slot -- hero foto.jpg            # troca a foto de uma seção
 npm run media:video -- video.mov nome          # converte vídeo para web
 npm run og                                     # regenera imagens de compartilhamento
+npm run standalone                             # gera standalone/: páginas HTML independentes (pré-visualização sem servidor)
 ```
 
 ## Publicação

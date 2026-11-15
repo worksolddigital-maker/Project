@@ -11,7 +11,8 @@
     "media:import": "node scripts/media-import.mjs",
     "media:slot": "node scripts/media-slot.mjs",
     "media:video": "node scripts/media-video.mjs",
-    "og": "node scripts/og-images.mjs"
+    "og": "node scripts/og-images.mjs",
+    "standalone": "node scripts/standalone.mjs"
   },
   "engines": {
     "node": ">=22.23.4"
