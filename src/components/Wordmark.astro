@@ -1,7 +1,8 @@
 ---
 /**
- * Assinatura tipográfica da marca.
- * Substitua por um SVG do logotipo oficial quando disponível.
+ * Assinatura da marca, no estilo do logotipo usado pela profissional
+ * (ESTÉTICA AVANÇADA sobre LETÍCIA em traço fino + ORLANDIN em peso
+ * regular, sem serifa). Substitua pelo SVG oficial quando disponível.
  */
 interface Props {
   tone?: 'dark' | 'light';
@@ -12,8 +13,8 @@ const { tone = 'dark', size = 'md', class: className } = Astro.props;
 ---
 
 <span class:list={['wordmark', `wordmark--${tone}`, `wordmark--${size}`, className]}>
-  <span class="wordmark__name">Letícia Orlandin</span>
-  <span class="wordmark__tag">Estética Avançada</span>
+  <span class="wordmark__tag">Estética <span class="wordmark__tag-em">Avançada</span></span>
+  <span class="wordmark__name"><span class="wordmark__thin">Letícia</span> <span class="wordmark__bold">Orlandin</span></span>
 </span>
 
 <style>
@@ -21,39 +22,45 @@ const { tone = 'dark', size = 'md', class: className } = Astro.props;
     display: inline-flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.4em;
     line-height: 1;
     color: var(--petrol);
     white-space: nowrap;
+    font-family: var(--sans);
+    text-transform: uppercase;
   }
   .wordmark--light {
     color: var(--offwhite);
   }
-  .wordmark__name {
-    font-family: var(--serif);
-    font-weight: 450;
-    font-size: 1.62rem;
-    letter-spacing: -0.01em;
-  }
   .wordmark__tag {
-    margin-top: 0.42em;
-    font-family: var(--sans);
-    font-weight: 600;
-    font-size: 0.56rem;
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-    opacity: 0.85;
-    padding-left: 0.1em;
+    font-weight: 500;
+    font-size: 0.5rem;
+    letter-spacing: 0.34em;
+    opacity: 0.8;
+  }
+  .wordmark__tag-em {
+    font-weight: 300;
+  }
+  .wordmark__name {
+    font-size: 1.12rem;
+    letter-spacing: 0.12em;
+  }
+  .wordmark__thin {
+    font-weight: 200;
+  }
+  .wordmark__bold {
+    font-weight: 500;
   }
   .wordmark--sm .wordmark__name {
-    font-size: 1.35rem;
+    font-size: 1rem;
   }
   .wordmark--sm .wordmark__tag {
-    font-size: 0.5rem;
+    font-size: 0.46rem;
   }
   .wordmark--lg .wordmark__name {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
   }
   .wordmark--lg .wordmark__tag {
-    font-size: 0.66rem;
+    font-size: 0.62rem;
   }
 </style>

@@ -67,13 +67,17 @@ public/            ícones, imagens de compartilhamento
 ## Antes de publicar — confirmar com a profissional
 
 - [ ] **Fotos próprias** (hero, retrato da Letícia, procedimentos) — as atuais são provisórias.
+- [x] Retrato, formação (do "sobre mim" publicado por ela), linha de produtos e dois casos de antes e depois — integrados.
+- [ ] **Fotos dos procedimentos e do hero** — ainda provisórias (banco de imagens).
+- [ ] Nome oficial da universidade (ela escreve "Universidade de Santa Maria").
 - [ ] **Textos dos procedimentos e respostas do FAQ** (`src/data/procedimentos.ts`, `src/data/faq.ts`).
-- [ ] O que é o **Studio Face** e o significado do **Método SER**, se houver.
+- [ ] O que é o **Studio Face** e se **SER** é uma sigla.
+- [ ] Linha de produtos: tipo do **Essenza** (rótulo parcialmente coberto na foto), nome do **gloss**, frases de benefício (normas da Anvisa) e forma de venda.
+- [ ] **Autorização por escrito** das pacientes dos antes e depois para uso no site (LGPD) e regras de publicidade do **Conselho Federal de Farmácia**.
 - [ ] **Horários de atendimento** (`site.hours` em `src/data/site.ts`).
-- [ ] **CEP** do endereço e **domínio** definitivo.
-- [ ] **Antes e depois** e **depoimentos** reais, com autorização por escrito.
-- [ ] Regras de publicidade do **conselho profissional** da Letícia.
-- [ ] Logotipo oficial (hoje o site usa uma assinatura tipográfica e o monograma "LO").
+- [ ] **CEP** (um diretório informa 95700-342) e **domínio** definitivo.
+- [ ] **Depoimentos** reais, com autorização.
+- [ ] Logotipo oficial em SVG (o site reproduz o estilo tipográfico dele; o símbolo das quatro pétalas e o favicon ainda não são os oficiais).
 
 O site não inventa formação, certificações, preços, tecnologias, indicações
 clínicas, resultados, nomes ou avaliações.

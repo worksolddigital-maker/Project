@@ -1,31 +1,11 @@
 ---
-import { getImage } from 'astro:assets';
 import ResultsGallery from '../react/ResultsGallery';
-import type { ResultEntry } from '../react/ResultsGallery';
 import Button from '../Button.astro';
 import { results } from '../../data/resultados';
-import { site } from '../../data/site';
+import { buildResultEntries } from '../../data/result-entries';
+import { site, whatsapp } from '../../data/site';
 
-const items: ResultEntry[] = await Promise.all(
-  results
-    .filter((r) => r.authorized === true)
-    .map(async (r) => {
-      const [b, a, bl, al] = await Promise.all([
-        getImage({ src: r.before, width: Math.min(900, r.before.width), format: 'webp', quality: 82 }),
-        getImage({ src: r.after, width: Math.min(900, r.after.width), format: 'webp', quality: 82 }),
-        getImage({ src: r.before, width: Math.min(1800, r.before.width), format: 'webp', quality: 86 }),
-        getImage({ src: r.after, width: Math.min(1800, r.after.width), format: 'webp', quality: 86 }),
-      ]);
-      return {
-        id: r.id,
-        alt: r.alt,
-        treatment: r.treatment ?? null,
-        note: r.note ?? null,
-        before: { src: b.src, large: bl.src, width: r.before.width, height: r.before.height },
-        after: { src: a.src, large: al.src, width: r.after.width, height: r.after.height },
-      };
-    }),
-);
+const items = await buildResultEntries(results);
 ---
 
 <section class="results section" id="resultados" aria-labelledby="results-title">
@@ -38,14 +18,29 @@ const items: ResultEntry[] = await Promise.all(
         </h2>
       </div>
       <p class="lead results__lead" data-reveal>
-        Registros publicados somente com autorização das pacientes, sem filtros ou retoques — porque confiança se
-        constrói com verdade.
+        Casos reais de pacientes, divulgados com autorização. Cada resultado é fruto de um plano individualizado —
+        arraste a linha para comparar.
       </p>
     </header>
 
     {
       items.length > 0 ? (
-        <ResultsGallery client:visible items={items} />
+        <>
+          <ResultsGallery client:visible items={items} />
+          <div class="results__foot" data-reveal>
+            <p class="results__disclaimer">
+              Os resultados variam de pessoa para pessoa e não representam promessa de resultado. A indicação de
+              qualquer procedimento depende de avaliação individual.
+            </p>
+            <Button
+              href={whatsapp('Olá, Letícia! Vi os resultados no site e gostaria de agendar uma avaliação.')}
+              label="Quero uma avaliação"
+              icon="whatsapp"
+              iconFirst
+              size="sm"
+            />
+          </div>
+        </>
       ) : (
         <div class="results__empty" data-reveal>
           <div class="results__empty-art" aria-hidden="true">
@@ -85,6 +80,22 @@ const items: ResultEntry[] = await Promise.all(
   }
   .results__lead {
     padding-bottom: 0.5rem;
+  }
+
+  .results__foot {
+    margin-top: clamp(1.8rem, 3vw, 2.6rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .results__disclaimer {
+    max-width: 62ch;
+    font-size: 0.84rem;
+    color: var(--ink-2);
   }
 
   .results__empty {

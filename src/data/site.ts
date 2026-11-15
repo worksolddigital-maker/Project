@@ -15,6 +15,22 @@ export const site = {
     'Não se trata de mudar quem você é. Trata-se de valorizar sua individualidade.',
   philosophy:
     'Cada pessoa possui características únicas. Por isso, cada tratamento deve respeitar sua individualidade.',
+  /** Frase na parede do consultório (visível no retrato enviado pela profissional). */
+  clinicMotto: 'A sua essência, em sua melhor forma.',
+
+  /**
+   * A profissional — dados do "sobre mim" publicado por ela no Instagram.
+   * TODO: confirmar o nome oficial da universidade (ela escreve
+   * "Universidade de Santa Maria").
+   */
+  professional: {
+    name: 'Letícia Orlandin',
+    title: 'Farmacêutica',
+    education: [
+      { label: 'Farmacêutica', detail: 'Universidade de Santa Maria', year: '2010' },
+      { label: 'Especialização em Farmácia Estética', detail: 'Porto Alegre', year: '2018' },
+    ],
+  },
 
   city: 'Bento Gonçalves',
   state: 'RS',
@@ -39,6 +55,9 @@ export const site = {
   instagram: {
     handle: '@leticiaorlandin.estetica',
     url: 'https://www.instagram.com/leticiaorlandin.estetica/',
+  },
+  facebook: {
+    url: 'https://www.facebook.com/leticiaorlandin.estetica/',
   },
 
   /**
@@ -78,12 +97,14 @@ export function whatsappFor(procedure: string): string {
   );
 }
 
-export const nav = [
+/** `desktop: false` → aparece só no menu móvel e no rodapé (cabeçalho enxuto). */
+export const nav: { label: string; href: string; desktop?: boolean }[] = [
   { label: 'Sobre', href: '/#sobre' },
   { label: 'Procedimentos', href: '/#procedimentos' },
   { label: 'Método SER', href: '/#metodo-ser' },
   { label: 'Atendimento', href: '/#atendimento' },
   { label: 'Resultados', href: '/#resultados' },
+  { label: 'Linha de produtos', href: '/#linha', desktop: false },
   { label: 'Dúvidas', href: '/#duvidas' },
   { label: 'Contato', href: '/#contato' },
 ];

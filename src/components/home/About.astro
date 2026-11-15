@@ -3,13 +3,12 @@ import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Icon from '../Icon.astro';
 import ambiente from '../../assets/images/site/sobre-ambiente.jpg';
-import serenidade from '../../assets/images/site/serenidade.jpg';
+import folhas from '../../assets/images/site/detalhe-folhas.jpg';
 import { site } from '../../data/site';
 
 /*
- * Retrato da profissional: basta adicionar o arquivo
- * src/assets/images/site/sobre-retrato.jpg (ou .png/.webp) que ele
- * substitui automaticamente a imagem de ambientação.
+ * Retrato da profissional: o arquivo src/assets/images/site/sobre-retrato.jpg
+ * (ou .png/.webp) substitui automaticamente a imagem de ambientação.
  */
 const portraits = import.meta.glob<{ default: ImageMetadata }>(
   '../../assets/images/site/sobre-retrato.{jpg,jpeg,png,webp}',
@@ -19,8 +18,10 @@ const portraitModule = Object.values(portraits)[0];
 const hasPortrait = Boolean(portraitModule);
 const mainImage = portraitModule?.default ?? ambiente;
 const mainAlt = hasPortrait
-  ? 'Retrato de Letícia Orlandin em seu consultório'
+  ? `Letícia Orlandin sentada em uma poltrona no consultório, diante da frase “${site.clinicMotto}”`
   : 'Ramo de eucalipto em vaso de vidro sob luz natural';
+// Com o retrato, o eucalipto vira o detalhe sobreposto (nada de outra pessoa ao lado dela).
+const detailImage = hasPortrait ? ambiente : folhas;
 
 const values = [
   {
@@ -59,14 +60,14 @@ const values = [
           <Picture
             src={mainImage}
             alt={mainAlt}
-            widths={[480, 720, 960, 1280]}
-            sizes="(max-width: 900px) 88vw, 38vw"
+            widths={[480, 720, 960, 1146]}
+            sizes="(max-width: 900px) 88vw, 40vw"
             formats={['avif', 'webp']}
           />
         </div>
       </figure>
       <figure class="about__detail" data-depth="0.16" aria-hidden="true">
-        <Picture src={serenidade} alt="" widths={[300, 480, 640]} sizes="(max-width: 900px) 40vw, 15vw" formats={['avif', 'webp']} />
+        <Picture src={detailImage} alt="" widths={[300, 480, 640]} sizes="(max-width: 900px) 40vw, 15vw" formats={['avif', 'webp']} />
       </figure>
       <p class="about__place" aria-hidden="true">Bento Gonçalves · RS</p>
     </div>
@@ -77,15 +78,35 @@ const values = [
 
       <div class="about__text prose" data-reveal>
         <p class="lead">
-          À frente da Letícia Orlandin Estética Avançada, Letícia conduz cada atendimento com escuta atenta,
-          planejamento e atenção aos detalhes.
+          Farmacêutica formada em 2010 pela Universidade de Santa Maria, Letícia encontrou na estética a sua verdadeira
+          paixão — e, em 2018, concluiu a especialização em Farmácia Estética em Porto Alegre.
         </p>
         <p>
-          O cuidado começa muito antes de qualquer procedimento: no tempo dedicado a entender quem você é, o que
-          deseja e o que deve ser preservado. É dessa escuta que nascem tratamentos personalizados, construídos para
-          valorizar — nunca descaracterizar — a sua beleza.
+          Fascinada pelo universo das fórmulas e pela ciência por trás de cada resultado, acredita que a beleza vai
+          muito além da aparência: está na harmonia, na naturalidade e no respeito à essência de cada paciente.
+        </p>
+        <p class="about__voice">
+          “Acredito que cuidar é um ato de atenção, sensibilidade e precisão — e é isso que levo para cada
+          atendimento.”
+        </p>
+        <p class="about__personal">
+          Mãe da Clara, encontra equilíbrio entre um café, uma partida de padel e os momentos ao lado de quem ama.
         </p>
       </div>
+
+      <dl class="about__creds" aria-label="Formação" data-reveal>
+        {
+          site.professional.education.map((item) => (
+            <div class="about__cred">
+              <dt>{item.year}</dt>
+              <dd>
+                <strong>{item.label}</strong>
+                <span>{item.detail}</span>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
 
       <blockquote class="about__quote">
         <span class="about__quote-mark" aria-hidden="true">“</span>
@@ -127,12 +148,13 @@ const values = [
     position: relative;
     overflow: hidden;
     border-radius: var(--radius-lg);
-    aspect-ratio: 4 / 5;
+    /* Mesma proporção do retrato: a frase da parede aparece inteira. */
+    aspect-ratio: 3 / 4;
     background: var(--gray-soft);
   }
   .about__portrait-inner {
     position: absolute;
-    inset: -8% 0;
+    inset: -5% 0;
   }
   .about__portrait-inner :global(picture),
   .about__portrait-inner :global(img) {
@@ -141,7 +163,7 @@ const values = [
   }
   .about__portrait-inner :global(img) {
     object-fit: cover;
-    object-position: 50% 40%;
+    object-position: 32% 30%;
   }
   .about__detail {
     position: absolute;
@@ -181,6 +203,50 @@ const values = [
   }
   .about__text .lead {
     color: var(--ink);
+  }
+  .about__voice {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.3rem;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .about__personal {
+    font-size: 0.92rem;
+  }
+  .about__creds {
+    margin: 2.2rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 2rem;
+    max-width: 52ch;
+  }
+  .about__cred {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-strong);
+  }
+  .about__cred dt {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .about__cred dd {
+    margin: 0;
+    display: grid;
+    gap: 0.15rem;
+  }
+  .about__cred strong {
+    font-size: 0.86rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .about__cred span {
+    font-size: 0.82rem;
+    color: var(--ink-2);
   }
   .about__quote {
     position: relative;
@@ -290,7 +356,8 @@ const values = [
     }
   }
   @media (max-width: 560px) {
-    .values {
+    .values,
+    .about__creds {
       grid-template-columns: 1fr;
     }
   }

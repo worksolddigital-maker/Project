@@ -22,9 +22,14 @@ export const faq: FaqItem[] = [
     a: 'Não. Você pode chegar apenas com suas dúvidas e incômodos. A indicação é construída em conjunto durante a avaliação, com explicações claras sobre cada possibilidade.',
   },
   {
+    topic: 'Avaliação',
+    q: 'Quem é a profissional responsável?',
+    a: `${site.professional.name} é farmacêutica formada pela Universidade de Santa Maria desde 2010, com especialização em Farmácia Estética concluída em 2018, em Porto Alegre.`,
+  },
+  {
     topic: 'Planejamento',
     q: 'O que é o Método SER?',
-    a: 'É uma proposta de planejamento dos tratamentos por etapas, com acompanhamento e respeito ao tempo de evolução de cada paciente. Os resultados são construídos com planejamento, sem pressa e sem excessos.',
+    a: 'É uma proposta de planejamento dos tratamentos por etapas, com acompanhamento e respeito ao tempo de evolução de cada paciente. Conforme a indicação, combina de forma estratégica tecnologias e procedimentos — como o Ultraformer MPT e os bioestimuladores de colágeno. Os resultados são construídos com planejamento, sem pressa e sem excessos.',
   },
   {
     topic: 'Planejamento',

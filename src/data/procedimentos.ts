@@ -299,6 +299,8 @@ export const procedures: Procedure[] = [
     focus: '50% 30%',
     intro: [
       'O Método SER organiza o cuidado em etapas. Em vez de concentrar tudo em um único momento, o tratamento é planejado ao longo do tempo, com prioridades claras, acompanhamento próximo e respeito ao ritmo de resposta de cada organismo.',
+      // Conforme publicação da profissional no Instagram.
+      'Na prática, o método combina de forma estratégica tecnologias e procedimentos — como o Ultraformer MPT e os bioestimuladores de colágeno — em um plano individualizado, focado na estrutura anatômica e nos objetivos únicos de cada paciente.',
       'É uma escolha consciente: resultados construídos com planejamento, sem pressa e sem excessos — para que a mudança seja percebida como cuidado, não como transformação.',
     ],
     steps: [
@@ -324,7 +326,7 @@ export const procedures: Procedure[] = [
     faq: [
       {
         q: 'O Método SER é um procedimento?',
-        a: 'Não exatamente. É uma forma de planejar e conduzir os tratamentos por etapas, com acompanhamento e respeito ao tempo de evolução de cada paciente.',
+        a: 'Não exatamente. É uma forma de planejar e conduzir os tratamentos por etapas, com acompanhamento e respeito ao tempo de evolução de cada paciente. Conforme a indicação, o plano pode combinar tecnologias e procedimentos como o Ultraformer MPT e os bioestimuladores de colágeno.',
       },
       {
         q: 'Quanto tempo dura o planejamento?',
@@ -333,7 +335,7 @@ export const procedures: Procedure[] = [
     ],
     seoTitle: 'Método SER — planejamento estético por etapas',
     seoDescription:
-      'Conheça o Método SER: planejamento de tratamentos estéticos por etapas, com acompanhamento e respeito ao tempo de cada paciente. Bento Gonçalves/RS.',
+      'Método SER em Bento Gonçalves/RS: planejamento estético por etapas que combina tecnologias como Ultraformer MPT e bioestimuladores de colágeno, com acompanhamento individual.',
   },
   {
     slug: 'remocao-de-tatuagem',

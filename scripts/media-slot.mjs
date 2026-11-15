@@ -19,8 +19,7 @@ import sharp from 'sharp';
 const SLOTS = {
   hero: 'Foto principal da página inicial (vertical, 4:5)',
   'sobre-retrato': 'Retrato da profissional na seção Sobre (vertical, 4:5)',
-  'sobre-ambiente': 'Imagem de ambientação da seção Sobre (usada sem retrato)',
-  serenidade: 'Detalhe sobreposto na seção Sobre',
+  'sobre-ambiente': 'Detalhe sobreposto na seção Sobre (ou imagem principal, sem retrato)',
   toque: 'Imagem pequena do manifesto (esquerda)',
   'detalhe-folhas': 'Imagem pequena do manifesto (direita) e do contato',
   'toxina-botulinica': 'Card e página de Toxina botulínica',

@@ -12,20 +12,22 @@ const { tone = 'dark' } = Astro.props;
 
 <header class="header" data-header data-tone={tone}>
   <div class="header__bar container">
-    <a href="/" class="header__brand" aria-label="Letícia Orlandin Estética Avançada — página inicial" data-intro-hide>
+    <a href="/" class="header__brand" aria-label="Estética Avançada Letícia Orlandin — página inicial" data-intro-hide>
       <Wordmark size="sm" />
     </a>
 
     <nav class="header__nav" aria-label="Navegação principal" data-intro-hide>
       <ul role="list">
         {
-          nav.map((item) => (
-            <li>
-              <a href={item.href} class="header__link" data-nav-link>
-                <span>{item.label}</span>
-              </a>
-            </li>
-          ))
+          nav
+            .filter((item) => item.desktop !== false)
+            .map((item) => (
+              <li>
+                <a href={item.href} class="header__link" data-nav-link>
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            ))
         }
       </ul>
     </nav>

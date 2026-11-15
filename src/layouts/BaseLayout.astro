@@ -70,7 +70,12 @@ const business: Record<string, unknown> = {
   },
   areaServed: { '@type': 'City', name: `${site.address.city}, ${site.address.state}` },
   hasMap: links.maps,
-  sameAs: [site.instagram.url],
+  sameAs: [site.instagram.url, site.facebook.url],
+  founder: {
+    '@type': 'Person',
+    name: site.professional.name,
+    jobTitle: 'Farmacêutica com especialização em Farmácia Estética',
+  },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Procedimentos e tratamentos',

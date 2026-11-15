@@ -1,4 +1,20 @@
-# Créditos das imagens provisórias
+# Créditos das imagens
+
+## Imagens da profissional (reais)
+
+Enviadas pela própria cliente a partir do Instagram
+[@leticiaorlandin.estetica](https://www.instagram.com/leticiaorlandin.estetica/).
+Foram apenas recortadas (borda de captura de tela do celular e separação das
+montagens de antes e depois) — sem filtros nem ajustes de cor.
+
+| Arquivo | Uso |
+| --- | --- |
+| `src/assets/images/site/sobre-retrato.jpg` | Retrato no "Sobre", imagem de compartilhamento e faixa do Instagram |
+| `src/assets/images/instagram/sobre-mim.jpg` | Faixa do Instagram |
+| `src/assets/images/linha/*.jpg` | Linha de produtos (kit, Aurora, Luce, gloss; Essenza e Elevare recortados da foto do kit) |
+| `src/assets/images/resultados/caso-0*-*.jpg` | Antes e depois (galeria e página do Método SER) |
+
+## Imagens provisórias (banco de imagens)
 
 As fotografias abaixo vêm do [Pexels](https://www.pexels.com/license/) e são
 usadas sob a Licença Pexels (uso gratuito, inclusive comercial, sem atribuição
@@ -22,7 +38,6 @@ puxadas para o verde-petróleo) para unificar a direção de arte.
 | `remocao-de-tatuagem.jpg` | https://www.pexels.com/photo/person-with-black-tattoo-on-right-hand-4662162/ |
 | `tratamentos-capilares.jpg` | https://www.pexels.com/photo/applying-hair-serum-with-precision-dropper-28994390/ |
 | `metodo-ser.jpg` (duotone) | https://www.pexels.com/photo/grayscale-photo-of-a-woman-touching-her-face-with-her-eyes-closed-11693061/ |
-| `serenidade.jpg` | https://www.pexels.com/photo/profile-of-woman-with-long-hair-and-eyes-closed-10870128/ |
 | `sobre-ambiente.jpg` | https://www.pexels.com/photo/green-leaves-in-clear-glass-10958923/ |
 | `detalhe-folhas.jpg` | https://www.pexels.com/photo/leaves-on-white-surface-3585648/ |
 | `toque.jpg` | https://www.pexels.com/photo/woman-face-and-hand-14095411/ |

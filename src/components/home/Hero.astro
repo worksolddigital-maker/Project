@@ -2,7 +2,7 @@
 import { Picture } from 'astro:assets';
 import heroImg from '../../assets/images/site/hero.jpg';
 import Button from '../Button.astro';
-import { whatsapp } from '../../data/site';
+import { site, whatsapp } from '../../data/site';
 ---
 
 <section class="hero" data-hero aria-labelledby="hero-title">
@@ -43,7 +43,7 @@ import { whatsapp } from '../../data/site';
       </div>
       <p class="hero__caption" data-intro-hide data-hero-caption>
         <span class="hero__caption-line" aria-hidden="true"></span>
-        Naturalidade como ponto de partida
+        {site.clinicMotto}
       </p>
     </div>
   </div>

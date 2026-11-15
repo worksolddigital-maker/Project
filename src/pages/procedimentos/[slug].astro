@@ -5,7 +5,10 @@ import Button from '../../components/Button.astro';
 import Icon from '../../components/Icon.astro';
 import MappingLines from '../../components/MappingLines.astro';
 import FaqAccordion from '../../components/react/FaqAccordion';
+import ResultsGallery from '../../components/react/ResultsGallery';
 import { procedures, categories, getProcedure } from '../../data/procedimentos';
+import { results } from '../../data/resultados';
+import { buildResultEntries } from '../../data/result-entries';
 import { site, whatsappFor, fullAddress, links } from '../../data/site';
 
 export function getStaticPaths() {
@@ -14,6 +17,8 @@ export function getStaticPaths() {
 
 const { slug } = Astro.params;
 const p = getProcedure(slug!)!;
+// Casos reais ligados a este procedimento (ex.: Método SER).
+const relatedResults = await buildResultEntries(results.filter((r) => r.procedure === p.slug));
 const category = categories.find((c) => c.id === p.category)!;
 const others = procedures.filter((o) => o.slug !== p.slug);
 const siteUrl = (Astro.site?.toString() ?? '').replace(/\/$/, '');
@@ -151,6 +156,30 @@ const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
         </ol>
       </div>
     </section>
+
+    {
+      relatedResults.length > 0 && (
+        <section class="presults section" aria-labelledby="presults-title">
+          <div class="container presults__grid">
+            <header class="presults__head">
+              <p class="eyebrow" data-reveal>
+                Caso real
+              </p>
+              <h2 id="presults-title" class="h2" data-split>
+                {p.category === 'metodo' ? `O ${p.name}` : p.name} <em>na prática.</em>
+              </h2>
+              <p class="presults__lead" data-reveal>
+                Paciente real, divulgado com autorização. Arraste a linha para comparar antes e depois.
+              </p>
+              <p class="presults__disclaimer" data-reveal>
+                Os resultados variam de pessoa para pessoa e não representam promessa de resultado.
+              </p>
+            </header>
+            <ResultsGallery client:visible items={relatedResults} />
+          </div>
+        </section>
+      )
+    }
 
     <section class="pnotes section" aria-labelledby="pnotes-title">
       <div class="pnotes__grid container">
@@ -427,6 +456,37 @@ const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
     font-size: 0.95rem;
     color: var(--ink);
     opacity: 0.85;
+  }
+
+  /* ---------- Caso real ---------- */
+  .presults__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .presults__head {
+    display: grid;
+    gap: 1rem;
+    align-content: center;
+  }
+  .presults__lead,
+  .presults__disclaimer {
+    color: var(--ink-2);
+  }
+  .presults__disclaimer {
+    margin-top: 0.6rem;
+    font-size: 0.84rem;
+    padding-left: 1rem;
+    border-left: 1px solid var(--line-strong);
+  }
+  .presults :global(.results-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (max-width: 900px) {
+    .presults__grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* ---------- Pontos importantes ---------- */

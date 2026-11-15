@@ -5,7 +5,7 @@
 <div class="curtain" aria-hidden="true" data-curtain>
   <div class="curtain__panel" data-curtain-panel></div>
   <div class="curtain__mark" data-curtain-mark>
-    <span class="curtain__name">Letícia Orlandin</span>
+    <span class="curtain__name"><span class="curtain__thin">Letícia</span> <span class="curtain__bold">Orlandin</span></span>
     <span class="curtain__line"></span>
   </div>
 </div>
@@ -35,11 +35,17 @@
     opacity: 0;
   }
   .curtain__name {
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 330;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    letter-spacing: -0.02em;
+    font-family: var(--sans);
+    font-size: clamp(1.3rem, 3vw, 2.2rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .curtain__thin {
+    font-weight: 200;
+  }
+  .curtain__bold {
+    font-weight: 500;
   }
   .curtain__line {
     width: 3.5rem;

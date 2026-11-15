@@ -20,7 +20,7 @@ const font = (file) =>
   pathToFileURL(join(root, 'node_modules/@fontsource-variable', file)).href;
 
 const pages = [
-  { out: 'og-default', kicker: 'Estética avançada · Bento Gonçalves/RS', title: 'Refinar, <em>não transformar.</em>', image: 'hero.jpg', pos: '58% 40%' },
+  { out: 'og-default', kicker: 'Estética avançada · Bento Gonçalves/RS', title: 'Refinar, <em>não transformar.</em>', image: 'sobre-retrato.jpg', pos: '30% 30%' },
   { out: 'toxina-botulinica', kicker: 'Estética facial', title: 'Toxina <em>botulínica</em>', image: 'toxina-botulinica.jpg', pos: '38% 30%' },
   { out: 'preenchimentos', kicker: 'Estética facial', title: '<em>Preenchimentos</em>', image: 'preenchimentos.jpg', pos: '58% 50%' },
   { out: 'avaliacao-e-mapeamento-facial', kicker: 'Estética facial · Studio Face', title: 'Avaliação e <em>mapeamento facial</em>', image: 'mapeamento-facial.jpg', pos: '45% 32%' },
@@ -43,14 +43,15 @@ body:before{content:'';position:absolute;right:250px;top:-180px;width:620px;heig
 h1{font-family:C;font-weight:360;font-size:${p.title.length > 40 ? 82 : 98}px;line-height:.95;letter-spacing:-.03em;max-width:9.5em}
 h1 em{font-style:italic;font-weight:330}
 .f{display:flex;align-items:flex-end;justify-content:space-between}
-.w{font-family:C;font-size:34px;font-weight:450;letter-spacing:-.01em;line-height:1}
-.w small{display:block;font-family:M;font-size:11px;font-weight:600;letter-spacing:.42em;text-transform:uppercase;margin-top:8px}
+.w{font-family:M;font-size:25px;letter-spacing:.12em;text-transform:uppercase;line-height:1}
+.w small{display:block;font-size:9.5px;font-weight:500;letter-spacing:.36em;margin-bottom:9px}
+.w .t{font-weight:200}.w .b{font-weight:500}
 .c{font-size:14px;color:#55635f}
 .r{position:relative;padding:28px 28px 28px 0}
 .r div{width:100%;height:100%;border-radius:26px;background:url(${img(p.image)}) ${p.pos}/cover no-repeat}
 </style></head><body>
 <div class="l"><p class="k">${p.kicker}</p><h1>${p.title}</h1>
-<div class="f"><p class="w">Letícia Orlandin<small>Estética Avançada</small></p><p class="c">Bento Gonçalves · RS</p></div></div>
+<div class="f"><p class="w"><small>Estética Avançada</small><span class="t">Letícia</span> <span class="b">Orlandin</span></p><p class="c">Bento Gonçalves · RS</p></div></div>
 <div class="r"><div></div></div>
 </body></html>`;
 

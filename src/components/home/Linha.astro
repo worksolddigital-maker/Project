@@ -1,0 +1,278 @@
+---
+import { Picture } from 'astro:assets';
+import Button from '../Button.astro';
+import Icon from '../Icon.astro';
+import { linha } from '../../data/linha';
+import { whatsapp } from '../../data/site';
+
+const askLine = whatsapp('Olá, Letícia! Gostaria de saber mais sobre a linha de produtos Letícia Orlandin.');
+const askProduct = (name: string, type: string) =>
+  whatsapp(`Olá, Letícia! Gostaria de saber mais sobre o ${name} (${type}) da linha Letícia Orlandin.`);
+---
+
+<section class="linha section bg-gray" id="linha" aria-labelledby="linha-title">
+  <div class="container">
+    <header class="linha__head">
+      <div>
+        <p class="eyebrow" data-reveal>Linha Letícia Orlandin</p>
+        <h2 id="linha-title" class="h1 linha__title" data-split>
+          O cuidado que <em>continua em casa.</em>
+        </h2>
+      </div>
+      <div class="linha__intro" data-reveal>
+        <p class="lead">
+          Produtos com a assinatura da Letícia, pensados para a rotina diária — porque cuidar da pele também é uma forma
+          de valorizar o que já é seu.
+        </p>
+        <Button href={askLine} label="Conhecer a linha" variant="ghost" icon="whatsapp" iconFirst size="sm" />
+      </div>
+    </header>
+
+    <div class="linha__body">
+      <div class="linha__visual">
+        <figure class="linha__kit" data-clip-reveal>
+          <div class="linha__kit-inner" data-parallax-inner>
+            <Picture
+              src={linha.kit}
+              alt={linha.kitAlt}
+              widths={[480, 720, 960, 1146]}
+              sizes="(max-width: 900px) 92vw, 40vw"
+              formats={['avif', 'webp']}
+            />
+          </div>
+        </figure>
+        <figure class="linha__life" data-depth="0.14">
+          <Picture
+            src={linha.lifestyle}
+            alt={linha.lifestyleAlt}
+            widths={[320, 480, 640]}
+            sizes="(max-width: 900px) 42vw, 15vw"
+            formats={['avif', 'webp']}
+          />
+        </figure>
+      </div>
+
+      <ol class="linha__list" role="list" data-reveal-children>
+        {
+          linha.products.map((product, i) => (
+            <li class="lp">
+              <a class="lp__link" href={askProduct(product.name, product.type)} target="_blank" rel="noopener" data-cursor="Saber mais">
+                <span class="lp__thumb">
+                  <Picture
+                    src={product.image}
+                    alt={product.imageAlt}
+                    widths={[160, 240, 360]}
+                    sizes="(max-width: 640px) 26vw, 9rem"
+                    formats={['avif', 'webp']}
+                    style={`object-position:${product.focus ?? '50% 50%'}`}
+                  />
+                </span>
+                <span class="lp__body">
+                  <span class="lp__index" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span class="lp__name">{product.name}</span>
+                  <span class="lp__type">{product.type}</span>
+                  {product.text && <span class="lp__text">{product.text}</span>}
+                </span>
+                <span class="lp__cta">
+                  <span class="sr-only">Saber mais sobre {product.name} pelo WhatsApp</span>
+                  <span class="lp__arrow" aria-hidden="true">
+                    <Icon name="arrow-up-right" />
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .linha__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 2rem clamp(2rem, 6vw, 7rem);
+    align-items: end;
+    margin-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+  .linha__title {
+    margin-top: 1.4rem;
+    max-width: 12ch;
+    min-width: min-content;
+  }
+  .linha__intro {
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+    padding-bottom: 0.5rem;
+  }
+
+  .linha__body {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(2.5rem, 6vw, 6.5rem);
+    align-items: start;
+  }
+  .linha__visual {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    padding-bottom: 3.5rem;
+  }
+  .linha__kit {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    aspect-ratio: 4 / 5;
+    background: var(--offwhite);
+  }
+  .linha__kit-inner {
+    position: absolute;
+    inset: -7% 0;
+  }
+  .linha__kit-inner :global(picture),
+  .linha__kit-inner :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+  .linha__kit-inner :global(img) {
+    object-fit: cover;
+    object-position: 50% 55%;
+  }
+  .linha__life {
+    position: absolute;
+    left: clamp(-3rem, -3.5vw, -1rem);
+    bottom: 0;
+    width: 36%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 6px solid var(--gray-soft);
+    box-shadow: var(--shadow-lift);
+  }
+  .linha__life :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 40% 40%;
+  }
+
+  .linha__list {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line-strong);
+  }
+  .lp {
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .lp__link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: clamp(1rem, 2vw, 1.8rem);
+    align-items: center;
+    padding: clamp(1.1rem, 2vw, 1.5rem) 0;
+  }
+  .lp__thumb {
+    width: clamp(5.6rem, 9vw, 8.4rem);
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--offwhite);
+  }
+  .lp__thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.1s var(--ease-out);
+  }
+  .lp__link:hover .lp__thumb :global(img) {
+    transform: scale(1.08);
+  }
+  .lp__body {
+    display: grid;
+    gap: 0.3rem;
+    align-content: center;
+  }
+  .lp__index {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--ink-2);
+  }
+  .lp__name {
+    font-family: var(--serif);
+    font-weight: 420;
+    font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform 0.7s var(--ease-out);
+  }
+  .lp__link:hover .lp__name {
+    transform: translateX(0.35rem);
+  }
+  .lp__type {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .lp__text {
+    margin-top: 0.4rem;
+    max-width: 48ch;
+    font-size: 0.93rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .lp__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    transition:
+      background-color 0.5s var(--ease-out),
+      color 0.5s var(--ease-out),
+      transform 0.6s var(--ease-out);
+  }
+  .lp__arrow :global(svg) {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+  .lp__link:hover .lp__arrow,
+  .lp__link:focus-visible .lp__arrow {
+    background: var(--petrol);
+    color: var(--offwhite);
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 1024px) {
+    .linha__head,
+    .linha__body {
+      grid-template-columns: 1fr;
+    }
+    .linha__visual {
+      position: relative;
+      top: auto;
+      width: 100%;
+      max-width: 34rem;
+      margin-left: auto;
+    }
+    .linha__life {
+      left: -0.5rem;
+    }
+  }
+  @media (max-width: 560px) {
+    .lp__link {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+    }
+    .lp__cta {
+      display: none;
+    }
+  }
+</style>

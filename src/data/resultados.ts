@@ -32,6 +32,10 @@
  * "galeria em curadoria" — nenhuma imagem é inventada.
  */
 import type { ImageMetadata } from 'astro';
+import caso01Antes from '../assets/images/resultados/caso-01-antes.jpg';
+import caso01Depois from '../assets/images/resultados/caso-01-depois.jpg';
+import caso02Antes from '../assets/images/resultados/caso-02-antes.jpg';
+import caso02Depois from '../assets/images/resultados/caso-02-depois.jpg';
 
 export interface ResultItem {
   id: string;
@@ -41,8 +45,36 @@ export interface ResultItem {
   alt: string;
   treatment?: string;
   note?: string;
+  /** Slug do procedimento relacionado (exibe o caso também na página dele). */
+  procedure?: string;
   /** Confirmação explícita de autorização de uso de imagem. */
   authorized: true;
 }
 
-export const results: ResultItem[] = [];
+/*
+ * Casos publicados pela própria profissional no Instagram
+ * (@leticiaorlandin.estetica), com a marca d'água dela. As montagens foram
+ * apenas separadas em "antes" (metade superior) e "depois" (metade
+ * inferior) — sem nenhum ajuste de imagem.
+ * TODO: confirmar que há autorização por escrito das pacientes para o site.
+ */
+export const results: ResultItem[] = [
+  {
+    id: 'caso-02',
+    before: caso02Antes,
+    after: caso02Depois,
+    alt: 'Perfil do rosto — contorno da mandíbula e região da papada',
+    treatment: 'Método SER',
+    note: 'Ultraformer MPT e bioestimuladores de colágeno, em plano individualizado',
+    procedure: 'metodo-ser',
+    authorized: true,
+  },
+  {
+    id: 'caso-01',
+    before: caso01Antes,
+    after: caso01Depois,
+    alt: 'Terço inferior do rosto — lábios, região perioral e mandíbula',
+    // Tratamento não informado na publicação: não identificar.
+    authorized: true,
+  },
+];

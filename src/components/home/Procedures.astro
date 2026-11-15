@@ -102,6 +102,10 @@ const blobs = {
           <p class="eyebrow" data-reveal><span class="metodo__num">{catMetodo.number}</span> Método SER</p>
           <h3 class="metodo__title display" data-split>Método <em>SER</em></h3>
           <p class="lead metodo__lead" data-reveal>{metodo.short}</p>
+          <p class="metodo__tech" data-reveal>
+            Combina, de forma estratégica, tecnologias como o <strong>Ultraformer MPT</strong> e os
+            <strong>bioestimuladores de colágeno</strong> — sempre dentro de um plano individualizado.
+          </p>
 
           <p class="metodo__kinetic" data-metodo-kinetic aria-hidden="true">
             <span>Sem pressa.</span> <em>Sem excessos.</em>
@@ -380,6 +384,17 @@ const blobs = {
   .metodo__lead {
     margin-top: 1.8rem;
     max-width: 38ch;
+  }
+  .metodo__tech {
+    margin-top: 1.1rem;
+    max-width: 44ch;
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+  .metodo__tech strong {
+    font-weight: 600;
+    color: var(--offwhite);
   }
   .metodo__kinetic {
     margin-top: 2.4rem;

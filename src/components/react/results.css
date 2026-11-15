@@ -3,18 +3,9 @@
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* 1, 2 ou 3 colunas conforme a quantidade de casos e a largura. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 25rem), 1fr));
   gap: clamp(1rem, 2vw, 1.75rem);
-}
-@media (max-width: 1024px) {
-  .results-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 640px) {
-  .results-grid {
-    grid-template-columns: 1fr;
-  }
 }
 .result-card {
   display: grid;

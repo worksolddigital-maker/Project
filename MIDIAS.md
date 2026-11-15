@@ -1,9 +1,18 @@
 # Fotos e vídeos do site
 
-As fotos atuais são **provisórias** (banco de imagens com licença livre — ver
-[CREDITOS-IMAGENS.md](CREDITOS-IMAGENS.md)). O ideal é substituí-las pelas
-fotografias e vídeos da própria Letícia, a partir do Instagram
-[@leticiaorlandin.estetica](https://www.instagram.com/leticiaorlandin.estetica/).
+**Já são reais** (enviadas pela profissional): o retrato da seção "Sobre",
+a linha de produtos, a faixa do Instagram e os dois casos de antes e depois.
+
+**Ainda provisórias** (banco de imagens com licença livre — ver
+[CREDITOS-IMAGENS.md](CREDITOS-IMAGENS.md)): a foto do hero, as fotos dos
+procedimentos, a imagem do Método SER e os detalhes decorativos. O ideal é
+substituí-las por fotografias da própria Letícia, do Instagram
+[@leticiaorlandin.estetica](https://www.instagram.com/leticiaorlandin.estetica/)
+ou de uma sessão no consultório.
+
+> Fotos tiradas como captura de tela do Instagram trazem a barrinha de
+> rolagem do celular na borda direita: corte cerca de 24 px dessa borda antes
+> de usar (o importador e o comando de slot não fazem isso sozinhos).
 
 ## 1. Obter as mídias do Instagram (forma oficial e em alta qualidade)
 
@@ -51,8 +60,8 @@ npm run media:slot -- sobre-retrato caminho/do/retrato.jpg
 | Posição (slot)          | Onde aparece                                   | Formato ideal |
 | ----------------------- | ---------------------------------------------- | ------------- |
 | `hero`                  | Abertura da página inicial                     | vertical 4:5  |
-| `sobre-retrato`         | Retrato da Letícia (substitui a ambientação)   | vertical 4:5  |
-| `serenidade`            | Detalhe sobreposto na seção Sobre              | vertical 3:4  |
+| `sobre-retrato`         | Retrato da Letícia (já em uso)                 | vertical 3:4  |
+| `sobre-ambiente`        | Detalhe sobreposto na seção Sobre              | vertical 3:4  |
 | `toque`, `detalhe-folhas` | Imagens pequenas do manifesto/contato        | vertical      |
 | `toxina-botulinica`     | Card e página do procedimento                  | horizontal    |
 | `preenchimentos`        | Card e página do procedimento                  | horizontal    |
