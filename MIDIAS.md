@@ -63,7 +63,7 @@ npm run media:slot -- sobre-retrato caminho/do/retrato.jpg
 | `hero`                  | Abertura da página inicial (já em uso)         | vertical 4:5  |
 | `sobre-retrato`         | Retrato da Letícia (já em uso)                 | vertical 3:4  |
 | `sobre-ambiente`        | Detalhe sobreposto na seção Sobre              | vertical 3:4  |
-| `toque`, `detalhe-folhas` | Imagens pequenas do manifesto/contato        | vertical      |
+| `detalhe-folhas`        | Detalhe decorativo do contato                  | vertical      |
 | `toxina-botulinica`     | Card e página do procedimento                  | horizontal    |
 | `preenchimentos`        | Card e página do procedimento                  | horizontal    |
 | `mapeamento-facial`     | Card e página (recebe o traçado animado)       | qualquer      |

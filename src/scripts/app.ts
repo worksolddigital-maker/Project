@@ -19,7 +19,7 @@ import { playIntro, skipIntro } from './modules/intro';
 import { initTransitions, scrollToInitialHash } from './modules/transitions';
 import { initHeader } from './modules/header';
 import { initMenu } from './modules/menu';
-import { initCursor, initMagnetic, initTilt } from './modules/pointer';
+import { initMagnetic, initTilt } from './modules/pointer';
 import { initReveals } from './modules/reveals';
 import {
   initFooter,
@@ -52,11 +52,9 @@ const markScrolled = () => (userScrolled = true);
 
 function initPointer() {
   gsap.matchMedia().add(mq.fine, () => {
-    const cleanCursor = initCursor();
     const cleanMagnetic = initMagnetic();
     const cleanTilt = initTilt();
     return () => {
-      cleanCursor();
       cleanMagnetic();
       cleanTilt();
     };
@@ -76,8 +74,6 @@ async function boot() {
 
   await fontsReady();
 
-  // A seção fixada vem antes de qualquer gatilho abaixo dela.
-  if (animate) initProcess();
   initHeader();
   scrollToInitialHash();
   if (animate) playIntro();
@@ -95,6 +91,7 @@ async function boot() {
     deferred.push(
       initHeroScroll,
       initReveals,
+      initProcess,
       initManifesto,
       initMappingLines,
       initMetodo,

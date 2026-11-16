@@ -2,7 +2,7 @@
  * Perguntas frequentes da página inicial.
  * TODO: respostas informativas — revisar e aprovar com a profissional.
  */
-import { site, fullAddress } from './site';
+import { site } from './site';
 
 export interface FaqItem {
   q: string;
@@ -15,16 +15,6 @@ export const faq: FaqItem[] = [
     topic: 'Avaliação',
     q: 'Como funciona a avaliação?',
     a: 'A avaliação é o primeiro passo de qualquer tratamento. É o momento de conversar sobre suas expectativas, analisar as características do seu rosto e da sua pele e entender quais caminhos fazem sentido para você. Nenhum procedimento é indicado sem essa etapa.',
-  },
-  {
-    topic: 'Avaliação',
-    q: 'Preciso saber qual procedimento quero antes de agendar?',
-    a: 'Não. Você pode chegar apenas com suas dúvidas e incômodos. A indicação é construída em conjunto durante a avaliação, com explicações claras sobre cada possibilidade.',
-  },
-  {
-    topic: 'Avaliação',
-    q: 'Quem é a profissional responsável?',
-    a: `${site.professional.name} é farmacêutica formada pela Universidade de Santa Maria desde 2010, com especialização em Farmácia Estética concluída em 2018, em Porto Alegre.`,
   },
   {
     topic: 'Planejamento',
@@ -50,10 +40,5 @@ export const faq: FaqItem[] = [
     topic: 'Agendamento',
     q: 'Como faço para agendar?',
     a: `Basta enviar uma mensagem pelo WhatsApp ${site.phone.display}. Você recebe as informações sobre os horários disponíveis e as orientações para a sua avaliação.`,
-  },
-  {
-    topic: 'Agendamento',
-    q: 'Onde fica o consultório?',
-    a: `${fullAddress}. No fim desta página você encontra o mapa e um atalho para traçar a rota pelo Google Maps.`,
   },
 ];

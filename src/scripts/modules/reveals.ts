@@ -10,14 +10,18 @@
 import { gsap, SplitText } from '../lib/gsap';
 import { matches, mq, qs, qsa } from '../lib/env';
 
-export function initReveals() {
+/** Cede a vez ao navegador (evita uma única tarefa longa no carregamento). */
+const yieldToMain = () => new Promise<void>((resolve) => window.setTimeout(resolve, 0));
+
+export async function initReveals() {
   const isMobile = matches(mq.mobile);
 
   // Títulos: linhas sobem por trás de máscaras. autoSplit refaz a divisão
   // quando as fontes carregam ou a largura muda (o tween é recriado).
-  qsa('[data-split]').forEach((el) => {
-    // O hero é tratado pela abertura.
-    if (el.closest('[data-hero], [data-phero]')) return;
+  // Criados em lotes pequenos para não travar o celular ao abrir a página.
+  const splits = qsa('[data-split]').filter((el) => !el.closest('[data-hero], [data-phero]'));
+  for (const [i, el] of splits.entries()) {
+    if (i > 0 && i % 3 === 0) await yieldToMain();
     // aria-label só é permitido em títulos; em parágrafos o texto dividido
     // em linhas continua legível para leitores de tela.
     const isHeading = /^H[1-6]$/.test(el.tagName);
@@ -38,7 +42,8 @@ export function initReveals() {
         });
       },
     });
-  });
+  }
+  await yieldToMain();
 
   qsa('[data-reveal]').forEach((el) => {
     gsap.fromTo(
@@ -73,6 +78,8 @@ export function initReveals() {
     );
   });
 
+  await yieldToMain();
+
   qsa('[data-clip-reveal]').forEach((frame) => {
     const img = qs('picture, img', frame);
     const tl = gsap.timeline({ scrollTrigger: { trigger: frame, start: 'top 82%', once: true } });
@@ -84,7 +91,10 @@ export function initReveals() {
     if (img) tl.fromTo(img, { scale: 1.3 }, { scale: 1, duration: 2.2, ease: 'lo' }, 0);
   });
 
-  qsa('[data-parallax-inner]').forEach((inner) => {
+  // Celular: sem parallax secundário (menos trabalho por quadro de rolagem).
+  const fine = matches(mq.fine);
+
+  if (fine) qsa('[data-parallax-inner]').forEach((inner) => {
     gsap.fromTo(
       inner,
       { yPercent: -6 },
@@ -96,7 +106,7 @@ export function initReveals() {
     );
   });
 
-  qsa('[data-depth]').forEach((el) => {
+  if (fine) qsa('[data-depth]').forEach((el) => {
     const speed = Number(el.dataset.depth ?? 0.15) * (isMobile ? 0.5 : 1);
     gsap.fromTo(
       el,

@@ -3,7 +3,7 @@ import { getImage } from 'astro:assets';
 import ProcedureCard from '../ProcedureCard.astro';
 import Button from '../Button.astro';
 import { categories, proceduresByCategory, getProcedure } from '../../data/procedimentos';
-import { whatsapp, whatsappFor } from '../../data/site';
+import { whatsappFor } from '../../data/site';
 
 const facial = proceduresByCategory('facial');
 const tatuagem = proceduresByCategory('tatuagem');
@@ -90,6 +90,7 @@ const blobs = {
                 width="500"
                 height="620"
                 preserveAspectRatio="xMidYMid slice"
+                decoding="async"
                 data-metodo-image
               />
             </g>
@@ -159,12 +160,6 @@ const blobs = {
     </div>
   </div>
 
-  <div class="procedures__end container" data-reveal>
-    <p class="procedures__end-text">
-      Não sabe por onde começar? <em>Toda indicação nasce de uma avaliação.</em>
-    </p>
-    <Button href={whatsapp()} label="Agendar minha avaliação" icon="whatsapp" iconFirst />
-  </div>
 </section>
 
 <style>
@@ -223,11 +218,11 @@ const blobs = {
     max-width: 100%;
     padding: 0.35rem;
     border-radius: 999px;
-    background: rgba(251, 249, 241, 0.86);
-    -webkit-backdrop-filter: saturate(140%) blur(14px);
-    backdrop-filter: saturate(140%) blur(14px);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-soft);
+    background: rgba(36, 50, 48, 0.9);
+    -webkit-backdrop-filter: saturate(120%) blur(12px);
+    backdrop-filter: saturate(120%) blur(12px);
+    border: 1px solid rgba(251, 249, 241, 0.08);
+    box-shadow: 0 12px 30px -16px rgba(29, 40, 38, 0.5);
     overflow-x: auto;
     scrollbar-width: none;
   }
@@ -241,7 +236,7 @@ const blobs = {
     left: 0;
     width: 0;
     border-radius: 999px;
-    background: var(--petrol);
+    background: var(--mint);
     opacity: 0;
     transition:
       transform 0.75s var(--ease-out),
@@ -259,21 +254,28 @@ const blobs = {
     font-size: 0.84rem;
     font-weight: 600;
     white-space: nowrap;
-    color: var(--ink-2);
+    color: rgba(251, 249, 241, 0.74);
     transition: color 0.5s var(--ease-out);
   }
   .pnav__item:hover {
-    color: var(--ink);
+    color: var(--offwhite);
   }
   .pnav__num {
     font-size: 0.68rem;
     letter-spacing: 0.1em;
   }
   :global(.pnav__item.is-active) {
-    color: var(--offwhite);
+    color: var(--petrol-ink);
   }
   :global(.pnav__item.is-active):hover {
-    color: var(--offwhite);
+    color: var(--petrol-ink);
+  }
+  @media (max-width: 1024px), (pointer: coarse) {
+    .pnav__bar {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: var(--petrol-deep);
+    }
   }
 
   /* ---------- Categorias ---------- */

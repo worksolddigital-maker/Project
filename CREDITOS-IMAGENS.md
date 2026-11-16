@@ -40,7 +40,6 @@ puxadas para o verde-petróleo) para unificar a direção de arte.
 | `metodo-ser.jpg` (duotone) | https://www.pexels.com/photo/grayscale-photo-of-a-woman-touching-her-face-with-her-eyes-closed-11693061/ |
 | `sobre-ambiente.jpg` | https://www.pexels.com/photo/green-leaves-in-clear-glass-10958923/ |
 | `detalhe-folhas.jpg` | https://www.pexels.com/photo/leaves-on-white-surface-3585648/ |
-| `toque.jpg` | https://www.pexels.com/photo/woman-face-and-hand-14095411/ |
 
 O monograma "LO" (favicon) foi desenhado a partir dos glifos da fonte
 Cormorant Garamond (SIL Open Font License).

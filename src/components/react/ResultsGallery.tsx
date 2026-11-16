@@ -118,7 +118,7 @@ function Compare({ view, size, label }: { view: ResultViewEntry; size: 'card' | 
 function Frame({ item, viewIndex, ratio }: { item: ResultEntry; viewIndex: number; ratio: number }) {
   const view = item.views[viewIndex];
   return (
-    <div className="cmp-frame" style={{ aspectRatio: ratio }} data-cursor="Arrastar">
+    <div className="cmp-frame" style={{ aspectRatio: ratio }}>
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={view.id}
@@ -381,7 +381,6 @@ function Lightbox({
               initial={{ opacity: 0, scale: 0.985 }}
               animate={{ opacity: 1, scale: 1, transition: { duration: 0.5, ease: EASE } }}
               exit={{ opacity: 0, scale: 0.985, transition: { duration: 0.2 } }}
-              data-cursor="Arrastar"
             >
               <Compare view={current} size="large" label={caseLabel(item, current)} />
             </motion.div>

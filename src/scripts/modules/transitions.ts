@@ -30,7 +30,6 @@ function leave(url: URL) {
   }
   const panel = qs('[data-curtain-panel]', curtain);
   const mark = qs('[data-curtain-mark]', curtain);
-  root.classList.add('cursor-hidden');
   gsap.set(curtain, { visibility: 'visible' });
   gsap
     .timeline({ defaults: { ease: 'loInOut' }, onComplete: () => location.assign(url.href) })
@@ -85,7 +84,7 @@ export function initTransitions({ animate }: { animate: boolean }) {
     } catch {
       /* ignora */
     }
-    root.classList.remove('is-entering', 'is-loading', 'cursor-hidden');
+    root.classList.remove('is-entering', 'is-loading');
   });
 }
 

@@ -108,12 +108,21 @@ const { tone = 'dark' } = Astro.props;
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: rgba(251, 249, 241, 0.82);
-    -webkit-backdrop-filter: saturate(140%) blur(16px);
-    backdrop-filter: saturate(140%) blur(16px);
-    border-bottom: 1px solid var(--line);
+    /* Tema: vidro verde-escuro discreto depois do topo da página */
+    background: rgba(36, 50, 48, 0.86);
+    -webkit-backdrop-filter: saturate(120%) blur(14px);
+    backdrop-filter: saturate(120%) blur(14px);
+    border-bottom: 1px solid rgba(251, 249, 241, 0.08);
     opacity: 0;
     transition: opacity 0.5s var(--ease-out);
+  }
+  /* Celular: sem desfoque (mais leve para rolar a 60fps) e fundo sólido. */
+  @media (max-width: 1024px), (pointer: coarse) {
+    .header::before {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background: var(--petrol-deep);
+    }
   }
   .header[data-tone='light'] {
     color: var(--offwhite);
@@ -122,10 +131,22 @@ const { tone = 'dark' } = Astro.props;
     color: var(--offwhite);
   }
   :global(.header.is-scrolled) {
-    color: var(--petrol);
+    color: var(--offwhite);
   }
   :global(.header.is-scrolled) :global(.wordmark) {
-    color: var(--petrol);
+    color: var(--offwhite);
+  }
+  :global(.header.is-scrolled) :global(.header__cta) {
+    --btn-bg: var(--mint);
+    --btn-fg: var(--petrol-ink);
+    --btn-fill: var(--offwhite);
+    --btn-fill-fg: var(--petrol-ink);
+  }
+  :global(.header.is-scrolled) .header__burger span {
+    background: var(--petrol);
+  }
+  :global(.header.is-scrolled) .header__toggle {
+    border-color: rgba(251, 249, 241, 0.3);
   }
   :global(.header.is-scrolled)::before {
     opacity: 1;
@@ -294,7 +315,7 @@ const { tone = 'dark' } = Astro.props;
   .header__progress span {
     display: block;
     height: 100%;
-    background: var(--petrol);
+    background: var(--mint);
     transform-origin: left;
     transform: scaleX(0);
   }

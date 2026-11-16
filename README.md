@@ -9,16 +9,30 @@ Site institucional da Letícia Orlandin Estética Avançada — Bento Gonçalves
 | Camada | Uso |
 | --- | --- |
 | [Astro 7](https://astro.build) | Site estático, imagens responsivas (AVIF/WebP), SEO |
-| GSAP + ScrollTrigger + SplitText | Abertura cinematográfica, revelações tipográficas, parallax, jornada horizontal, transições de página |
+| GSAP + ScrollTrigger + SplitText | Abertura cinematográfica, revelações tipográficas, parallax, roleta do Instagram ligada à rolagem, transições de página |
 | DrawSVG + MorphSVG (GSAP) | Traçado do mapeamento facial e máscara orgânica do Método SER |
 | Lenis | Rolagem suave sincronizada ao ScrollTrigger |
 | React + Motion | Ilhas interativas: FAQ, galeria de antes e depois, depoimentos, formulário de pré-agendamento |
 
 Regras de movimento: GSAP e Motion nunca controlam o mesmo elemento; com
-**movimento reduzido** ativado no sistema, Lenis, parallax, fixações e
-abertura são desligados e todo o conteúdo aparece imediatamente. Cursor
-personalizado, botões magnéticos e efeito de profundidade só existem com
-mouse/trackpad.
+**movimento reduzido** ativado no sistema, Lenis, parallax, roleta e
+abertura são desligados e todo o conteúdo aparece imediatamente (a roleta
+vira uma faixa que se arrasta com o dedo). Botões magnéticos, parallax e
+efeito de profundidade só existem com mouse/trackpad; o site usa o cursor
+padrão do sistema.
+
+Desempenho (alvo de 60 fps):
+
+- Sem desfoque de fundo nem camadas fixas com mistura no celular; cabeçalho
+  sólido em telas de toque.
+- As ilhas React usam `client:calm` (`src/directives/calm.ts`): ativam depois
+  da abertura, com o navegador ocioso e sem rolagem em andamento — ou na
+  hora, se a pessoa tocar nelas.
+- A camada de movimento é criada em blocos pequenos, no tempo ocioso, para
+  não gerar tarefas longas ao abrir a página.
+- Imagens em AVIF (qualidade 68) e WebP (86), com larguras até a original
+  (`astro.config.mjs`); a nitidez máxima depende da resolução da foto de
+  origem.
 
 ## Comandos
 

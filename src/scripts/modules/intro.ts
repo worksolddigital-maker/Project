@@ -106,8 +106,16 @@ function genericPage(tl: Timeline) {
   headerIn(tl, 0.1);
 }
 
+/** Avisa que a abertura terminou (ilhas client:calm podem ser ativadas). */
+export function signalReady() {
+  const w = window as Window & { __loReady?: boolean };
+  if (w.__loReady) return;
+  w.__loReady = true;
+  window.dispatchEvent(new Event('lo:ready'));
+}
+
 function buildPageTimeline() {
-  const tl = gsap.timeline({ paused: true, defaults: { ease: 'lo' } });
+  const tl = gsap.timeline({ paused: true, defaults: { ease: 'lo' }, onComplete: signalReady });
   if (!homeHero(tl) && !procedureHero(tl)) genericPage(tl);
   return tl;
 }
@@ -206,6 +214,7 @@ export async function playIntro() {
 
 /** Sem animação: apenas garante que tudo esteja visível. */
 export function skipIntro() {
+  window.setTimeout(signalReady, 300);
   clearLoading();
   qs('[data-preloader]')?.remove();
   root.classList.remove('is-loading', 'is-intro', 'is-entering');

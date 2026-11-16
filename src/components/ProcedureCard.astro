@@ -31,7 +31,7 @@ const widths = [400, 640, 880, 1100, 1400, 1800].filter((w) => w <= p.image.widt
 
 <div class:list={['pcard-wrap', `pcard-wrap--${layout}`]} data-reveal>
   <article class:list={['pcard', `pcard--${layout}`, { 'pcard--reverse': reverse }]} data-tilt>
-    <a href={href} class="pcard__media" data-cursor="Ver" tabindex="-1" aria-hidden="true">
+    <a href={href} class="pcard__media" tabindex="-1" aria-hidden="true">
       <div class="pcard__img" data-tilt-depth>
         <Picture
           src={p.image}

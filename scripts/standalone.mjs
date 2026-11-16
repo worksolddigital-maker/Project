@@ -82,7 +82,7 @@ function dataUri(publicPath) {
   return uri;
 }
 
-/** Escolhe uma única variante WebP (≤ 1000 px) para cada <picture>. */
+/** Escolhe uma única variante WebP (a maior até 1600 px) para cada <picture>. */
 function flattenPictures(html) {
   return html.replace(/<picture([^>]*)>([\s\S]*?)<\/picture>/g, (_, attrs, inner) => {
     const webp = inner.match(/<source[^>]*srcset="([^"]+)"[^>]*type="image\/webp"[^>]*>/);
@@ -93,7 +93,8 @@ function flattenPictures(html) {
       .filter(([u]) => u)
       .map(([u, w]) => ({ u, w: parseInt(w, 10) || 0 }))
       .sort((a, b) => a.w - b.w);
-    const pick = [...candidates].reverse().find((c) => c.w <= 1000) ?? candidates[0];
+    // Variante mais nítida disponível (até 1600 px): boa em telas de alta densidade.
+    const pick = [...candidates].reverse().find((c) => c.w <= 1600) ?? candidates[0];
     const src = pick ? dataUri(pick.u) : img.match(/src="([^"]+)"/)?.[1];
     const newImg = img
       .replace(/\s(srcset|sizes)="[^"]*"/g, '')

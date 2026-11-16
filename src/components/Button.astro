@@ -17,7 +17,6 @@ interface Props {
   magnetic?: boolean;
   class?: string;
   ariaLabel?: string;
-  cursor?: string;
   [key: `data-${string}`]: string | undefined;
 }
 
@@ -32,7 +31,6 @@ const {
   magnetic = true,
   class: className,
   ariaLabel,
-  cursor,
   ...rest
 } = Astro.props;
 
@@ -55,7 +53,6 @@ const isExternal = external || /^https?:\/\//.test(href);
   rel={isExternal ? 'noopener' : undefined}
   aria-label={ariaLabel}
   data-magnetic={magnetic ? '' : undefined}
-  data-cursor={cursor}
   {...rest}
 >
   <span class="btn__fill" aria-hidden="true"></span>

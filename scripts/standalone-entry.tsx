@@ -55,37 +55,48 @@ function hydrate(island: Element) {
   });
 }
 
-// Equivalente a client:visible — ativa cada ilha ao se aproximar da tela.
-// <astro-island> usa display: contents (não tem caixa própria), então
-// observamos os filhos, como faz o próprio Astro.
+// Equivalente a client:calm (src/directives/calm.ts): ativa as ilhas depois
+// da abertura, com o navegador ocioso e sem rolagem — uma por vez.
 const islands = Array.from(document.querySelectorAll('astro-island'));
 const done = new WeakSet<Element>();
-if ('IntersectionObserver' in window) {
-  const owner = new Map<Element, Element>();
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const island = owner.get(entry.target);
-        if (!island || done.has(island)) continue;
-        done.add(island);
-        for (const child of Array.from(island.children)) io.unobserve(child);
-        hydrate(island);
-      }
-    },
-    { rootMargin: '300px 0px' },
-  );
-  for (const island of islands) {
-    const children = Array.from(island.children);
-    if (!children.length) {
-      hydrate(island);
-      continue;
-    }
-    for (const child of children) {
-      owner.set(child, island);
-      io.observe(child);
-    }
+const hydrateOnce = (island: Element) => {
+  if (done.has(island)) return;
+  done.add(island);
+  hydrate(island);
+};
+const idle = (cb: () => void) =>
+  'requestIdleCallback' in window ? window.requestIdleCallback(cb, { timeout: 2000 }) : window.setTimeout(cb, 50);
+
+let timer = 0;
+const queue = () => {
+  const next = islands.find((el) => !done.has(el));
+  if (!next) {
+    window.removeEventListener('scroll', onScroll);
+    return;
   }
-} else {
-  islands.forEach(hydrate);
+  idle(() => {
+    hydrateOnce(next);
+    schedule(120);
+  });
+};
+const schedule = (delay: number) => {
+  window.clearTimeout(timer);
+  timer = window.setTimeout(queue, delay);
+};
+const onScroll = () => schedule(300);
+
+for (const island of islands) {
+  const now = () => hydrateOnce(island);
+  island.addEventListener('pointerover', now, { once: true });
+  island.addEventListener('focusin', now, { once: true });
+  island.addEventListener('touchstart', now, { once: true, passive: true });
+}
+const start = () => {
+  window.addEventListener('scroll', onScroll, { passive: true });
+  schedule(500);
+};
+if ((window as Window & { __loReady?: boolean }).__loReady) start();
+else {
+  window.addEventListener('lo:ready', start, { once: true });
+  window.setTimeout(start, 6000);
 }

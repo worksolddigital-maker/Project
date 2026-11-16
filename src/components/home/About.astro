@@ -60,7 +60,7 @@ const values = [
           <Picture
             src={mainImage}
             alt={mainAlt}
-            widths={[480, 720, 960, 1146]}
+            widths={[480, 720, 960, mainImage.width].filter((w, i, all) => w <= mainImage.width && all.indexOf(w) === i)}
             sizes="(max-width: 900px) 88vw, 40vw"
             formats={['avif', 'webp']}
           />
@@ -84,13 +84,6 @@ const values = [
         <p>
           Fascinada pelo universo das fórmulas e pela ciência por trás de cada resultado, acredita que a beleza vai
           muito além da aparência: está na harmonia, na naturalidade e no respeito à essência de cada paciente.
-        </p>
-        <p class="about__voice">
-          “Acredito que cuidar é um ato de atenção, sensibilidade e precisão — e é isso que levo para cada
-          atendimento.”
-        </p>
-        <p class="about__personal">
-          Mãe da Clara, encontra equilíbrio entre um café, uma partida de padel e os momentos ao lado de quem ama.
         </p>
       </div>
 
@@ -205,16 +198,6 @@ const values = [
   .about__text .lead {
     color: var(--ink);
   }
-  .about__voice {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 1.3rem;
-    line-height: 1.4;
-    color: var(--ink);
-  }
-  .about__personal {
-    font-size: 0.92rem;
-  }
   .about__creds {
     margin: 2.2rem 0 0;
     display: grid;
@@ -277,7 +260,7 @@ const values = [
   }
 
   .values {
-    margin: clamp(5rem, 9vw, 9rem) 0 0;
+    margin: clamp(3.5rem, 6vw, 6rem) 0 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));

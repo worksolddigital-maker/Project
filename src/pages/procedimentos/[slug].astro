@@ -181,7 +181,7 @@ const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
               </div>
             </header>
             <div data-reveal>
-              <ResultsGallery client:visible items={relatedResults} showLinks={false} featuredLabel={null} />
+              <ResultsGallery client:calm items={relatedResults} showLinks={false} featuredLabel={null} />
             </div>
           </div>
         </section>
@@ -225,7 +225,7 @@ const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
                 Sobre {nameRef}
               </h2>
             </div>
-            <FaqAccordion client:visible items={faqItems} filters={false} initialOpen={null} />
+            <FaqAccordion client:calm items={faqItems} filters={false} initialOpen={null} />
           </div>
         </section>
       )
@@ -262,7 +262,7 @@ const nameRef = p.category === 'metodo' ? `o ${p.name}` : p.name.toLowerCase();
           {
             others.map((o) => (
               <li>
-                <a class="pmore__item" href={`/procedimentos/${o.slug}/`} data-cursor="Ver">
+                <a class="pmore__item" href={`/procedimentos/${o.slug}/`}>
                   <span class="pmore__thumb">
                     <Picture src={o.image} alt="" widths={[200, 360]} sizes="120px" formats={['avif', 'webp']} style={`object-position:${o.focus}`} />
                   </span>

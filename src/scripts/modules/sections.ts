@@ -31,6 +31,16 @@ export function initManifesto() {
     autoSplit: true,
     onSplit(self) {
       gsap.set(self.lines, { backgroundPositionX: '100%' });
+      if (!matches(mq.fine)) {
+        // Celular: uma revelação única ao entrar na tela.
+        return gsap.to(self.lines, {
+          backgroundPositionX: '0%',
+          duration: 1.4,
+          stagger: 0.25,
+          ease: 'loInOut',
+          scrollTrigger: { trigger: text, start: 'top 75%', once: true },
+        });
+      }
       return gsap.to(self.lines, {
         backgroundPositionX: '0%',
         ease: 'none',
@@ -138,7 +148,8 @@ export async function initMetodo() {
   const ghost = qs('[data-metodo-ghost]', block);
   const kinetic = qs('[data-metodo-kinetic]', block);
 
-  if (clip && outline) {
+  // No celular a forma fica estática: o morph repinta a imagem a cada quadro.
+  if (clip && outline && matches('(min-width: 1024px) and (pointer: fine)')) {
     await loadMorphSVG();
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
@@ -185,116 +196,92 @@ export async function initMetodo() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Como funciona — jornada horizontal fixada (desktop)                 */
+/* Como funciona — etapas compactas, ícones desenhados em sequência     */
 /* ------------------------------------------------------------------ */
 export function initProcess() {
   const section = qs('[data-process]');
   if (!section) return;
-  const pin = qs('[data-process-pin]', section)!;
-  const track = qs('[data-process-track]', section)!;
-  const steps = qsa('[data-pstep]', section);
-  const bar = qs('[data-process-progress]', section);
-
-  const mm = gsap.matchMedia();
-  mm.add({ desktop: mq.desktop, mobile: '(max-width: 1023px)' }, (ctx) => {
-    const { desktop } = ctx.conditions as { desktop: boolean };
-
-    if (desktop) {
-      const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
-      const move = gsap.to(track, {
-        x: () => -distance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: pin,
-          start: 'top top',
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-      if (bar) {
-        gsap.to(bar, {
-          scaleX: 1,
-          ease: 'none',
-          scrollTrigger: { trigger: pin, start: 'top top', end: () => `+=${distance()}`, scrub: true, invalidateOnRefresh: true },
-        });
-      }
-      steps.forEach((step) => {
-        const num = qs('[data-pstep-num]', step);
-        const body = qs('[data-pstep-body]', step);
-        const icon = qs('[data-pstep-icon]', step);
-        const st = { trigger: step, containerAnimation: move, start: 'left 92%', end: 'left 48%', scrub: true };
-        if (num) gsap.fromTo(num, { xPercent: 45, opacity: 0.15 }, { xPercent: 0, opacity: 1, ease: 'none', scrollTrigger: st });
-        // Revelação por máscara (sem transparência no texto).
-        if (body) {
-          gsap.fromTo(
-            body,
-            { y: 50, clipPath: 'inset(0% 0% 100% 0%)' },
-            { y: 0, clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: { ...st, start: 'left 85%', end: 'left 52%' } },
-          );
-        }
-        if (icon instanceof SVGGeometryElement) {
-          prepareStroke(icon);
-          gsap.to(icon, { strokeDashoffset: 0, ease: 'none', scrollTrigger: { ...st, start: 'left 80%', end: 'left 45%' } });
-        }
-      });
-    } else {
-      steps.forEach((step) => {
-        gsap.fromTo(
-          step,
-          { autoAlpha: 0, y: 36 },
-          { autoAlpha: 1, y: 0, duration: 1.1, ease: 'lo', scrollTrigger: { trigger: step, start: 'top 88%', once: true } },
-        );
-        const icon = qs('[data-pstep-icon]', step);
-        if (icon instanceof SVGGeometryElement) {
-          prepareStroke(icon);
-          gsap.to(icon, { strokeDashoffset: 0, duration: 1.4, ease: 'loInOut', scrollTrigger: { trigger: step, start: 'top 85%', once: true } });
-        }
-      });
-    }
-  });
+  const icons = qsa('[data-pstep-icon]', section).filter(
+    (el): el is SVGGeometryElement & HTMLElement => el instanceof SVGGeometryElement,
+  );
+  icons.forEach((icon) => prepareStroke(icon));
+  const line = qs('[data-process-line]', section);
+  const tl = gsap.timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } });
+  if (line) tl.fromTo(line, { scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: 'loInOut' }, 0);
+  tl.to(icons, { strokeDashoffset: 0, duration: 1.2, stagger: 0.15, ease: 'loInOut' }, 0.2);
 }
 
 /* ------------------------------------------------------------------ */
-/* Instagram — letreiro que reage à velocidade da rolagem              */
+/* Instagram — letreiro e roleta de fotos guiados pela rolagem         */
 /* ------------------------------------------------------------------ */
+/**
+ * Cada faixa [data-marquee] gira em laço infinito (só transform → 60fps).
+ * A rolagem da página acelera as faixas e define o sentido; ao parar,
+ * voltam suavemente à velocidade de cruzeiro. A roleta de fotos desacelera
+ * até parar quando o mouse está sobre ela (para clicar com calma).
+ */
 export function initMarquee() {
-  qsa('[data-marquee]').forEach((track) => {
-    const chunks = track.children.length || 1;
-    const loop = gsap.to(track, {
-      xPercent: -100 / chunks,
-      duration: 26,
+  const tracks = qsa('[data-marquee]');
+  if (!tracks.length) return;
+
+  const loops = tracks.map((track) => {
+    const sets = Number(track.dataset.marqueeSets ?? 2);
+    const dir = Number(track.dataset.marqueeDir ?? 1); // 1 = para a esquerda
+    const tween = gsap.to(track, {
+      xPercent: -100 / sets,
+      duration: Number(track.dataset.marqueeDuration ?? 36),
       ease: 'none',
       repeat: -1,
       paused: true,
-      // Permite inverter a direção indefinidamente.
+      // Permite girar ao contrário indefinidamente.
       onReverseComplete() {
-        this.totalTime(this.rawTime() + this.duration() * 50);
+        this.totalTime(this.rawTime() + this.duration() * 100);
       },
     });
-    const speed = { value: 1 };
-    const apply = () => loop.timeScale(speed.value);
-    ScrollTrigger.create({
-      trigger: track,
-      start: 'top bottom',
-      end: 'bottom top',
-      onToggle: (self) => (self.isActive ? loop.play() : loop.pause()),
-      onUpdate: (self) => {
-        const dir = self.direction === -1 ? -1 : 1;
-        const boost = gsap.utils.clamp(0, 5, Math.abs(self.getVelocity()) / 320);
-        gsap.to(speed, {
-          value: dir * (1 + boost),
-          duration: 0.3,
-          overwrite: true,
-          onUpdate: apply,
-          onComplete: () => {
-            gsap.to(speed, { value: dir, duration: 1.4, ease: 'power2.out', onUpdate: apply });
-          },
-        });
-      },
-    });
+    // Começa "adiantado" no tempo: girar ao contrário nunca encosta no zero
+    // (no zero o GSAP daria a animação por concluída e a removeria).
+    tween.totalTime(tween.duration() * 1000);
+    return { track, tween, dir, hover: { v: 1 } };
+  });
+
+  const speed = { v: 1 };
+  let scrollDir = 1;
+  const apply = () => {
+    for (const l of loops) l.tween.timeScale(speed.v * scrollDir * l.dir * l.hover.v);
+  };
+
+  for (const l of loops) {
+    if (!l.track.hasAttribute('data-marquee-hover-pause') || !matches(mq.fine)) continue;
+    const host = l.track.closest<HTMLElement>('[data-marquee-host]') ?? l.track;
+    host.addEventListener('pointerenter', () =>
+      gsap.to(l.hover, { v: 0, duration: 0.7, ease: 'power2.out', overwrite: true, onUpdate: apply }),
+    );
+    host.addEventListener('pointerleave', () =>
+      gsap.to(l.hover, { v: 1, duration: 0.9, ease: 'power2.inOut', overwrite: true, onUpdate: apply }),
+    );
+  }
+  apply();
+
+  const section = tracks[0].closest('section') ?? tracks[0];
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top bottom',
+    end: 'bottom top',
+    // Fora da tela, as faixas param (nenhum custo de quadro).
+    onToggle: (self) => loops.forEach((l) => (self.isActive ? l.tween.resume() : l.tween.pause())),
+    onUpdate: (self) => {
+      scrollDir = self.direction === -1 ? -1 : 1;
+      const boost = gsap.utils.clamp(0, 3.5, Math.abs(self.getVelocity()) / 420);
+      gsap.to(speed, {
+        v: 1 + boost,
+        duration: 0.25,
+        overwrite: true,
+        onUpdate: apply,
+        onComplete: () => {
+          gsap.to(speed, { v: 1, duration: 1.4, ease: 'power2.out', onUpdate: apply });
+        },
+      });
+    },
   });
 }
 
