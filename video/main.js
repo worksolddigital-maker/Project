@@ -1,4 +1,4 @@
-// WorkSuite — Convite de sociedade
+// Work Sold — Convite de sociedade
 // Uma única timeline GSAP (pausada) controla tudo; o render faz seek quadro a quadro.
 import * as THREE from './node_modules/three/build/three.module.js';
 
@@ -154,7 +154,7 @@ const uniforms = {
 };
 const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 220, 160), new THREE.ShaderMaterial({ uniforms, vertexShader: VERT, fragmentShader: FRAG }));
 scene3.add(mesh);
-const COOL = [[0.27, 0.16, 0.92], [0.27, 0.83, 1.0], [1.0, 0.37, 0.64]];
+const COOL = [[0.02, 0.16, 0.62], [0.0, 0.74, 1.0], [0.45, 0.85, 1.0]]; // azul / ciano Work Sold / gelo
 const WARM = [[0.78, 0.22, 0.2], [1.0, 0.8, 0.5], [1.0, 0.45, 0.58]];
 const orb = { x: 2.15, y: -0.05, s: 0, amp: 0.2, warm: 0, op: 1, glow: 1 };
 const haloC = $('#halo-c'), haloW = $('#halo-w');
@@ -190,15 +190,18 @@ const grainEl = $('#grain');
 
 // ---------- build ----------
 async function build() {
-  await Promise.all(['800 100px "Bricolage Grotesque"', '600 100px "Bricolage Grotesque"', '800 100px Syne', '500 100px Syne', '700 100px Syne', 'italic 400 100px "Instrument Serif"',
+  await Promise.all(['800 100px "Bricolage Grotesque"', '600 100px "Bricolage Grotesque"', '800 100px Montserrat', '600 100px Montserrat', 'italic 400 100px "Instrument Serif"',
     '500 100px Manrope', '600 100px Manrope', '700 100px Manrope', '800 100px Manrope', '700 100px "JetBrains Mono"']
     .map((f) => document.fonts.load(f)));
   await document.fonts.ready;
+  // logo: imagens decodificadas antes do primeiro quadro
+  const mask = new Image(); mask.src = 'assets/logo/ws-mask.png';
+  await Promise.all([mask, ...document.images].map((im) => im.decode().catch(() => {})));
 
   CustomEase.create('cine', 'M0,0 C0.7,0 0.15,1 1,1');
 
   // ajustes de corpo antes do split
-  fitWords($$('#track h3'), 455);
+  fitWords($$('#track h3'), 330);
   $$('.fcard .name').forEach((e) => fitLine(e, 456));
 
   // ----- todos os splits primeiro (antes de qualquer transform) -----
@@ -206,7 +209,7 @@ async function build() {
     l1: splitC($('#s1-l1')), l2: splitC($('#s1-l2')), k1: splitC($('#s1-kick')),
     rot: ['#s1-r1', '#s1-r2', '#s1-r3'].map((s) => splitC($(s))),
     wm: splitC($('#wordmark')), tag: splitW($('#tagline')),
-    cards: $$('#track h3').map(splitC), tiles: $$('#s3-row h4').map(splitC),
+    cards: $$('#track h3').map(splitC),
     k3: splitC($('#s3-kick')), b3: splitC($('#s3-big')),
     k4: splitC($('#s4-kick')), p4: $$('#s4-panels h3').map(splitC), code: splitC($('#s4 .g3')),
     sem: splitC($('#s4-sem')), stack: $$('#s4-stack .s4w').map(splitC), k42: splitC($('#s4-kick2')), f4: splitC($('#s4-final')),
@@ -277,23 +280,26 @@ async function build() {
   tl.to(orb, { x: 0, y: 0, s: 5.6, amp: 0.5, duration: 1.05, ease: 'expo.in' }, tx);
   tl.to('#flash', { opacity: 1, duration: 0.32, ease: 'power2.in' }, tx + 0.78);
   const t2 = tx + 1.1;
-  tl.set(orb, { s: 0, x: 0, y: (540 - 340) / U, amp: 0.22 }, t2);
+  const LOGO_Y = (540 - (150 + 122)) / U; // centro do logo no S2
+  tl.set(orb, { s: 0, x: 0, y: LOGO_Y, amp: 0.22 }, t2);
   unvis('#s1', t2);
   tl.to('#flash', { opacity: 0, duration: 1.2, ease: 'power2.out' }, t2);
 
   // ================= S2 — a marca =================
   vis('#s2', t2);
-  tw('#mark', { scale: 0, rotation: -60, transformOrigin: '50% 50%' }, { scale: 1, rotation: 0, duration: 1.5, ease: 'expo.out' }, t2);
-  tl.to('#mark-shape', { morphSVG: 'M60 8 H140 C168.7 8 192 31.3 192 60 V140 C192 168.7 168.7 192 140 192 H60 C31.3 192 8 168.7 8 140 V60 C8 31.3 31.3 8 60 8 Z', duration: 1.0, ease: 'power3.inOut' }, t2 + 0.45);
-  draw('#mark-w', T('nasceu') - 0.1, { d: 0.95 });
-  tl.to(orb, { s: 0.6, amp: 0.16, duration: 1.6, ease: 'expo.out' }, t2 + 0.05);
+  // logo WS: o W entra pela diagonal esquerda, o S pela direita, e se encaixam
+  tw('#logo-w', { x: -170, y: -90, autoAlpha: 0, clipPath: 'inset(0% 100% 0% 0%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.out' }, t2 + 0.05);
+  tw('#logo-s', { x: 170, y: 90, autoAlpha: 0, clipPath: 'inset(0% 0% 0% 100%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.out' }, t2 + 0.3);
+  tw('#logo', { scale: 0.86, transformOrigin: '50% 50%' }, { scale: 1, duration: 2.6, ease: 'expo.out' }, t2);
+  tl.to(orb, { s: 0.62, amp: 0.16, duration: 1.6, ease: 'expo.out' }, t2 + 0.05);
+  tl.to(orb, { glow: 1.9, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, T('nasceu') - 0.05);
   inChars(S.wm.chars.slice(0, 4), T('work', 1) - 0.12, { st: 0.05, d: 1.1, rx: -70 });
-  inChars(S.wm.chars.slice(4), T('suite', 1) - 0.12, { st: 0.05, d: 1.1, rx: -70 });
-  tw('#wordmark', { scale: 1.08, letterSpacing: '.02em' }, { scale: 1, letterSpacing: '-.045em', duration: 2.6, ease: 'expo.out' }, T('work', 1) - 0.15);
-  tw('#tagline', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.0, ease: 'expo.out' }, T('uma', 2) - 0.35);
-  const ti2 = idx('uma', 2);
+  inChars(S.wm.chars.slice(4), T('sold', 1) - 0.12, { st: 0.05, d: 1.1, rx: -70 });
+  tw('#wordmark', { scale: 1.06, letterSpacing: '.12em' }, { scale: 1, letterSpacing: '-.01em', duration: 2.6, ease: 'expo.out' }, T('work', 1) - 0.15);
+  tw('#tagline', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.0, ease: 'expo.out' }, T('solucoes') - 0.35);
+  const ti2 = idx('solucoes');
   S.tag.words.forEach((w, i) => tw(w, { opacity: 0.16 }, { opacity: 1, duration: 0.35, ease: 'power2.out' }, WORDS[ti2 + i].s - 0.05));
-  const x2 = TE('digital') + 0.12;
+  const x2 = TE('longe') + 0.12;
   tl.to('#lockup', { y: -90, scale: 0.92, autoAlpha: 0, filter: 'blur(10px)', duration: 0.75, ease: 'power3.in' }, x2);
   tl.to(orb, { x: 0, y: -3.95, s: 2.4, amp: 0.3, duration: 1.4, ease: 'expo.inOut' }, x2);
   unvis('#s2', x2 + 0.8);
@@ -305,66 +311,58 @@ async function build() {
   const t3 = x2 + 0.35;
   vis('#s3', t3);
   const cards = $$('#track .card');
-  const cx = (i) => 440 - i * 1100;
-  gsap.set('#track', { x: 1960 });
-  cards.forEach((c, i) => gsap.set(c, { scale: i ? 0.9 : 1, opacity: i ? 0.35 : 1, rotationY: i ? -10 : 0, transformOrigin: '50% 50%' }));
-  tl.to('#track', { x: cx(0), duration: 1.35, ease: 'expo.out' }, t3);
-  const cardIn = (i, t) => {
-    const c = cards[i];
-    inChars(S.cards[i].chars, t, { st: 0.022, d: 1.0 });
-    tw(c.querySelector('.num'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out' }, t - 0.1);
-    tw(c.querySelector('p'), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1.0, ease: 'expo.out' }, t + 0.25);
-    tw(c.querySelector('.viz'), { x: 140 }, { x: 0, duration: 1.7, ease: 'expo.out' }, t - 0.35);
-  };
-  const moveTo = (i, t) => {
-    tl.to('#track', { x: cx(i), duration: 1.05, ease: 'power4.inOut' }, t);
-    cards.forEach((c, j) => tl.to(c, { scale: j === i ? 1 : 0.9, opacity: j === i ? 1 : 0.35, rotationY: j < i ? 10 : j > i ? -10 : 0, duration: 1.05, ease: 'power4.inOut' }, t));
-  };
-  // 01 marketing
-  const m0 = T('marketing', 1);
-  cardIn(0, m0 - 0.15);
-  tw($$('#card1 .bars rect'), { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 1.1, ease: 'expo.out', stagger: 0.09 }, m0);
-  draw('#card1 .curve', m0 + 0.3, { d: 1.3 });
-  tw('#card1 .cdot', { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.6, ease: 'back.out(2.2)' }, m0 + 1.45);
-  tw($$('#card1 .chip'), { autoAlpha: 0, y: 20, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: 'expo.out', stagger: 0.14 }, T('estrategico') + 0.1);
-  // 02 sites
-  const b0 = T('desenvolvimento');
-  moveTo(1, b0 - 0.45);
-  cardIn(1, b0 - 0.05);
-  tw('#card2 .browser', { y: 40, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.0, ease: 'expo.out' }, b0 - 0.1);
-  tw('#card2 .bhero', { clipPath: 'inset(0% 100% 0% 0% round 16px)' }, { clipPath: 'inset(0% 0% 0% 0% round 16px)', duration: 0.9, ease: 'expo.inOut' }, b0 + 0.2);
-  tw(['#card2 .bh1', '#card2 .bh2', '#card2 .bbtn'], { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: 'expo.out', stagger: 0.08 }, b0 + 0.7);
-  tw($$('#card2 .bcell'), { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.08 }, b0 + 0.55);
-  tw('#card2 .cursor', { x: 60, y: 60, autoAlpha: 0 }, { x: -252, y: -96, autoAlpha: 1, duration: 1.0, ease: 'power3.inOut' }, b0 + 0.9);
-  tl.to('#card2 .bbtn', { x: 5, y: 4, duration: 0.4, ease: 'power2.out' }, b0 + 1.55); // magnético
-  tl.to(['#card2 .bbtn', '#card2 .cursor'], { scale: 0.88, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, b0 + 1.95);
-  tl.to('#card2 .bhero', { filter: 'brightness(1.25) saturate(1.15)', duration: 0.25, yoyo: true, repeat: 1 }, b0 + 2.0);
-  // 03 portfólios
-  const p0 = T('portfolios');
-  moveTo(2, p0 - 0.45);
-  cardIn(2, p0 - 0.05);
+  gsap.set($$('#track .viz'), { scale: 0.58, transformOrigin: '0 0' });
+  const svc = [T('sites'), T('landing'), T('portfolios'), T('videos')];
+  const tc = T('todo') - 0.15; // convergência
+  tw('#track', { x: 70 }, { x: -70, duration: tc - t3, ease: 'none' }, t3); // deriva horizontal lenta
+  cards.forEach((c, i) => {
+    const t = svc[i] - 0.38;
+    tw(c, { clipPath: 'inset(100% 0% 0% 0% round 34px)', y: 90, rotationY: -16, transformOrigin: '50% 100%' },
+      { clipPath: 'inset(0% 0% 0% 0% round 34px)', y: 0, rotationY: 0, duration: 1.2, ease: 'expo.out' }, t);
+    inChars(S.cards[i].chars, svc[i] - 0.08, { st: 0.02, d: 0.9 });
+    tw(c.querySelector('.num'), { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out' }, t + 0.1);
+    tw(c.querySelector('p'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'expo.out' }, svc[i] + 0.15);
+    tw(c.querySelector('.viz'), { y: 50 }, { y: 0, duration: 1.5, ease: 'expo.out' }, t + 0.05);
+  });
+  // 01 sites — navegador montando a página + cursor magnético
+  const b0 = svc[0];
+  tw('#card1 .bhero', { clipPath: 'inset(0% 100% 0% 0% round 16px)' }, { clipPath: 'inset(0% 0% 0% 0% round 16px)', duration: 0.9, ease: 'expo.inOut' }, b0 + 0.05);
+  tw(['#card1 .bh1', '#card1 .bh2', '#card1 .bbtn'], { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: 'expo.out', stagger: 0.08 }, b0 + 0.5);
+  tw($$('#card1 .bcell'), { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.08 }, b0 + 0.35);
+  tw('#card1 .cursor', { x: 60, y: 60, autoAlpha: 0 }, { x: -252, y: -96, autoAlpha: 1, duration: 1.0, ease: 'power3.inOut' }, b0 + 0.7);
+  tl.to('#card1 .bbtn', { x: 5, y: 4, duration: 0.4, ease: 'power2.out' }, b0 + 1.35);
+  tl.to(['#card1 .bbtn', '#card1 .cursor'], { scale: 0.88, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, b0 + 1.75);
+  tl.to('#card1 .bhero', { filter: 'brightness(1.25) saturate(1.15)', duration: 0.25, yoyo: true, repeat: 1 }, b0 + 1.8);
+  // 02 landing pages — conversão subindo
+  const l0 = svc[1];
+  tw($$('#card2 .bars rect'), { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 1.1, ease: 'expo.out', stagger: 0.09 }, l0);
+  draw('#card2 .curve', l0 + 0.3, { d: 1.3 });
+  tw('#card2 .cdot', { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.6, ease: 'back.out(2.2)' }, l0 + 1.45);
+  tw($$('#card2 .chip'), { autoAlpha: 0, y: 20, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: 'expo.out', stagger: 0.14 }, l0 + 0.7);
+  // 03 portfólios e posts — grade revelada com clip-path + escala
+  const p0 = svc[2];
   tw($$('#card3 .tile'), { clipPath: 'inset(100% 0% 0% 0% round 18px)' }, { clipPath: 'inset(0% 0% 0% 0% round 18px)', duration: 1.1, ease: 'expo.inOut', stagger: 0.08 }, p0);
   tw($$('#card3 .tile i'), { scale: 1.4 }, { scale: 1, duration: 1.8, ease: 'expo.out', stagger: 0.08 }, p0 + 0.1);
-  // saída do trilho + 4 serviços
-  const tr = T('identidade') - 0.5;
-  tl.to('#track', { x: cx(2) - 1400, duration: 0.9, ease: 'power3.in' }, tr);
-  tl.to(cards, { opacity: 0, duration: 0.7, ease: 'power2.in' }, tr + 0.2);
-  const st = $$('#s3-row .stile');
-  const stc = [T('identidade'), T('redes'), T('trafego'), T('criacao')];
-  st.forEach((el, i) => {
-    tw(el, { autoAlpha: 0, y: 90, rotationX: -55, transformOrigin: '50% 100%', transformPerspective: 1400 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 1.1, ease: 'expo.out' }, stc[i] - 0.25);
-    draw($$('svg > *', el), stc[i] - 0.05, { d: 1.0, st: 0.1 });
-    inChars(S.tiles[i].chars, stc[i] - 0.1, { st: 0.018, d: 0.9 });
+  // 04 vídeos mobile — celular com vídeo vertical rodando
+  const v0 = svc[3];
+  tw('#card4 .scr', { clipPath: 'inset(0% 0% 100% 0% round 34px)' }, { clipPath: 'inset(0% 0% 0% 0% round 34px)', duration: 1.0, ease: 'expo.inOut' }, v0 - 0.2);
+  tw('#card4 .vid', { scale: 1.35 }, { scale: 1, duration: 2.2, ease: 'expo.out' }, v0 - 0.2);
+  tw('#card4 .b1p', { x: 0, y: 0 }, { x: 70, y: 120, duration: 4, ease: 'sine.inOut' }, v0 - 0.2);
+  tw('#card4 .b2p', { x: 0, y: 0 }, { x: -60, y: -90, duration: 4, ease: 'sine.inOut' }, v0 - 0.2);
+  tw('#card4 .play', { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.6, ease: 'back.out(2)' }, v0 + 0.25);
+  tl.to('#card4 .play', { scale: 1.6, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, v0 + 1.0);
+  tw('#card4 .prog u', { scaleX: 0 }, { scaleX: 1, duration: 3.2, ease: 'none' }, v0 + 1.0);
+  tw($$('#card4 .side svg'), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(2.5)', stagger: 0.1 }, v0 + 0.4);
+  tl.to('#card4 .heart', { scale: 1.45, duration: 0.18, ease: 'power2.out', yoyo: true, repeat: 1 }, v0 + 1.3);
+  tw($$('#card4 .cap > *'), { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.7, ease: 'expo.out', stagger: 0.1 }, v0 + 0.45);
+  // convergência: todo o marketing digital em um só lugar
+  cards.forEach((c, i) => {
+    const dx = 960 - (100 - 70 + i * 440 + 200);
+    tl.to(c, { x: dx, y: 155, scale: 0.2, rotation: (i - 1.5) * 12, autoAlpha: 0, duration: 0.9, ease: 'power3.in' }, tc + i * 0.04);
   });
-  // convergência: tudo em um só lugar
-  const tc = T('tudo') - 0.1;
-  st.forEach((el, i) => {
-    const dx = 960 - (152 + i * 412 + 190), dy = 540 - (300 + 220);
-    tl.to(el, { x: dx, y: dy, scale: 0.18, rotation: (i - 1.5) * 14, autoAlpha: 0, duration: 0.9, ease: 'power3.in' }, tc + i * 0.05);
-  });
-  tl.to(orb, { x: 0, y: -0.15, s: 0.45, amp: 0.28, duration: 0.95, ease: 'power3.inOut' }, tc);
+  tl.to(orb, { x: 0, y: -0.55, s: 0.45, amp: 0.28, duration: 0.95, ease: 'power3.inOut' }, tc);
   tl.to(orb, { s: 1.15, amp: 0.42, duration: 1.2, ease: 'expo.out' }, tc + 0.9);
-  inChars(S.k3.chars, T('tudo') - 0.05, { st: 0.01, d: 0.8 });
+  inChars(S.k3.chars, T('marketing', 1) - 0.15, { st: 0.01, d: 0.8 });
   syncWords(S.b3, idx('crescer') + 1, { st: 0.03, d: 1.0, rx: -60, lead: 0.08 });
   tl.to(orb, { y: -1.3, s: 1.3, amp: 0.3, duration: 1.4, ease: 'power3.inOut' }, T('lugar') - 0.9);
   const x3 = T('aqui') - 0.35;
@@ -430,7 +428,7 @@ async function build() {
   vis('#s5', t5);
   sec(2, t5);
   tl.to(orb, { x: 0, y: -3.95, s: 2.5, amp: 0.26, duration: 1.6, ease: 'expo.inOut' }, t5);
-  syncWords(S.h5, idx('por'), { st: 0.02, d: 0.9, lead: 0.06 }, [0, 1, 2, 3, 6, 7, 8, 9, 10, 11]);
+  syncWords(S.h5, idx('por'), { st: 0.02, d: 0.9, lead: 0.06 }, [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11]);
   tl.to('#s5-head', { y: -290, scale: 0.5, transformOrigin: '50% 0%', duration: 1.1, ease: 'power4.inOut' }, T('jeferson') - 0.65);
   const fc = [$('#fc1'), $('#fc2')];
   const fcT = [T('jeferson'), T('kaue')];
@@ -546,15 +544,16 @@ async function build() {
   const xf = T('work', 4) - 0.6;
   tl.to('#s8-ask', { autoAlpha: 0, filter: 'blur(14px)', scale: 1.12, duration: 0.6, ease: 'power3.in' }, xf);
   tl.to('#hud', { autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, xf);
-  tl.to(orb, { warm: 0, x: 0, y: (540 - 275) / U, s: 0.62, amp: 0.24, duration: 1.6, ease: 'expo.inOut' }, xf);
+  tl.to(orb, { warm: 0, x: 0, y: (540 - (140 + 103)) / U, s: 0.55, amp: 0.2, duration: 1.6, ease: 'expo.inOut' }, xf);
   tl.to(['.w1', '.w2'], { opacity: 0.55, duration: 2 }, xf);
   tl.to(['.b1', '.b2', '.b3'], { opacity: 0.9, duration: 2 }, xf);
   const tf = xf + 0.45;
-  tw('#fmark', { scale: 0, rotation: -45, transformOrigin: '50% 50%' }, { scale: 1, rotation: 0, duration: 1.3, ease: 'expo.out' }, tf);
-  draw('#fmark-w', tf + 0.25, { d: 0.9 });
+  tw('#flogo-w', { x: -150, y: -80, autoAlpha: 0, clipPath: 'inset(0% 100% 0% 0%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.out' }, tf);
+  tw('#flogo-s', { x: 150, y: 80, autoAlpha: 0, clipPath: 'inset(0% 0% 0% 100%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.out' }, tf + 0.2);
+  tw('#flogo', { scale: 0.86, transformOrigin: '50% 50%' }, { scale: 1, duration: 2.4, ease: 'expo.out' }, tf);
   inChars(S.fw.chars.slice(0, 4), T('work', 4) - 0.1, { st: 0.05, d: 1.1, rx: -70 });
-  inChars(S.fw.chars.slice(4), T('suite', 4) - 0.1, { st: 0.05, d: 1.1, rx: -70 });
-  tw('#fword', { letterSpacing: '.02em' }, { letterSpacing: '-.045em', duration: 2.6, ease: 'expo.out' }, T('work', 4) - 0.12);
+  inChars(S.fw.chars.slice(4), T('sold', 4) - 0.1, { st: 0.05, d: 1.1, rx: -70 });
+  tw('#fword', { letterSpacing: '.12em' }, { letterSpacing: '-.01em', duration: 2.6, ease: 'expo.out' }, T('work', 4) - 0.12);
   syncWords(S.ft, idx('vamos', 2), { st: 0.02, d: 0.9, lead: 0.06 });
   tw('#fnames', { autoAlpha: 0, y: 16, letterSpacing: '.5em' }, { autoAlpha: 1, y: 0, letterSpacing: '.32em', duration: 1.6, ease: 'expo.out' }, TE('juntos', 2) + 0.05);
   tw('#fserv', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'expo.out' }, TE('juntos', 2) + 0.45);
@@ -569,6 +568,7 @@ async function build() {
     grainEl.style.backgroundPosition = `${(f * 73) % 256}px ${(f * 151) % 256}px`;
   };
   window.__duration = TOTAL;
+  window.__advance = (t) => tl.time(Math.min(t, TOTAL), false); // só a timeline (aquecimento)
   window.__seek(0);
 
   // pré-visualização no navegador: index.html?play

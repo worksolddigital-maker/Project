@@ -1,8 +1,8 @@
 {
-  "name": "worksuite-convite-video",
+  "name": "worksold-convite-video",
   "version": "1.0.0",
   "private": true,
-  "description": "Vídeo-convite de sociedade da WorkSuite (90s, narração sem música) renderizado com GSAP + Three.js",
+  "description": "Vídeo-convite de sociedade da Work Sold (90s, narração sem música) renderizado com GSAP + Three.js",
   "scripts": {
     "audio": "python3 build_audio.py",
     "preview": "node render.js preview",

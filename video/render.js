@@ -38,29 +38,49 @@ async function openPage(browser, port) {
   return page;
 }
 
-// avança de forma monotônica até t, como no render contínuo
-const warmup = (page, t) => page.evaluate((t) => { for (let x = 0; x < t; x += 0.25) window.__seek(x); }, t);
+// avança só a timeline (sem WebGL) de forma monotônica até t, como no render contínuo;
+// o orbe é recalculado a partir do estado da timeline em cada quadro
+const warmup = (page, t) => page.evaluate((t) => { for (let x = 0; x < t; x += 0.25) window.__advance(x); }, t);
+const launch = () => chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--force-color-profile=srgb'] });
 
-async function renderFrames(browser, port, from, to, fps, workers) {
+async function renderFrames(port, from, to, fps, workers) {
   fs.mkdirSync(FDIR, { recursive: true });
   const n = to - from;
   const chunk = Math.ceil(n / workers);
   const t0 = Date.now();
   let done = 0;
+  // cada worker tem o próprio navegador (processo de GPU isolado)
   await Promise.all(Array.from({ length: workers }, async (_, w) => {
     const a = from + w * chunk, b = Math.min(to, a + chunk);
     if (a >= b) return;
-    const page = await openPage(browser, port);
-    await warmup(page, a / fps);
+    let browser = await launch();
+    let page = null;
+    const fresh = async (f) => {
+      if (page) await page.close().catch(() => {});
+      page = await openPage(browser, port);
+      await warmup(page, f / fps);
+    };
+    await fresh(a);
     for (let f = a; f < b; f++) {
-      await page.evaluate((t) => window.__seek(t), f / fps);
-      await page.screenshot({ path: path.join(FDIR, `f${String(f).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 95 });
+      for (let attempt = 1; ; attempt++) {
+        try {
+          await page.evaluate((t) => window.__seek(t), f / fps);
+          await page.screenshot({ path: path.join(FDIR, `f${String(f).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 95, timeout: 90000 });
+          break;
+        } catch (e) {
+          if (attempt >= 3) throw e;
+          console.error(`worker ${w}: quadro ${f} falhou (${e.name}), tentando de novo…`);
+          await browser.close().catch(() => {});
+          browser = await launch(); page = null;
+          await fresh(f);
+        }
+      }
       if (++done % 300 === 0) {
         const el = (Date.now() - t0) / 1000;
         console.log(`${done}/${n} quadros · ${el.toFixed(0)}s · ETA ${((n - done) * el / done).toFixed(0)}s`);
       }
     }
-    await page.close();
+    await browser.close();
   }));
   console.log(`quadros prontos em ${((Date.now() - t0) / 1000).toFixed(0)}s`);
 }
@@ -76,15 +96,15 @@ function encode(fps) {
   const audio = ['-i', WAV, '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', '-shortest'];
   console.log('codificando master (CRF 18)…');
   ffmpeg([...input, ...audio.slice(0, 2), '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', ...color, ...audio.slice(2),
-    path.join(OUT, 'worksuite-convite-master.mp4')]);
+    path.join(OUT, 'worksold-convite-master.mp4')]);
   // versão de entrega (~70 MB) em duas passadas: cabe no GitHub e em mensageiros
   console.log('codificando versão de entrega (2 passadas, 6 Mbps)…');
   const log = path.join(OUT, 'x264-2pass');
   const v = ['-c:v', 'libx264', '-preset', 'slow', '-b:v', '6M', '-maxrate', '9M', '-bufsize', '12M', '-x264-params', 'aq-mode=3', ...color];
   ffmpeg([...input, ...v, '-pass', '1', '-passlogfile', log, '-an', '-f', 'null', '/dev/null']);
-  ffmpeg([...input, ...audio.slice(0, 2), ...v, '-pass', '2', '-passlogfile', log, ...audio.slice(2), path.join(OUT, 'worksuite-convite.mp4')]);
+  ffmpeg([...input, ...audio.slice(0, 2), ...v, '-pass', '2', '-passlogfile', log, ...audio.slice(2), path.join(OUT, 'worksold-convite.mp4')]);
   for (const f of fs.readdirSync(OUT)) if (f.startsWith('x264-2pass')) fs.rmSync(path.join(OUT, f));
-  console.log(path.join(OUT, 'worksuite-convite.mp4'));
+  console.log(path.join(OUT, 'worksold-convite.mp4'));
 }
 
 async function main() {
@@ -94,7 +114,7 @@ async function main() {
 
   const srv = await serve();
   const port = srv.address().port;
-  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--force-color-profile=srgb'] });
+  const browser = await launch();
   try {
     if (mode === 'preview') {
       const dir = path.join(OUT, 'preview');
@@ -110,7 +130,7 @@ async function main() {
       }
     } else if (mode === 'frames') {
       const fps = parseInt(args[2] || '60', 10);
-      await renderFrames(browser, port, parseInt(args[0], 10), parseInt(args[1], 10), fps, 2);
+      await renderFrames(port, parseInt(args[0], 10), parseInt(args[1], 10), fps, 2);
     } else if (mode === 'full') {
       const fps = parseInt(args[0] || '60', 10);
       const workers = parseInt(args[1] || '4', 10);
@@ -118,7 +138,7 @@ async function main() {
       const total = await page.evaluate(() => window.__duration);
       await page.close();
       fs.rmSync(FDIR, { recursive: true, force: true });
-      await renderFrames(browser, port, 0, Math.round(total * fps), fps, workers);
+      await renderFrames(port, 0, Math.round(total * fps), fps, workers);
       await browser.close();
       encode(fps);
     } else {
