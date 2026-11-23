@@ -2,14 +2,13 @@
   "name": "worksold-convite-video",
   "version": "1.0.0",
   "private": true,
-  "description": "Vídeo-convite de sociedade da Work Sold (90s, narração sem música) renderizado com GSAP + Three.js",
+  "description": "Vídeo-convite de sociedade da Work Sold (90s, narração sem música) renderizado com GSAP + figuras 3D",
   "scripts": {
     "audio": "python3 build_audio.py",
     "preview": "node render.js preview",
     "render": "node render.js full 60 4"
   },
   "dependencies": {
-    "gsap": "3.13.0",
-    "three": "0.170.0"
+    "gsap": "3.13.0"
   }
 }

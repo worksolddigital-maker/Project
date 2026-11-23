@@ -26,13 +26,14 @@ Vídeo institucional de 1min30 com **narração em voz (sem música)** apresenta
 | Arquivo | Papel |
 | --- | --- |
 | `index.html` | Composição 1920×1080: cenas, tipografia, layout (fundo só com luz difusa, sem linhas/texturas). |
-| `main.js` | Uma timeline GSAP pausada controla tudo (SplitText, MorphSVG, DrawSVG, CustomEase) + orbe 3D em Three.js (shader próprio). Cada palavra entra no instante exato em que é falada. |
+| `main.js` | Uma timeline GSAP pausada controla tudo (SplitText, CustomEase). Cada palavra entra no instante exato em que é falada, e cada frase ganha sua figura 3D. |
 | `cues.js` | Tempo de cada palavra na narração final (gerado). |
 | `build_audio.py` | Insere respiros entre os blocos do take original (cortes achados nas pausas reais), trata a voz e gera `audio/narracao-90s.wav` + `cues.js`. |
 | `render.js` | Faz *seek* determinístico quadro a quadro no Chromium headless e monta os MP4 com ffmpeg. |
 | `tools/extract_logo.py` | Extrai o logo WS em PNGs transparentes (completo, só W, só S, máscara) a partir da arte em fundo preto. |
 | `sheet.py` | Junta PNGs de preview numa folha de contato para revisão. |
 | `assets/logo/` | Logo WS extraído. |
+| `assets/fig/` | Figuras 3D (PNG transparente, Seedream 5.5 via ElevenLabs) — uma por frase e as capas dos serviços. |
 | `audio/` | Take da ElevenLabs (`narracao.mp3`) e timestamps por palavra (`words.json`). |
 
 ## Reproduzir
@@ -49,6 +50,23 @@ node render.js encode               # recodifica master + entrega a partir de ou
 
 O render completo leva ~11 min de quadros + ~8 min de codificação numa máquina de 4 núcleos (WebGL em software).
 Pré-visualização ao vivo com áudio: sirva a pasta (`npx serve video`) e abra `index.html?play`, clique na tela.
+
+## Figuras 3D por frase
+
+| Frase / cena | Figura |
+| --- | --- |
+| "…começa com uma **ideia**" | cérebro de vidro (`brain.png`) |
+| "presença" · "estratégia" · "resultado" | globo · cavalo de xadrez · troféu |
+| Sites · Landing pages · Portfólios e posts · Vídeos mobile (capas dos cards) | notebook · ímã de clientes · posts sociais · celular |
+| "Todo o marketing digital… para **crescer**" | foguete (decola na saída) |
+| Estratégia · Design · Tecnologia (painéis) | alvo · pena vetorial e paleta · chip |
+| "o crescimento de quem **confia** na gente" | aperto de mão |
+| "o **próximo passo**" | escada dourada |
+| "Três sócios. Uma só visão." | três anéis entrelaçados (dois ciano, um dourado) |
+| "liderar e gerenciar uma empresa de **marketing**" | megafone |
+| "Aceita o **convite**?" | envelope com lacre dourado |
+
+Para trocar uma figura, substitua o PNG em `assets/fig/` (fundo transparente) mantendo o nome.
 
 ## Personalizar
 

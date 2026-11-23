@@ -1,8 +1,8 @@
 // Work Sold — Convite de sociedade
 // Uma única timeline GSAP (pausada) controla tudo; o render faz seek quadro a quadro.
-import * as THREE from './node_modules/three/build/three.module.js';
+// Figuras 3D (renderizadas por IA, fundo transparente) entram sincronizadas com cada frase.
 
-gsap.registerPlugin(SplitText, MorphSVGPlugin, DrawSVGPlugin, CustomEase);
+gsap.registerPlugin(SplitText, CustomEase);
 window.__errors = [];
 window.addEventListener('error', (e) => window.__errors.push(String(e.message || e)));
 
@@ -72,112 +72,6 @@ function fitLine(el, max) {
   el.style.display = '';
 }
 
-// ---------- orbe 3D ----------
-const NOISE = /* glsl */`
-vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;}
-vec4 mod289(vec4 x){return x-floor(x*(1./289.))*289.;}
-vec4 permute(vec4 x){return mod289(((x*34.)+1.)*x);}
-vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;}
-float snoise(vec3 v){
-  const vec2 C=vec2(1./6.,1./3.); const vec4 D=vec4(0.,.5,1.,2.);
-  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
-  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
-  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
-  i=mod289(i);
-  vec4 p=permute(permute(permute(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
-  float n_=.142857142857; vec3 ns=n_*D.wyz-D.xzx;
-  vec4 j=p-49.*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.*x_);
-  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.-abs(x)-abs(y);
-  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
-  vec4 s0=floor(b0)*2.+1.; vec4 s1=floor(b1)*2.+1.; vec4 sh=-step(h,vec4(0.));
-  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
-  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
-  vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
-  p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
-  vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.); m=m*m;
-  return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
-}`;
-const VERT = /* glsl */`
-uniform float uTime; uniform float uAmp; uniform float uFreq;
-varying vec3 vN; varying vec3 vV; varying float vD;
-${NOISE}
-float disp(vec3 p){
-  return (snoise(p*uFreq+vec3(0.,uTime*.2,uTime*.12))*.86 + snoise(p*uFreq*1.75-vec3(uTime*.15))*.14)*uAmp;
-}
-void main(){
-  vec3 n=normalize(position);
-  vec3 t=normalize(abs(n.y)>.99?cross(n,vec3(1.,0.,0.)):cross(n,vec3(0.,1.,0.)));
-  vec3 b=normalize(cross(n,t));
-  float e=.012;
-  float d0=disp(n);
-  vec3 p0=n*(1.+d0);
-  vec3 n1=normalize(n+t*e); vec3 p1=n1*(1.+disp(n1));
-  vec3 n2=normalize(n+b*e); vec3 p2=n2*(1.+disp(n2));
-  vec3 nn=normalize(cross(p1-p0,p2-p0)); if(dot(nn,n)<0.) nn=-nn;
-  vD=d0;
-  vec4 mv=modelViewMatrix*vec4(p0,1.);
-  vV=-mv.xyz; vN=normalize(normalMatrix*nn);
-  gl_Position=projectionMatrix*mv;
-}`;
-const FRAG = /* glsl */`
-uniform vec3 uA; uniform vec3 uB; uniform vec3 uC; uniform float uTime;
-varying vec3 vN; varying vec3 vV; varying float vD;
-void main(){
-  vec3 n=normalize(vN); vec3 v=normalize(vV);
-  float ndv=clamp(dot(n,v),0.,1.);
-  float fres=pow(1.-ndv,2.4);
-  float band=.5+.5*sin(vD*9.+n.y*2.6+n.x*1.4+uTime*.35);
-  vec3 base=mix(uA,uB,smoothstep(.12,.95,band));
-  base=mix(base,uC,smoothstep(.55,1.,.5+.5*n.x)*.55);
-  vec3 L1=normalize(vec3(-.5,.8,.7)); vec3 L2=normalize(vec3(.8,-.35,.45));
-  float d1=max(dot(n,L1),0.); float d2=max(dot(n,L2),0.);
-  float s1=pow(max(dot(n,normalize(L1+v)),0.),48.);
-  vec3 col=base*(.08+.78*d1+.26*d2);
-  col+=s1*.8;
-  col+=fres*mix(uB,vec3(1.),.25)*.95;
-  col=col/(1.+col*.32);
-  gl_FragColor=vec4(col,1.);
-}`;
-
-const canvas = $('#gl');
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: true });
-renderer.setPixelRatio(1);
-renderer.setSize(1920, 1080, false);
-renderer.setClearColor(0x000000, 0);
-const scene3 = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(35, 1920 / 1080, 0.1, 100);
-camera.position.z = 6;
-const U = 1080 / (2 * 6 * Math.tan(THREE.MathUtils.degToRad(17.5))); // px por unidade no plano z=0
-const uniforms = {
-  uTime: { value: 0 }, uAmp: { value: 0.2 }, uFreq: { value: 0.82 },
-  uA: { value: new THREE.Vector3() }, uB: { value: new THREE.Vector3() }, uC: { value: new THREE.Vector3() },
-};
-const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 220, 160), new THREE.ShaderMaterial({ uniforms, vertexShader: VERT, fragmentShader: FRAG }));
-scene3.add(mesh);
-const COOL = [[0.02, 0.16, 0.62], [0.0, 0.74, 1.0], [0.45, 0.85, 1.0]]; // azul / ciano Work Sold / gelo
-const WARM = [[0.78, 0.22, 0.2], [1.0, 0.8, 0.5], [1.0, 0.45, 0.58]];
-const orb = { x: 2.15, y: -0.05, s: 0, amp: 0.2, warm: 0, op: 1, glow: 1 };
-const haloC = $('#halo-c'), haloW = $('#halo-w');
-function renderGL(t) {
-  uniforms.uTime.value = t;
-  uniforms.uAmp.value = orb.amp * 0.78;
-  ['uA', 'uB', 'uC'].forEach((k, i) => uniforms[k].value.set(
-    ...COOL[i].map((c, j) => c + (WARM[i][j] - c) * orb.warm)));
-  mesh.position.set(orb.x, orb.y, 0);
-  mesh.scale.setScalar(Math.max(orb.s, 1e-4));
-  mesh.rotation.set(Math.sin(t * 0.25) * 0.25, t * 0.18, 0);
-  mesh.visible = orb.s > 0.003;
-  canvas.style.opacity = orb.op;
-  const px = 960 + orb.x * U, py = 540 - orb.y * U;
-  const size = Math.max(orb.s, 0) * U * 3.4 * (1 + orb.amp * 0.5);
-  [[haloC, 1 - orb.warm], [haloW, orb.warm]].forEach(([el, a]) => {
-    el.style.width = el.style.height = size + 'px';
-    el.style.transform = `translate(${px - size / 2}px, ${py - size / 2}px)`;
-    el.style.opacity = orb.op * orb.glow * a;
-  });
-  renderer.render(scene3, camera);
-}
-
 // ---------- grão anti-banding (imperceptível) ----------
 const grainEl = $('#grain');
 {
@@ -211,7 +105,7 @@ async function build() {
     wm: splitC($('#wordmark')), tag: splitW($('#tagline')),
     cards: $$('#track h3').map(splitC),
     k3: splitC($('#s3-kick')), b3: splitC($('#s3-big')),
-    k4: splitC($('#s4-kick')), p4: $$('#s4-panels h3').map(splitC), code: splitC($('#s4 .g3')),
+    k4: splitC($('#s4-kick')), p4: $$('#s4-panels h3').map(splitC),
     sem: splitC($('#s4-sem')), stack: $$('#s4-stack .s4w').map(splitC), k42: splitC($('#s4-kick2')), f4: splitC($('#s4-final')),
     h5: splitC($('#s5-head')), mono5: $$('.fcard .mono').map(splitC), name5: $$('.fcard .name').map(splitC),
     k6: splitC($('#s6-kick')), l6: splitC($('#s6-line')), nm: splitC($('#s6-name')), for6: splitC($('#s6-for')),
@@ -231,14 +125,31 @@ async function build() {
   const syncWords = (split, start, o = {}, offs = null) => split.words.forEach((w, i) =>
     inChars($$('.c', w), WORDS[start + (offs ? offs[i] : i)].s - (o.lead ?? 0.07), o));
   const tw = (sel, from, to, t) => tl.fromTo(sel, from, to, t);
-  // stroke com linecap redondo: esconde a "pontinha" antes de começar a desenhar
-  const draw = (sel, t, o = {}) => {
-    tl.fromTo(sel, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 }, t);
-    return tl.fromTo(sel, { drawSVG: o.from ?? '0%' }, { drawSVG: o.to ?? '100%', duration: o.d ?? 1, ease: o.ease ?? 'power2.inOut', stagger: o.st ?? 0 }, t);
+
+  // ---------- figuras 3D ----------
+  // entrada: sai do desfoque, cresce e gira até o lugar; saída: avança e desfoca
+  const figIn = (id, t, o = {}) => {
+    tl.set(id, { autoAlpha: 1 }, t);
+    tl.fromTo(id, { scale: o.s0 ?? 0.62, x: o.x0 ?? 0, y: o.y0 ?? 70, rotation: o.r0 ?? -9, filter: 'blur(22px)', opacity: 0 },
+      { scale: 1, x: 0, y: 0, rotation: 0, filter: 'blur(0px)', opacity: 1, duration: o.d ?? 1.1, ease: 'expo.out' }, t);
+    tl.fromTo(id + ' .fglow', { scale: 0.35, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.4, ease: 'expo.out' }, t);
+  };
+  const figFloat = (id, t, dur) => tl.fromTo(id + ' img', { y: -12, rotation: -1.6 },
+    { y: 12, rotation: 1.6, duration: 1.9, ease: 'sine.inOut', yoyo: true, repeat: Math.max(1, Math.ceil(dur / 1.9)) }, t);
+  const figOut = (id, t, o = {}) => {
+    const d = o.d ?? 0.45;
+    tl.to(id, { scale: o.s1 ?? 1.25, x: o.x1 ?? 0, y: o.y1 ?? -60, rotation: o.r1 ?? 8, filter: 'blur(20px)', opacity: 0, duration: d, ease: 'power3.in' }, t);
+    tl.set(id, { autoAlpha: 0 }, t + d);
+  };
+  // capa 3D dentro de um card/painel
+  const coverIn = (card, t, el = card.querySelector('.cover')) => {
+    tw(el.querySelector('img'), { scale: 0.55, y: 50, rotation: -8, filter: 'blur(16px)', opacity: 0 },
+      { scale: 1, y: 0, rotation: 0, filter: 'blur(0px)', opacity: 1, duration: 1.3, ease: 'expo.out' }, t);
+    tw(el.querySelector('.cglow'), { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, ease: 'expo.out' }, t);
+    tl.fromTo(el, { y: -7 }, { y: 7, duration: 1.7, ease: 'sine.inOut', yoyo: true, repeat: 7 }, t + 0.6);
   };
 
   // ---------- ambiente ----------
-  gsap.set(orb, { x: 2.15, y: -0.05, s: 0, amp: 0.2, warm: 0, op: 1, glow: 1 });
   tl.fromTo('#bg', { opacity: 0 }, { opacity: 1, duration: 3, ease: 'power2.out' }, 0);
   tl.to('.b1', { x: 260, y: 140, duration: 15, ease: 'sine.inOut', yoyo: true, repeat: 6 }, 0);
   tl.to('.b2', { x: -240, y: -120, duration: 17, ease: 'sine.inOut', yoyo: true, repeat: 5 }, 0);
@@ -257,11 +168,9 @@ async function build() {
 
   // ================= S1 — gancho =================
   vis('#s1', 0);
-  tl.to(orb, { s: 0.16, duration: 2.6, ease: 'power2.out' }, 0.5);
   const i0 = idx('toda');
   S.l1.words.forEach((w, i) => inChars($$('.c', w), WORDS[i0 + i].s - 0.06, { st: 0.03, d: 1.1 }));
   S.l2.words.forEach((w, i) => inChars($$('.c', w), WORDS[i0 + 3 + i].s - 0.06, { st: 0.03, d: 1.1 }));
-  tl.to(orb, { s: 0.55, amp: 0.26, duration: 1.6, ease: 'expo.out' }, T('ideia') - 0.12);
   outChars(S.l1.chars, T('mas') - 0.16, { st: 0.008, d: 0.5 });
   outChars(S.l2.chars, T('mas') - 0.1, { st: 0.008, d: 0.5 });
   inChars(S.k1.chars, T('transformar') - 0.25, { st: 0.012, d: 0.8 });
@@ -270,18 +179,12 @@ async function build() {
     inChars(sp.chars, rc[i] - 0.12, { rx: -85, st: 0.026, d: 0.95 });
     if (i < 2) outChars(sp.chars, rc[i + 1] - 0.3, { st: 0.01, d: 0.32, rx: 60 });
   });
-  tl.to(orb, { s: 0.75, y: 0.12, duration: 1.2, ease: 'expo.out' }, rc[0] - 0.1);
-  tl.to(orb, { s: 0.95, y: -0.05, x: 2.25, duration: 1.2, ease: 'expo.out' }, rc[1] - 0.1);
-  tl.to(orb, { s: 1.15, amp: 0.3, duration: 1.2, ease: 'expo.out' }, rc[2] - 0.1);
-  // hero reveal: o orbe engole a tela
+  // hero reveal: o troféu avança para a câmera
   const tx = TE('resultado', 1) + 0.25;
   tl.to('#s1-kick', { autoAlpha: 0, duration: 0.4 }, tx - 0.2);
   tl.to('#s1-r3', { scale: 1.12, filter: 'blur(16px)', autoAlpha: 0, duration: 0.9, ease: 'power2.in', transformOrigin: '30% 50%' }, tx);
-  tl.to(orb, { x: 0, y: 0, s: 5.6, amp: 0.5, duration: 1.05, ease: 'expo.in' }, tx);
   tl.to('#flash', { opacity: 1, duration: 0.32, ease: 'power2.in' }, tx + 0.78);
   const t2 = tx + 1.1;
-  const LOGO_Y = (540 - (150 + 122)) / U; // centro do logo no S2
-  tl.set(orb, { s: 0, x: 0, y: LOGO_Y, amp: 0.22 }, t2);
   unvis('#s1', t2);
   tl.to('#flash', { opacity: 0, duration: 1.2, ease: 'power2.out' }, t2);
 
@@ -291,8 +194,8 @@ async function build() {
   tw('#logo-w', { x: -170, y: -90, autoAlpha: 0, clipPath: 'inset(0% 100% 0% 0%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.out' }, t2 + 0.05);
   tw('#logo-s', { x: 170, y: 90, autoAlpha: 0, clipPath: 'inset(0% 0% 0% 100%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.out' }, t2 + 0.3);
   tw('#logo', { scale: 0.86, transformOrigin: '50% 50%' }, { scale: 1, duration: 2.6, ease: 'expo.out' }, t2);
-  tl.to(orb, { s: 0.62, amp: 0.16, duration: 1.6, ease: 'expo.out' }, t2 + 0.05);
-  tl.to(orb, { glow: 1.9, duration: 0.25, ease: 'power2.out', yoyo: true, repeat: 1 }, T('nasceu') - 0.05);
+  tw('#logo-glow', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.8, ease: 'expo.out' }, t2);
+  tl.to('#logo-glow', { scale: 1.18, duration: 0.3, ease: 'power2.out', yoyo: true, repeat: 1 }, T('nasceu') - 0.05);
   inChars(S.wm.chars.slice(0, 4), T('work', 1) - 0.12, { st: 0.05, d: 1.1, rx: -70 });
   inChars(S.wm.chars.slice(4), T('sold', 1) - 0.12, { st: 0.05, d: 1.1, rx: -70 });
   tw('#wordmark', { scale: 1.06, letterSpacing: '.12em' }, { scale: 1, letterSpacing: '-.01em', duration: 2.6, ease: 'expo.out' }, T('work', 1) - 0.15);
@@ -301,7 +204,6 @@ async function build() {
   S.tag.words.forEach((w, i) => tw(w, { opacity: 0.16 }, { opacity: 1, duration: 0.35, ease: 'power2.out' }, WORDS[ti2 + i].s - 0.05));
   const x2 = TE('longe') + 0.12;
   tl.to('#lockup', { y: -90, scale: 0.92, autoAlpha: 0, filter: 'blur(10px)', duration: 0.75, ease: 'power3.in' }, x2);
-  tl.to(orb, { x: 0, y: -3.95, s: 2.4, amp: 0.3, duration: 1.4, ease: 'expo.inOut' }, x2);
   unvis('#s2', x2 + 0.8);
   tw('#hud', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9, ease: 'power2.out' }, x2 + 0.55);
   tw('#hud-logo', { x: -24 }, { x: 0, duration: 1.2, ease: 'expo.out' }, x2 + 0.55);
@@ -311,7 +213,6 @@ async function build() {
   const t3 = x2 + 0.35;
   vis('#s3', t3);
   const cards = $$('#track .card');
-  gsap.set($$('#track .viz'), { scale: 0.58, transformOrigin: '0 0' });
   const svc = [T('sites'), T('landing'), T('portfolios'), T('videos')];
   const tc = T('todo') - 0.15; // convergência
   tw('#track', { x: 70 }, { x: -70, duration: tc - t3, ease: 'none' }, t3); // deriva horizontal lenta
@@ -322,49 +223,15 @@ async function build() {
     inChars(S.cards[i].chars, svc[i] - 0.08, { st: 0.02, d: 0.9 });
     tw(c.querySelector('.num'), { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out' }, t + 0.1);
     tw(c.querySelector('p'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'expo.out' }, svc[i] + 0.15);
-    tw(c.querySelector('.viz'), { y: 50 }, { y: 0, duration: 1.5, ease: 'expo.out' }, t + 0.05);
+    coverIn(c, t + 0.12);
   });
-  // 01 sites — navegador montando a página + cursor magnético
-  const b0 = svc[0];
-  tw('#card1 .bhero', { clipPath: 'inset(0% 100% 0% 0% round 16px)' }, { clipPath: 'inset(0% 0% 0% 0% round 16px)', duration: 0.9, ease: 'expo.inOut' }, b0 + 0.05);
-  tw(['#card1 .bh1', '#card1 .bh2', '#card1 .bbtn'], { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: 'expo.out', stagger: 0.08 }, b0 + 0.5);
-  tw($$('#card1 .bcell'), { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.08 }, b0 + 0.35);
-  tw('#card1 .cursor', { x: 60, y: 60, autoAlpha: 0 }, { x: -252, y: -96, autoAlpha: 1, duration: 1.0, ease: 'power3.inOut' }, b0 + 0.7);
-  tl.to('#card1 .bbtn', { x: 5, y: 4, duration: 0.4, ease: 'power2.out' }, b0 + 1.35);
-  tl.to(['#card1 .bbtn', '#card1 .cursor'], { scale: 0.88, duration: 0.12, ease: 'power2.out', yoyo: true, repeat: 1 }, b0 + 1.75);
-  tl.to('#card1 .bhero', { filter: 'brightness(1.25) saturate(1.15)', duration: 0.25, yoyo: true, repeat: 1 }, b0 + 1.8);
-  // 02 landing pages — conversão subindo
-  const l0 = svc[1];
-  tw($$('#card2 .bars rect'), { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 1.1, ease: 'expo.out', stagger: 0.09 }, l0);
-  draw('#card2 .curve', l0 + 0.3, { d: 1.3 });
-  tw('#card2 .cdot', { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.6, ease: 'back.out(2.2)' }, l0 + 1.45);
-  tw($$('#card2 .chip'), { autoAlpha: 0, y: 20, scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, ease: 'expo.out', stagger: 0.14 }, l0 + 0.7);
-  // 03 portfólios e posts — grade revelada com clip-path + escala
-  const p0 = svc[2];
-  tw($$('#card3 .tile'), { clipPath: 'inset(100% 0% 0% 0% round 18px)' }, { clipPath: 'inset(0% 0% 0% 0% round 18px)', duration: 1.1, ease: 'expo.inOut', stagger: 0.08 }, p0);
-  tw($$('#card3 .tile i'), { scale: 1.4 }, { scale: 1, duration: 1.8, ease: 'expo.out', stagger: 0.08 }, p0 + 0.1);
-  // 04 vídeos mobile — celular com vídeo vertical rodando
-  const v0 = svc[3];
-  tw('#card4 .scr', { clipPath: 'inset(0% 0% 100% 0% round 34px)' }, { clipPath: 'inset(0% 0% 0% 0% round 34px)', duration: 1.0, ease: 'expo.inOut' }, v0 - 0.2);
-  tw('#card4 .vid', { scale: 1.35 }, { scale: 1, duration: 2.2, ease: 'expo.out' }, v0 - 0.2);
-  tw('#card4 .b1p', { x: 0, y: 0 }, { x: 70, y: 120, duration: 4, ease: 'sine.inOut' }, v0 - 0.2);
-  tw('#card4 .b2p', { x: 0, y: 0 }, { x: -60, y: -90, duration: 4, ease: 'sine.inOut' }, v0 - 0.2);
-  tw('#card4 .play', { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.6, ease: 'back.out(2)' }, v0 + 0.25);
-  tl.to('#card4 .play', { scale: 1.6, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, v0 + 1.0);
-  tw('#card4 .prog u', { scaleX: 0 }, { scaleX: 1, duration: 3.2, ease: 'none' }, v0 + 1.0);
-  tw($$('#card4 .side svg'), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5, ease: 'back.out(2.5)', stagger: 0.1 }, v0 + 0.4);
-  tl.to('#card4 .heart', { scale: 1.45, duration: 0.18, ease: 'power2.out', yoyo: true, repeat: 1 }, v0 + 1.3);
-  tw($$('#card4 .cap > *'), { scaleX: 0, transformOrigin: '0 50%' }, { scaleX: 1, duration: 0.7, ease: 'expo.out', stagger: 0.1 }, v0 + 0.45);
   // convergência: todo o marketing digital em um só lugar
   cards.forEach((c, i) => {
     const dx = 960 - (100 - 70 + i * 440 + 200);
     tl.to(c, { x: dx, y: 155, scale: 0.2, rotation: (i - 1.5) * 12, autoAlpha: 0, duration: 0.9, ease: 'power3.in' }, tc + i * 0.04);
   });
-  tl.to(orb, { x: 0, y: -0.55, s: 0.45, amp: 0.28, duration: 0.95, ease: 'power3.inOut' }, tc);
-  tl.to(orb, { s: 1.15, amp: 0.42, duration: 1.2, ease: 'expo.out' }, tc + 0.9);
   inChars(S.k3.chars, T('marketing', 1) - 0.15, { st: 0.01, d: 0.8 });
   syncWords(S.b3, idx('crescer') + 1, { st: 0.03, d: 1.0, rx: -60, lead: 0.08 });
-  tl.to(orb, { y: -1.3, s: 1.3, amp: 0.3, duration: 1.4, ease: 'power3.inOut' }, T('lugar') - 0.9);
   const x3 = T('aqui') - 0.35;
   outChars(S.k3.chars, x3, { st: 0.005, d: 0.4 });
   outChars(S.b3.chars, x3, { st: 0.012, d: 0.5 });
@@ -374,7 +241,6 @@ async function build() {
   const t4 = x3 + 0.3;
   vis('#s4', t4);
   sec(1, t4);
-  tl.to(orb, { x: 0, y: -3.9, s: 2.4, amp: 0.28, duration: 1.5, ease: 'expo.inOut' }, x3);
   inChars(S.k4.chars, T('cada') - 0.1, { st: 0.015, d: 0.8 });
   const panels = $$('#s4-panels .panel');
   const pc = [T('estrategia', 2), T('design'), T('tecnologia')];
@@ -386,20 +252,8 @@ async function build() {
     tw(p.querySelector('.sub'), { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'expo.out' }, t + 0.3);
     tw(p.querySelector('.pn'), { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 1.0, ease: 'expo.out' }, t + 0.2);
   });
-  // glifo 1: alvo
-  draw('.g1 .r1', pc[0] - 0.3, { from: '0% 0%', to: '0% 72%', d: 1.3 });
-  draw('.g1 .r2', pc[0] - 0.2, { from: '0% 0%', to: '0% 84%', d: 1.3 });
-  draw('.g1 .r3', pc[0] - 0.1, { d: 1.1 });
-  draw('.g1 .arw', pc[0] + 0.6, { d: 0.6, ease: 'power3.out' });
-  tw('.g1 .r1', { rotation: 0 }, { rotation: 220, svgOrigin: '100 100', duration: 6, ease: 'sine.inOut' }, pc[0]);
-  tw('.g1 .r2', { rotation: 0 }, { rotation: -180, svgOrigin: '100 100', duration: 6, ease: 'sine.inOut' }, pc[0]);
-  // glifo 2: morph orgânico
-  tw('#morph-a', { scale: 0, svgOrigin: '100 100' }, { scale: 1, duration: 1.0, ease: 'expo.out' }, pc[1] - 0.3);
-  tl.to('#morph-a', { morphSVG: '#morph-b', duration: 1.1, ease: 'power2.inOut' }, pc[1] + 0.25);
-  tl.to('#morph-a', { morphSVG: '#morph-c', duration: 1.1, ease: 'power2.inOut' }, pc[1] + 1.45);
-  // glifo 3: código
-  inChars(S.code.chars, pc[2] - 0.25, { st: 0.07, d: 0.9 });
-  tl.to('.caret', { opacity: 0, duration: 0.01, yoyo: true, repeat: 15, repeatDelay: 0.4 }, pc[2] - 0.3);
+  // figuras 3D dos painéis: alvo, design, chip
+  $$('#s4-panels .pimg').forEach((el, i) => coverIn(el.parentElement, pc[i] - 0.25, el));
   // "Sem fórmulas prontas." -> se desfaz
   const x4a = T('sem') - 0.4;
   tl.to(panels, { y: -70, autoAlpha: 0, duration: 0.6, ease: 'power3.in', stagger: 0.06 }, x4a);
@@ -417,7 +271,6 @@ async function build() {
   S.stack.forEach((sp, i) => outChars(sp.chars, x4b + i * 0.05, { st: 0.006, d: 0.45 }));
   inChars(S.k42.chars, T('realmente') - 0.3, { st: 0.012, d: 0.8 });
   syncWords(S.f4, idx('crescimento') - 1, { st: 0.02, d: 0.9 });
-  tl.to(orb, { y: -2.95, s: 2.3, amp: 0.34, duration: 2.4, ease: 'power2.inOut' }, T('crescimento') - 0.2);
   const x4 = T('por') - 0.42;
   outChars(S.f4.chars, x4, { st: 0.005, d: 0.42 });
   outChars(S.k42.chars, x4, { st: 0.005, d: 0.4 });
@@ -427,7 +280,6 @@ async function build() {
   const t5 = x4 + 0.12;
   vis('#s5', t5);
   sec(2, t5);
-  tl.to(orb, { x: 0, y: -3.95, s: 2.5, amp: 0.26, duration: 1.6, ease: 'expo.inOut' }, t5);
   syncWords(S.h5, idx('por'), { st: 0.02, d: 0.9, lead: 0.06 }, [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11]);
   tl.to('#s5-head', { y: -290, scale: 0.5, transformOrigin: '50% 0%', duration: 1.1, ease: 'power4.inOut' }, T('jeferson') - 0.65);
   const fc = [$('#fc1'), $('#fc2')];
@@ -453,8 +305,6 @@ async function build() {
   sec(3, t6);
   tl.to(['.w1', '.w2'], { opacity: 1, duration: 2.2, ease: 'power2.inOut' }, t6);
   tl.to(['.b1', '.b2', '.b3'], { opacity: 0.25, duration: 2.2, ease: 'power2.inOut' }, t6);
-  tl.to(orb, { warm: 1, duration: 2.2, ease: 'power2.inOut' }, t6);
-  tl.to(orb, { x: 0, y: -3.6, s: 2.3, amp: 0.24, duration: 1.6, ease: 'expo.inOut' }, t6);
   tl.to('#hud-br', { color: 'rgba(246,221,174,.9)', duration: 1.5 }, t6);
   inChars(S.k6.chars, T('agora') - 0.3, { st: 0.02, d: 0.8 });
   syncWords(S.l6, idx('chegou'), { st: 0.02, d: 0.9, lead: 0.06 });
@@ -501,10 +351,7 @@ async function build() {
     const dx = 960 - (342 + i * 428 + 190);
     tl.to(p, { x: dx, y: -20, scale: 0.32, autoAlpha: 0, rotation: (i - 1) * 8, duration: 1.0, ease: 'power3.inOut' }, uv + 0.15);
   });
-  tl.to(orb, { x: 0, y: -0.1, s: 0.25, warm: 0, duration: 0.9, ease: 'power3.inOut' }, uv + 0.15);
-  tl.to(orb, { s: 1.25, amp: 0.36, duration: 1.3, ease: 'expo.out' }, uv + 1.0);
   outChars(S.h7.chars, T('juntos') - 0.4, { st: 0.006, d: 0.42 });
-  tl.to(orb, { x: 2.45, y: 0.55, s: 1.05, duration: 1.6, ease: 'power3.inOut' }, T('juntos') - 0.2);
   syncWords(S.t7, idx('juntos'), { st: 0.018, d: 0.9, lead: 0.06 });
   const pl = $$('#s7-pillars .pillar');
   const pc7 = [T('atendendo'), T('criando'), T('construindo')];
@@ -524,7 +371,6 @@ async function build() {
   sec(5, t8);
   tl.to(['.w1', '.w2'], { opacity: 0.95, duration: 2, ease: 'power2.inOut' }, t8);
   tl.to(['.b1', '.b2', '.b3'], { opacity: 0.45, duration: 2, ease: 'power2.inOut' }, t8);
-  tl.to(orb, { warm: 1, x: 0, y: -3.9, s: 2.5, amp: 0.24, duration: 1.6, ease: 'expo.inOut' }, x7);
   syncWords(S.h8, idx('kewin', 2), { st: 0.022, d: 0.9, lead: 0.06 });
   const sl = $$('#s8-slots .slot');
   const ls = T('lugar', 2);
@@ -539,31 +385,68 @@ async function build() {
   tl.to(sl, { y: 60, autoAlpha: 0, filter: 'blur(6px)', duration: 0.55, ease: 'power3.in', stagger: 0.05 }, x8a);
   syncWords(S.ask, idx('aceita'), { st: 0.035, d: 1.1, rx: -60, lead: 0.08 });
   tw('#s8-ask', { scale: 1 }, { scale: 1.06, duration: 2.4, ease: 'sine.inOut' }, T('aceita') - 0.1);
-  tl.to(orb, { y: -3.0, s: 2.3, amp: 0.3, duration: 2.0, ease: 'power2.inOut' }, x8a);
   // assinatura
   const xf = T('work', 4) - 0.6;
   tl.to('#s8-ask', { autoAlpha: 0, filter: 'blur(14px)', scale: 1.12, duration: 0.6, ease: 'power3.in' }, xf);
   tl.to('#hud', { autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, xf);
-  tl.to(orb, { warm: 0, x: 0, y: (540 - (140 + 103)) / U, s: 0.55, amp: 0.2, duration: 1.6, ease: 'expo.inOut' }, xf);
   tl.to(['.w1', '.w2'], { opacity: 0.55, duration: 2 }, xf);
   tl.to(['.b1', '.b2', '.b3'], { opacity: 0.9, duration: 2 }, xf);
   const tf = xf + 0.45;
   tw('#flogo-w', { x: -150, y: -80, autoAlpha: 0, clipPath: 'inset(0% 100% 0% 0%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.out' }, tf);
   tw('#flogo-s', { x: 150, y: 80, autoAlpha: 0, clipPath: 'inset(0% 0% 0% 100%)' }, { x: 0, y: 0, autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.out' }, tf + 0.2);
   tw('#flogo', { scale: 0.86, transformOrigin: '50% 50%' }, { scale: 1, duration: 2.4, ease: 'expo.out' }, tf);
+  tw('#flogo-glow', { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.8, ease: 'expo.out' }, tf);
   inChars(S.fw.chars.slice(0, 4), T('work', 4) - 0.1, { st: 0.05, d: 1.1, rx: -70 });
   inChars(S.fw.chars.slice(4), T('sold', 4) - 0.1, { st: 0.05, d: 1.1, rx: -70 });
   tw('#fword', { letterSpacing: '.12em' }, { letterSpacing: '-.01em', duration: 2.6, ease: 'expo.out' }, T('work', 4) - 0.12);
   syncWords(S.ft, idx('vamos', 2), { st: 0.02, d: 0.9, lead: 0.06 });
   tw('#fnames', { autoAlpha: 0, y: 16, letterSpacing: '.5em' }, { autoAlpha: 1, y: 0, letterSpacing: '.32em', duration: 1.6, ease: 'expo.out' }, TE('juntos', 2) + 0.05);
   tw('#fserv', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'expo.out' }, TE('juntos', 2) + 0.45);
+
+  // ================= figuras 3D por frase =================
+  // S1 — ideia → cérebro, presença → globo, estratégia → xadrez, resultado → troféu
+  figIn('#f-brain', T('ideia') - 0.2);
+  figFloat('#f-brain', T('ideia'), rc[0] - T('ideia'));
+  figOut('#f-brain', rc[0] - 0.32);
+  [['#f-globe', 0], ['#f-knight', 1], ['#f-trophy', 2]].forEach(([id, i]) => {
+    figIn(id, rc[i] - 0.14, { d: 0.9 });
+    figFloat(id, rc[i], 1.2);
+    if (i < 2) figOut(id, rc[i + 1] - 0.32);
+  });
+  // hero reveal: o troféu avança para a câmera e a luz explode
+  tl.to('#f-trophy', { x: 960 - 1570, y: 20, scale: 2.9, filter: 'blur(26px)', opacity: 0, duration: 1.05, ease: 'expo.in' }, tx);
+  tl.set('#f-trophy', { autoAlpha: 0 }, t2);
+  // S3 — "crescer": o foguete sobe de onde os cards convergem e decola na saída
+  figIn('#f-rocket', tc + 0.55, { y0: 240, s0: 0.7, r0: 0, d: 1.3 });
+  figFloat('#f-rocket', tc + 1.4, x3 - tc - 1.4);
+  tl.to('#f-rocket', { x: 260, y: -1150, scale: 0.75, opacity: 0, duration: 0.95, ease: 'power3.in' }, x3 - 0.15);
+  tl.set('#f-rocket', { autoAlpha: 0 }, x3 + 0.85);
+  // S4 — "confia na gente": aperto de mão
+  figIn('#f-handshake', T('confia') - 0.35, { y0: 120 });
+  figFloat('#f-handshake', T('confia') + 0.5, x4 - T('confia'));
+  figOut('#f-handshake', x4, { y1: 40 });
+  // S6 — "próximo passo": escada dourada
+  figIn('#f-stairs', T('proximo') - 0.4, { x0: 120, y0: 40, r0: 6 });
+  figFloat('#f-stairs', T('proximo') + 0.4, x6a - T('proximo'));
+  figOut('#f-stairs', x6a - 0.05, { x1: 160, y1: -120 });
+  // S7 — "uma só visão": três anéis entrelaçados; "liderar e gerenciar… marketing": megafone
+  figIn('#f-rings', uv + 0.6, { s0: 0.4, r0: -20, y0: 0, d: 1.3 });
+  figFloat('#f-rings', uv + 1.4, T('juntos') - uv - 1.4);
+  figOut('#f-rings', T('juntos') - 0.35, { x1: 420, y1: -160, s1: 0.7 });
+  figIn('#f-megaphone', T('juntos') - 0.05, { x0: 160, y0: 0, r0: 10 });
+  figFloat('#f-megaphone', T('juntos') + 0.8, x7 - T('juntos'));
+  figOut('#f-megaphone', x7, { x1: 120 });
+  // S8 — "aceita o convite?": envelope com lacre dourado
+  figIn('#f-envelope', T('aceita') + 0.15, { y0: 160, r0: 10, d: 1.2 });
+  figFloat('#f-envelope', T('aceita') + 0.9, xf - T('aceita'));
+  figOut('#f-envelope', xf, { y1: 80, s1: 1.1 });
+
   tl.to('#fade', { opacity: 1, duration: 1.2, ease: 'power2.in' }, TOTAL - 1.25);
   tl.set({}, {}, TOTAL);
 
   window.__tl = tl;
   window.__seek = (t) => {
     tl.time(Math.min(t, TOTAL), false);
-    renderGL(t);
     const f = Math.round(t * 60);
     grainEl.style.backgroundPosition = `${(f * 73) % 256}px ${(f * 151) % 256}px`;
   };

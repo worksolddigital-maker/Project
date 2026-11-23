@@ -41,10 +41,11 @@
   .b3{width:900px;height:900px;left:560px;top:520px;background:radial-gradient(circle,rgba(127,219,255,.08) 0%,rgba(127,219,255,0) 65%)}
   .w1{width:1600px;height:1600px;left:-600px;top:-700px;background:radial-gradient(circle,rgba(255,176,103,.26) 0%,rgba(255,176,103,.08) 38%,rgba(255,176,103,0) 68%);opacity:0}
   .w2{width:1700px;height:1700px;left:850px;top:200px;background:radial-gradient(circle,rgba(255,122,89,.18) 0%,rgba(255,122,89,.05) 40%,rgba(255,122,89,0) 68%);opacity:0}
-  .halo{position:absolute;left:0;top:0;width:100px;height:100px;border-radius:50%;pointer-events:none}
-  #halo-c{background:radial-gradient(circle,rgba(2,184,255,.5) 0%,rgba(10,132,255,.18) 32%,rgba(10,132,255,0) 66%)}
-  #halo-w{background:radial-gradient(circle,rgba(255,176,103,.55) 0%,rgba(255,122,89,.18) 32%,rgba(255,122,89,0) 66%);opacity:0}
-  #gl{position:absolute;left:0;top:0;width:1920px;height:1080px}
+  .fig{position:absolute;visibility:hidden;opacity:0}
+  .fig img,.cover img,.pimg img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 34px 50px rgba(0,0,0,.55))}
+  .fglow,.cglow{position:absolute;left:-18%;top:-18%;width:136%;height:136%;border-radius:50%;background:radial-gradient(circle,rgba(2,184,255,.30) 0%,rgba(10,132,255,.10) 36%,rgba(10,132,255,0) 64%)}
+  .fig.warm .fglow{background:radial-gradient(circle,rgba(255,176,103,.32) 0%,rgba(255,122,89,.10) 36%,rgba(255,122,89,0) 64%)}
+  .glow{position:absolute;border-radius:50%;opacity:0;background:radial-gradient(circle,rgba(2,184,255,.38) 0%,rgba(10,132,255,.12) 38%,rgba(10,132,255,0) 66%)}
   #vignette{background:radial-gradient(ellipse 75% 70% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
   #flash{opacity:0;background:radial-gradient(circle at 50% 50%,#FFFFFF 0%,#D6F4FF 22%,#02B8FF 55%,#063A7A 85%,#021029 100%)}
   #grain{opacity:.022;background-size:256px 256px}
@@ -68,55 +69,16 @@
   .card .num{font-family:Manrope;font-weight:700;font-size:15px;letter-spacing:.3em}
   .card h3{position:absolute;left:0;bottom:64px;width:330px;font-size:50px;line-height:1.02;white-space:normal}
   .card p{position:absolute;left:0;bottom:0;width:328px;font-size:18px;line-height:1.4;color:var(--mute);font-weight:500}
-  .card .viz{position:absolute;left:78px;top:76px;width:420px;height:492px}
+  .card .cover{position:absolute;left:40px;top:60px;width:320px;height:300px}
   .card .sheen{position:absolute;inset:0;background:radial-gradient(800px 400px at 85% 0%,rgba(10,132,255,.16),rgba(10,132,255,0) 70%)}
-  .chip{position:absolute;padding:11px 20px;border-radius:999px;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
-        font-weight:600;font-size:18px;white-space:nowrap;display:flex;align-items:center;gap:10px}
-  .chip i{width:9px;height:9px;border-radius:50%;background:var(--brand);display:block}
-  .browser{position:absolute;left:0;top:70px;width:420px;height:340px;border-radius:22px;background:#0E0E18;
-           box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 30px 80px rgba(0,0,0,.5);overflow:hidden}
-  .bbar{height:38px;display:flex;align-items:center;gap:8px;padding:0 16px;background:rgba(255,255,255,.04)}
-  .bbar i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.22);display:block}
-  .bbar .url{margin-left:14px;height:16px;width:180px;border-radius:8px;background:rgba(255,255,255,.07)}
-  .bhero{position:absolute;left:16px;top:54px;width:388px;height:150px;border-radius:16px;background:linear-gradient(130deg,#0A84FF,#02B8FF);overflow:hidden}
-  .bh1{position:absolute;left:22px;top:28px;width:210px;height:20px;border-radius:10px;background:rgba(255,255,255,.9)}
-  .bh2{position:absolute;left:22px;top:60px;width:150px;height:14px;border-radius:7px;background:rgba(255,255,255,.5)}
-  .bbtn{position:absolute;left:22px;top:96px;padding:9px 18px;border-radius:999px;background:#06060B;color:#fff;font-weight:700;font-size:14px}
-  .bcell{position:absolute;top:220px;width:120px;height:104px;border-radius:14px;background:rgba(255,255,255,.06)}
-  .bcell:nth-child(1){left:16px}.bcell:nth-child(2){left:150px}.bcell:nth-child(3){left:284px}
-  .bcell b{position:absolute;left:14px;top:14px;width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#0A84FF,#7FDBFF)}
-  .bcell s{position:absolute;left:14px;top:58px;width:80px;height:10px;border-radius:5px;background:rgba(255,255,255,.22)}
-  .bcell u{position:absolute;left:14px;top:76px;width:56px;height:10px;border-radius:5px;background:rgba(255,255,255,.12)}
-  .cursor{position:absolute;left:330px;top:330px;width:34px;height:34px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}
-  .masonry{position:absolute;left:0;top:0;width:420px;height:492px;display:flex;gap:14px}
-  .masonry .col{flex:1;display:flex;flex-direction:column;gap:14px}
-  .tile{position:relative;border-radius:18px;overflow:hidden}
-  .tile i{position:absolute;inset:0;display:block}
-  .tile i::after{content:"";position:absolute;width:46%;aspect-ratio:1;border-radius:50%;right:12%;bottom:14%;background:rgba(255,255,255,.18)}
 
-  /* ---------- S3 celular ---------- */
-  .phone{position:absolute;left:92px;top:0;width:236px;height:484px;border-radius:44px;background:#0E0E18;padding:10px;
-         box-shadow:inset 0 0 0 2px rgba(255,255,255,.12),0 30px 80px rgba(0,0,0,.55)}
-  .phone .scr{position:relative;width:100%;height:100%;border-radius:34px;overflow:hidden;background:linear-gradient(170deg,#0A84FF,#02B8FF 48%,#06306E)}
-  .phone .vid{position:absolute;inset:0}
-  .phone .b1p{position:absolute;width:280px;height:280px;border-radius:50%;left:-80px;top:40px;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 65%)}
-  .phone .b2p{position:absolute;width:240px;height:240px;border-radius:50%;right:-80px;bottom:40px;background:radial-gradient(circle,rgba(4,30,80,.9),rgba(4,30,80,0) 70%)}
-  .phone .notch{position:absolute;left:50%;top:10px;width:76px;height:20px;margin-left:-38px;border-radius:12px;background:#0E0E18}
-  .phone .play{position:absolute;left:50%;top:44%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:rgba(255,255,255,.24);display:grid;place-items:center}
-  .phone .side{position:absolute;right:12px;bottom:96px;display:flex;flex-direction:column;gap:16px}
-  .phone .side svg{width:30px;height:30px;display:block}
-  .phone .cap{position:absolute;left:16px;bottom:44px;width:150px}
-  .phone .cap b,.phone .cap s{display:block;height:10px;border-radius:5px;background:rgba(255,255,255,.85);margin-top:8px}
-  .phone .cap s{width:70%;background:rgba(255,255,255,.5)}
-  .phone .prog{position:absolute;left:16px;right:16px;bottom:22px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);overflow:hidden}
-  .phone .prog u{display:block;height:100%;width:100%;background:#fff;transform-origin:0 50%}
 
   /* ---------- S4 panels ---------- */
   #s4-panels{left:140px;top:250px;display:flex;gap:40px}
   .panel{position:relative;width:520px;height:620px;border-radius:38px;background:var(--glass);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 30px 90px rgba(0,0,0,.4);overflow:hidden}
   .panel .in{position:absolute;inset:0}
   .panel .pn{position:absolute;left:48px;top:30px;font-size:120px;line-height:1}
-  .panel .glyph{position:absolute;left:160px;top:150px;width:200px;height:200px;overflow:visible}
+  .panel .pimg{position:absolute;left:105px;top:112px;width:310px;height:310px}
   .panel .sub{position:absolute;left:48px;top:450px;font-size:18px}
   .panel h3{position:absolute;left:48px;top:486px;font-size:66px}
   .panel .pglow{position:absolute;width:700px;height:700px;left:-90px;top:-120px;border-radius:50%;background:radial-gradient(circle,rgba(69,212,255,.12),rgba(69,212,255,0) 62%)}
@@ -190,9 +152,20 @@
   <div id="bg" class="full">
     <div class="bloom b1"></div><div class="bloom b2"></div><div class="bloom b3"></div>
     <div class="bloom w1"></div><div class="bloom w2"></div>
-    <div id="halo-c" class="halo"></div><div id="halo-w" class="halo"></div>
   </div>
-  <canvas id="gl" width="1920" height="1080"></canvas>
+  <!-- figuras 3D (uma por frase) -->
+  <div id="figs" class="full">
+    <div class="fig" id="f-brain" style="left:1270px;top:250px;width:600px;height:600px"><div class="fglow"></div><img src="assets/fig/brain.png" alt=""></div>
+    <div class="fig" id="f-globe" style="left:1270px;top:250px;width:600px;height:600px"><div class="fglow"></div><img src="assets/fig/globe.png" alt=""></div>
+    <div class="fig" id="f-knight" style="left:1290px;top:240px;width:560px;height:600px"><div class="fglow"></div><img src="assets/fig/knight.png" alt=""></div>
+    <div class="fig" id="f-trophy" style="left:1290px;top:240px;width:560px;height:600px"><div class="fglow"></div><img src="assets/fig/trophy.png" alt=""></div>
+    <div class="fig" id="f-rocket" style="left:800px;top:650px;width:410px;height:410px"><div class="fglow"></div><img src="assets/fig/rocket.png" alt=""></div>
+    <div class="fig" id="f-handshake" style="left:720px;top:600px;width:480px;height:420px"><div class="fglow"></div><img src="assets/fig/handshake.png" alt=""></div>
+    <div class="fig warm" id="f-stairs" style="left:1330px;top:330px;width:500px;height:500px"><div class="fglow"></div><img src="assets/fig/stairs.png" alt=""></div>
+    <div class="fig" id="f-rings" style="left:690px;top:290px;width:540px;height:540px"><div class="fglow"></div><img src="assets/fig/rings.png" alt=""></div>
+    <div class="fig" id="f-megaphone" style="left:1310px;top:110px;width:560px;height:540px"><div class="fglow"></div><img src="assets/fig/megaphone.png" alt=""></div>
+    <div class="fig warm" id="f-envelope" style="left:765px;top:640px;width:390px;height:390px"><div class="fglow"></div><img src="assets/fig/envelope.png" alt=""></div>
+  </div>
 
   <div id="stage" class="full">
 
@@ -211,6 +184,7 @@
     <!-- S2 — a marca -->
     <section class="scene" id="s2">
       <div id="lockup" class="full">
+        <div id="logo-glow" class="glow" style="left:560px;top:-30px;width:800px;height:600px"></div>
         <div id="logo" class="logo" style="left:735px;top:150px;width:450px;height:245px">
           <img id="logo-w" src="assets/logo/ws-w.png" alt=""><img id="logo-s" src="assets/logo/ws-s.png" alt="">
         </div>
@@ -227,61 +201,19 @@
       <div id="track" class="abs">
         <div class="card" id="card1"><div class="sheen"></div>
           <div class="txt"><div class="num g">01 — SERVIÇO</div><h3 class="display">Sites</h3><p>Sites rápidos, responsivos e pensados para converter.</p></div>
-          <div class="viz">
-            <div class="browser">
-              <div class="bbar"><i></i><i></i><i></i><span class="url"></span></div>
-              <div class="bhero"><div class="bh1"></div><div class="bh2"></div><div class="bbtn">Começar</div></div>
-              <div class="bcells"><div class="bcell"><b></b><s></s><u></u></div><div class="bcell"><b></b><s></s><u></u></div><div class="bcell"><b></b><s></s><u></u></div></div>
-            </div>
-            <svg class="cursor" viewBox="0 0 24 24"><path d="M4 2 L20 12 L12.5 13.5 L16.5 21 L13.5 22.5 L9.6 15 L4 20 Z" fill="#F4F1EA" stroke="#06060B" stroke-width="1.2" stroke-linejoin="round"/></svg>
-          </div>
+          <div class="cover"><div class="cglow"></div><img src="assets/fig/laptop.png" alt=""></div>
         </div>
         <div class="card" id="card2"><div class="sheen"></div>
           <div class="txt"><div class="num g">02 — SERVIÇO</div><h3 class="display">Landing pages</h3><p>Páginas focadas em transformar visitas em clientes.</p></div>
-          <div class="viz">
-            <svg class="viz1" viewBox="0 0 420 492" style="width:420px;height:492px;overflow:visible">
-              <defs><linearGradient id="barg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#0A84FF" stop-opacity=".25"/><stop offset="1" stop-color="#02B8FF"/></linearGradient></defs>
-              <g class="bars">
-                <rect x="24" y="352" width="56" height="110" rx="16" fill="url(#barg)"/>
-                <rect x="104" y="302" width="56" height="160" rx="16" fill="url(#barg)"/>
-                <rect x="184" y="252" width="56" height="210" rx="16" fill="url(#barg)"/>
-                <rect x="264" y="182" width="56" height="280" rx="16" fill="url(#barg)"/>
-                <rect x="344" y="102" width="56" height="360" rx="16" fill="url(#barg)"/>
-              </g>
-              <path class="curve" d="M40 300 C 120 290, 170 240, 220 190 S 320 70, 372 46" stroke="#F4F1EA" stroke-width="6" fill="none" stroke-linecap="round"/>
-              <circle class="cdot" cx="372" cy="46" r="13" fill="#F4F1EA"/>
-            </svg>
-            <div class="chip" style="left:-30px;top:40px"><i></i>Visitas</div>
-            <div class="chip" style="left:60px;top:120px"><i style="background:#7FDBFF"></i>Leads</div>
-            <div class="chip" style="left:-10px;top:200px"><i style="background:#FFFFFF"></i>Vendas</div>
-          </div>
+          <div class="cover"><div class="cglow"></div><img src="assets/fig/magnet.png" alt=""></div>
         </div>
         <div class="card" id="card3"><div class="sheen"></div>
           <div class="txt"><div class="num g">03 — SERVIÇO</div><h3 class="display">Portfólios e posts</h3><p>Seu trabalho e sua marca apresentados com impacto.</p></div>
-          <div class="viz">
-            <div class="masonry">
-              <div class="col"><div class="tile" style="height:250px"><i style="background:linear-gradient(140deg,#0A84FF,#06306E)"></i></div><div class="tile" style="height:228px"><i style="background:linear-gradient(200deg,#7FDBFF,#0A84FF)"></i></div></div>
-              <div class="col" style="padding-top:44px"><div class="tile" style="height:180px"><i style="background:linear-gradient(160deg,#FF8A65,#7A2E1E)"></i></div><div class="tile" style="height:254px"><i style="background:radial-gradient(circle at 30% 30%,#02B8FF,#062B52)"></i></div></div>
-              <div class="col" style="padding-top:12px"><div class="tile" style="height:280px"><i style="background:linear-gradient(120deg,#F6DDAE,#B9774A)"></i></div><div class="tile" style="height:186px"><i style="background:linear-gradient(140deg,#16263F,#2F6FD6)"></i></div></div>
-            </div>
-          </div>
+          <div class="cover"><div class="cglow"></div><img src="assets/fig/posts.png" alt=""></div>
         </div>
         <div class="card" id="card4"><div class="sheen"></div>
           <div class="txt"><div class="num g">04 — SERVIÇO</div><h3 class="display">Vídeos mobile</h3><p>Vídeos verticais feitos para prender a atenção.</p></div>
-          <div class="viz">
-            <div class="phone"><div class="scr">
-              <div class="vid"><div class="b1p"></div><div class="b2p"></div></div>
-              <div class="notch"></div>
-              <div class="play"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="#fff"/></svg></div>
-              <div class="side">
-                <svg viewBox="0 0 24 24" class="heart"><path d="M12 21s-7.5-4.6-9.5-9.1C1.1 8.6 3.3 5 6.8 5c2 0 3.4 1.1 4.2 2.4C11.8 6.1 13.2 5 15.2 5c3.5 0 5.7 3.6 4.3 6.9C19.5 16.4 12 21 12 21z" fill="#fff"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M4 5h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" fill="rgba(255,255,255,.85)"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M14 4l7 7-7 7v-4c-5 0-8 1.5-11 5 1-5 4-10 11-11z" fill="rgba(255,255,255,.85)"/></svg>
-              </div>
-              <div class="cap"><b></b><s></s></div>
-              <div class="prog"><u></u></div>
-            </div></div>
-          </div>
+          <div class="cover"><div class="cglow"></div><img src="assets/fig/phone.png" alt=""></div>
         </div>
       </div>
 
@@ -295,24 +227,15 @@
       <div id="s4-panels" class="abs">
         <div class="panel"><div class="in"><div class="pglow"></div>
           <div class="pn serif g">01</div>
-          <svg class="glyph g1" viewBox="0 0 200 200" fill="none" stroke="#F4F1EA" stroke-width="4" stroke-linecap="round">
-            <circle class="r1" cx="100" cy="100" r="84" stroke-opacity=".35"/><circle class="r2" cx="100" cy="100" r="56" stroke-opacity=".6"/><circle class="r3" cx="100" cy="100" r="28"/>
-            <circle cx="100" cy="100" r="8" fill="#45D4FF" stroke="none"/>
-            <path class="arw" d="M186 14L108 92M160 14h26v26" stroke="#45D4FF" stroke-width="6"/>
-          </svg>
+          <div class="pimg"><div class="cglow"></div><img src="assets/fig/target.png" alt=""></div>
           <div class="sub kicker">Nasce da</div><h3 class="display">Estratégia</h3></div></div>
         <div class="panel"><div class="in"><div class="pglow" style="background:radial-gradient(circle,rgba(10,132,255,.16),rgba(10,132,255,0) 62%)"></div>
           <div class="pn serif g">02</div>
-          <svg class="glyph g2" viewBox="0 0 200 200">
-            <defs><linearGradient id="dg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C9F1FF"/><stop offset="1" stop-color="#0A84FF"/></linearGradient></defs>
-            <path id="morph-a" fill="url(#dg)" d="M100 16 C146 16 184 54 184 100 C184 146 146 184 100 184 C54 184 16 146 16 100 C16 54 54 16 100 16 Z"/>
-            <path id="morph-b" style="display:none" d="M108 14 C160 20 192 62 180 112 C170 160 128 190 84 182 C40 174 10 136 18 90 C26 44 62 8 108 14 Z"/>
-            <path id="morph-c" style="display:none" d="M100 18 C116 18 124 30 132 44 L176 122 C190 148 176 176 146 176 L54 176 C24 176 10 148 24 122 L68 44 C76 30 84 18 100 18 Z"/>
-          </svg>
+          <div class="pimg"><div class="cglow"></div><img src="assets/fig/design.png" alt=""></div>
           <div class="sub kicker">Ganha forma com o</div><h3 class="display">Design</h3></div></div>
         <div class="panel"><div class="in"><div class="pglow" style="background:radial-gradient(circle,rgba(127,219,255,.12),rgba(127,219,255,0) 62%)"></div>
           <div class="pn serif g">03</div>
-          <div class="abs g3" style="left:0;width:520px;top:170px;text-align:center;font-family:'JetBrains Mono';font-weight:700;font-size:136px;letter-spacing:-.04em"><span class="g">&lt;/&gt;</span><span class="caret" style="display:inline-block;width:14px;height:120px;margin-left:10px;vertical-align:-14px;background:#45D4FF;border-radius:4px"></span></div>
+          <div class="pimg"><div class="cglow"></div><img src="assets/fig/chip.png" alt=""></div>
           <div class="sub kicker">Entrega resultado com</div><h3 class="display">Tecnologia</h3></div></div>
       </div>
       <div id="s4-sem" class="abs center display" style="top:430px;font-size:150px">Sem fórmulas prontas.</div>
@@ -345,8 +268,8 @@
 
     <!-- S6 — convite -->
     <section class="scene" id="s6">
-      <div id="s6-kick" class="abs center kicker" style="top:350px;color:rgba(246,221,174,.85)">E agora,</div>
-      <div id="s6-line" class="abs center" style="top:410px">
+      <div id="s6-kick" class="abs center kicker" style="top:350px;left:-230px;color:rgba(246,221,174,.85)">E agora,</div>
+      <div id="s6-line" class="abs center" style="top:410px;left:-230px">
         <div class="display" style="font-size:104px">chegou a hora de dar o</div>
         <div class="display" style="font-size:104px;margin-top:2px"><span class="serif gw" style="font-size:1.3em">próximo passo.</span></div>
       </div>
@@ -413,6 +336,7 @@
       <div id="s8-ask" class="abs center display" style="top:380px;font-size:180px">Aceita o <span class="serif gw" style="font-size:1.22em">convite?</span></div>
 
       <div id="final" class="full">
+        <div id="flogo-glow" class="glow" style="left:620px;top:-40px;width:680px;height:520px"></div>
         <div id="flogo" class="logo" style="left:770px;top:140px;width:380px;height:207px">
           <img id="flogo-w" src="assets/logo/ws-w.png" alt=""><img id="flogo-s" src="assets/logo/ws-s.png" alt="">
         </div>
@@ -450,8 +374,6 @@
 
 <script src="node_modules/gsap/dist/gsap.min.js"></script>
 <script src="node_modules/gsap/dist/SplitText.min.js"></script>
-<script src="node_modules/gsap/dist/MorphSVGPlugin.min.js"></script>
-<script src="node_modules/gsap/dist/DrawSVGPlugin.min.js"></script>
 <script src="node_modules/gsap/dist/CustomEase.min.js"></script>
 <script src="cues.js"></script>
 <script type="module" src="main.js"></script>
