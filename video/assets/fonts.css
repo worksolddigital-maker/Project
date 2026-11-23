@@ -1,0 +1,6 @@
+/* Fontes locais (Google Fonts, subconjunto latin). Manrope, Syne e Bricolage são variáveis. */
+@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:block;src:url(./fonts/InstrumentSerif-400-italic.woff2) format('woff2');}
+@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:block;src:url(./fonts/InstrumentSerif-400-normal.woff2) format('woff2');}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:200 800;font-display:block;src:url(./fonts/Manrope-var.woff2) format('woff2');}
+@font-face{font-family:'Syne';font-style:normal;font-weight:400 800;font-display:block;src:url(./fonts/Syne-var.woff2) format('woff2');}
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:200 800;font-stretch:75% 100%;font-display:block;src:url(./fonts/BricolageGrotesque-var.woff2) format('woff2');}
