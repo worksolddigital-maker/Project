@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx scripts/migrate.ts"
+    "db:migrate": "tsx scripts/migrate.ts",
+    "demo:build": "vite build --config demo/vite.config.ts && node scripts/demo-artifact.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.6.0",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@playwright/test": "1.63.0",
     "@tailwindcss/turbopack": "4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^22.20.7",
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19",
@@ -49,6 +51,8 @@
     "tailwindcss": "4.3.3",
     "tsx": "^4.21.0",
     "typescript": "^5",
+    "vite": "^8.3.8",
+    "vite-plugin-singlefile": "^2.3.4",
     "vitest": "^5.1.2"
   }
 }

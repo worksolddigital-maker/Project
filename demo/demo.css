@@ -1,0 +1,22 @@
+@import "../src/app/globals.css";
+@source "../src";
+@source "./";
+
+:root {
+  --font-geist-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-geist-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: #060709;
+}
+
+/* Phone apps: keep the sticky top bar clear of the status bar and paint that strip. */
+header.sticky {
+  top: env(safe-area-inset-top, 0px);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 35;
+  background: #060709;
+}

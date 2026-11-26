@@ -7,7 +7,7 @@ import { createCash, createJournal, createStrategy, getSettings, listCash, listJ
 import { createTrade, deleteTrade, listTrades, updateTrade } from "@/server/repositories/trades";
 import { authenticate, registerUser } from "@/server/repositories/users";
 import { exportBackup, restoreBackup } from "@/server/services/backup";
-import { buildTradesCsv, buildWorkbook } from "@/server/services/export";
+import { buildTradesCsv, buildWorkbook } from "@/lib/reports/export-builders";
 import { commitImport, parseImportFile } from "@/server/services/import";
 
 const TZ = "America/Sao_Paulo";

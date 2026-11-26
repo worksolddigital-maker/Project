@@ -1,5 +1,5 @@
 import { requireUser, route } from "@/server/http";
-import { templateCsv, templateWorkbook } from "@/server/services/export";
+import { templateCsv, templateWorkbook } from "@/lib/reports/export-builders";
 
 export const GET = route(async (request) => {
   await requireUser();

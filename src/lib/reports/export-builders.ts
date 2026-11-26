@@ -1,4 +1,4 @@
-import "server-only";
+/** Report builders (CSV/XLSX). Pure: used by the API routes and by the standalone demo. */
 import {
   buildLedger,
   filterByRange,
@@ -84,7 +84,7 @@ export function templateCsv(): string {
   return "﻿" + [IMPORT_TEMPLATE_HEADERS.join(";"), example.join(";")].join("\r\n") + "\r\n";
 }
 
-export async function buildWorkbook(data: ExportData, range: DateRange, periodLabel: string): Promise<Buffer> {
+export async function buildWorkbook(data: ExportData, range: DateRange, periodLabel: string): Promise<Uint8Array> {
   const { default: ExcelJS } = await import("exceljs");
   const tz = data.settings.timezone;
   const cur = data.settings.currency;
@@ -282,11 +282,10 @@ export async function buildWorkbook(data: ExportData, range: DateRange, periodLa
   }
   styleHeader(jWs);
 
-  const out = await wb.xlsx.writeBuffer();
-  return Buffer.from(out as ArrayBuffer);
+  return new Uint8Array(await wb.xlsx.writeBuffer());
 }
 
-export async function templateWorkbook(): Promise<Buffer> {
+export async function templateWorkbook(): Promise<Uint8Array> {
   const { default: ExcelJS } = await import("exceljs");
   const wb = new ExcelJS.Workbook();
   const ws = wb.addWorksheet("Operações");
@@ -294,6 +293,5 @@ export async function templateWorkbook(): Promise<Buffer> {
   ws.addRow(["25/11/2026", "14:30:00", "EUR/USD", "CALL", "50,00", "1m", "WIN", "87", "", "Minha estratégia", "Exemplo — apague esta linha"]);
   ws.columns.forEach((c) => (c.width = 16));
   ws.getRow(1).font = { bold: true };
-  const out = await wb.xlsx.writeBuffer();
-  return Buffer.from(out as ArrayBuffer);
+  return new Uint8Array(await wb.xlsx.writeBuffer());
 }

@@ -3,7 +3,7 @@ import { getDb } from "@/server/db/client";
 import { ApiError, requireUser, route } from "@/server/http";
 import { getSettings, listCash, listJournal, listStrategies } from "@/server/repositories/entities";
 import { listTrades } from "@/server/repositories/trades";
-import { buildTradesCsv, buildWorkbook } from "@/server/services/export";
+import { buildTradesCsv, buildWorkbook } from "@/lib/reports/export-builders";
 
 export const GET = route(async (request) => {
   const user = await requireUser();

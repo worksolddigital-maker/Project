@@ -10,7 +10,7 @@ import type {
   UserSettings,
 } from "@/lib/domain/types";
 import type { CashMovementInput, JournalInput, SettingsUpdate, TradeInput } from "@/lib/validation/schemas";
-import { api } from "./client";
+import { api } from "@/lib/api/client";
 
 export const qk = {
   me: ["me"] as const,

@@ -74,6 +74,15 @@ A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas:
 
 > Em plataformas serverless (Vercel etc.) use sempre `DATABASE_URL`: o banco embarcado precisa de disco persistente.
 
+## Versão de demonstração em HTML
+
+`npm run demo:build` gera **um único arquivo HTML** (`dist-demo/index.html`, ~2,4 MB) com o sistema inteiro rodando no navegador, sem servidor: as mesmas telas, validações e cálculos, com a API substituída por um motor local (`demo/`). Serve para testar e apresentar o painel.
+
+- Os dados ficam no navegador (ou, quando aberto dentro do visualizador do Claude, no armazenamento privado da conta de quem abre).
+- Há uma **conta de exemplo com dados fictícios**, claramente identificada, para explorar os gráficos.
+- `dist-demo/artifact.html` é a mesma página no formato usado para publicação como Artifact do Claude.
+- Não substitui a versão instalada: não há banco de dados compartilhado nem login real entre dispositivos.
+
 ## Scripts
 
 | Comando | Descrição |
@@ -86,6 +95,7 @@ A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas:
 | `npm run test:e2e` | Testes ponta a ponta (Playwright; faz o build e sobe um servidor com banco novo) |
 | `npm run db:generate` | Gera nova migração após alterar `src/server/db/schema.ts` |
 | `npm run db:migrate` | Aplica migrações (PGlite ou `DATABASE_URL`) |
+| `npm run demo:build` | Gera a versão de demonstração em um único arquivo HTML |
 
 ## Arquitetura
 

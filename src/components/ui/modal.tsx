@@ -45,7 +45,10 @@ export function Modal({ open, onClose, title, description, children, footer, siz
     }
     const isTop = () => modalStack[modalStack.length - 1] === titleId;
     const t = window.setTimeout(() => {
-      const first = panelRef.current?.querySelector<HTMLElement>("[data-autofocus]") ?? panelRef.current?.querySelector<HTMLElement>(FOCUSABLE);
+      const panel = panelRef.current;
+      // Never steal focus from a field the person already started using.
+      if (!panel || panel.contains(document.activeElement)) return;
+      const first = panel.querySelector<HTMLElement>("[data-autofocus]") ?? panel.querySelector<HTMLElement>(FOCUSABLE);
       first?.focus();
     }, 50);
     const onKey = (e: KeyboardEvent) => {

@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_rethrow } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 import { ZodError, type ZodType } from "zod";
 import { fieldErrors } from "@/lib/validation/schemas";
@@ -63,6 +64,8 @@ export function route<C = unknown>(handler: Handler<C>): Handler<C> {
       assertSameOrigin(request);
       return await handler(request, context);
     } catch (err) {
+      // Let Next.js handle its own control-flow signals (e.g. "this route is dynamic" during prerendering).
+      unstable_rethrow(err);
       if (err instanceof ZodError) {
         const fields = fieldErrors(err);
         const first = Object.values(fields)[0] ?? "Dados inválidos.";
