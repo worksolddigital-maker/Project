@@ -3,7 +3,7 @@ import { CloudCheck, FlaskConical, HardDrive, LoaderCircle, TriangleAlert, X } f
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
-import { openExampleAccount } from "./backend/sample";
+import { EXAMPLE_PASSWORD, openExampleAccount } from "./backend/sample";
 import { emptyState, getPersistenceMode, getSaveStatus, getState, replaceState, subscribeSaveStatus } from "./backend/store";
 import type { NoticeTone } from "./notices";
 import { hardNavigate } from "./shims/navigation";
@@ -91,8 +91,8 @@ export function DemoDock({ signedIn }: { signedIn: boolean }) {
                 <Button
                   variant="primary"
                   size="sm"
-                  onClick={() => {
-                    openExampleAccount();
+                  onClick={async () => {
+                    await openExampleAccount();
                     setOpen(false);
                     hardNavigate("/dashboard");
                   }}
@@ -101,7 +101,14 @@ export function DemoDock({ signedIn }: { signedIn: boolean }) {
                   Abrir conta de exemplo (dados fictícios)
                 </Button>
               )}
-              {isExample && <p className="text-xs text-warn">Você está na conta de exemplo: todos os números são fictícios.</p>}
+              {isExample && (
+                <div className="space-y-1 text-xs">
+                  <p className="text-warn">Você está na conta de exemplo: todos os números são fictícios.</p>
+                  <p className="text-muted">
+                    Senha desta conta (pedida em ações sensíveis): <span className="mono text-fg">{EXAMPLE_PASSWORD}</span>
+                  </p>
+                </div>
+              )}
               {confirmReset ? (
                 <div className="flex items-center gap-2">
                   <Button

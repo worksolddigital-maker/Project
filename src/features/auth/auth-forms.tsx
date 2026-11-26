@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FormError, Input } from "@/components/ui/form";
 import { api, ApiClientError } from "@/lib/api/client";
 import { hardNavigate } from "@/lib/navigation";
+import { SECURITY_POLICY } from "@/lib/security";
 import { fieldErrors, loginSchema, registerSchema } from "@/lib/validation/schemas";
 import { AuthScreen } from "./auth-screen";
 
@@ -129,7 +130,7 @@ export function RegisterForm() {
         <Field label="E-mail" error={errors.email}>
           {(id) => <Input id={id} type="email" autoComplete="email" value={form.email} onChange={set("email")} invalid={!!errors.email} name="email" />}
         </Field>
-        <Field label="Senha" error={errors.password} hint="Mínimo de 8 caracteres, com letras e números.">
+        <Field label="Senha" error={errors.password} hint={`Mínimo de ${SECURITY_POLICY.minPasswordLength} caracteres, com maiúsculas, minúsculas e números, sem conter o seu nome.`}>
           {(id) => <PasswordInput id={id} autoComplete="new-password" value={form.password} onChange={set("password")} invalid={!!errors.password} name="password" />}
         </Field>
         <Field label="Confirmar senha" error={errors.confirm}>

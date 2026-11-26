@@ -17,8 +17,9 @@ Se a Hezilex publicar uma API oficial no futuro, basta criar um novo serviço em
 
 | Seção | O que faz |
 |---|---|
+| **Monitoramento** | Acompanhamento ao vivo da sessão do dia (atualiza a cada 20 s enquanto a página está aberta): status dentro/fora dos parâmetros, resultado acumulado operação a operação com a meta e o limite de perda como referência, consumo dos limites em tempo real, alertas ativos, operações de hoje, resumo de segurança e **registro de atividades** (tudo o que foi criado, alterado ou excluído na conta). |
 | **Dashboard** | Saldo total, capital inicial, lucro e prejuízo acumulados, resultado líquido, rentabilidade, taxa de acerto, total de operações, vencedoras/perdedoras, média de lucro e de perda, melhor e pior operação. Evolução do saldo, distribuição WIN/LOSS, P&L dos últimos 30 dias, alertas ativos e operações recentes. Atualiza a cada operação registrada. |
-| **Operações** | Cadastro, edição e exclusão (com confirmação). Pesquisa por ativo, filtros por período, resultado, estratégia e tipo; ordenação; paginação; resumo do filtro; exportação CSV; importação CSV/Excel. Lucro/prejuízo e retorno calculados automaticamente (WIN = valor × payout; LOSS = −valor; EMPATE = 0), com opção de informar o valor manualmente quando a corretora creditar outro valor. |
+| **Operações** | Cadastro, edição e exclusão (com confirmação). **Seletor de ativos** com o catálogo da corretora (Cripto, Forex, Ações, Commodities), favoritos, recentes e busca; ao escolher o ativo o payout de referência é preenchido (editável). Pesquisa por ativo, filtros por período, resultado, estratégia e tipo; ordenação; paginação; resumo do filtro; exportação CSV; importação CSV/Excel. Lucro/prejuízo e retorno calculados automaticamente (WIN = valor × payout; LOSS = −valor; EMPATE = 0), com opção de informar o valor manualmente quando a corretora creditar outro valor. |
 | **Gerenciamento de banca** | Capital inicial, depósitos e retiradas (CRUD), saldo atualizado, valor máximo por operação, risco %, limite diário de perda, metas diária/semanal/mensal, payout padrão. Situação do dia com barras de consumo. |
 | **Gestão de risco** | Risco por operação (médio e último), exposição diária, capital comprometido, drawdown máximo e atual (curva submersa), sequência de perdas, relação lucro/prejuízo, fator de lucro, limite de perda diário. Alertas e detecção de comportamentos de risco (aumento de valor após LOSS, operações após o limite diário, excesso de operações). Não recomenda operações. |
 | **Estatísticas** | Evolução do saldo, P&L diário, semanal e mensal, taxa de acerto no tempo, distribuição WIN/LOSS, desempenho por ativo e por estratégia (gráfico + tabela), horários mais rentáveis, mapa de calor dia × hora e comparação entre dois períodos. Tooltips detalhados em todos os gráficos. |
@@ -26,7 +27,14 @@ Se a Hezilex publicar uma API oficial no futuro, basta criar um novo serviço em
 | **Diário de trading** | Emocional, estratégia, seguiu o gerenciamento, impulso, principal erro, acertos e melhorias. Vínculo com uma operação ou com a sessão (data). Histórico filtrável e indicadores de disciplina cruzados com o resultado real dos dias. |
 | **Metas** | Metas diária/semanal/mensal, máximo de operações por dia e de perdas consecutivas, com anéis de progresso, histórico de 30 dias e 12 semanas contra a meta e aproveitamento. |
 | **Relatórios** | Relatório por período (resumo, por ativo, por estratégia, por dia, movimentações), exportação **CSV** e **Excel** (7 abas formatadas) e impressão/PDF. |
-| **Configurações** | Perfil, moeda, fuso horário, payout padrão, animações reduzidas, rolagem suave, estratégias, importação/exportação, **backup e restauração (JSON)**, exclusão de todas as operações, troca de senha, encerramento de sessões e exclusão de conta. |
+| **Segurança** | Troca de senha, sessões abertas (dispositivo, IP, último acesso) com encerramento individual ou de todas as outras, registro de acessos (entradas, tentativas com senha errada, bloqueios, trocas de senha) e exclusão da conta. |
+| **Configurações** | Perfil, moeda, fuso horário, payout padrão, animações reduzidas, rolagem suave, **ativos e payouts** (seu payout por ativo e favoritos), estratégias, importação/exportação, **backup e restauração (JSON)** e exclusão de todas as operações. |
+
+O menu lateral é agrupado em **Visão geral, Operacional, Capital e risco, Análise e Conta**, e as Estatísticas são divididas em abas (Desempenho, Ativos e estratégias, Horários, Comparação).
+
+### Catálogo de ativos
+
+`src/lib/domain/assets.ts` traz os ativos e payouts que apareceram nas telas da corretora em 25/11/2026 (12 cripto, 29 forex, 4 commodities). O payout é só **referência**: a corretora altera esses valores, então cada conta pode gravar o seu próprio payout por ativo em Configurações › Ativos e payouts, e o formulário sempre permite editar. EUR/NZD, AUD/CHF e EUR/AUD aparecem sem payout porque o valor não estava visível; a categoria Ações estava vazia nas telas.
 
 Alertas aparecem no sino do topo, no dashboard e na página de risco; quando um limite é atingido após salvar uma operação, uma notificação é exibida. O formulário de operação avisa **antes de salvar** se o valor ultrapassa seus parâmetros (sem bloquear).
 
@@ -70,7 +78,7 @@ npm start            # porta 3000; use PGLITE_DATA_DIR para escolher onde salvar
 3. Aplique as migrações: `DATABASE_URL=... npm run db:migrate`
 4. `npm run build && npm start` (ou deploy na Vercel/Render/Railway com a mesma variável).
 
-A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas: como o Supabase expõe o schema `public` pela API REST, isso bloqueia o acesso via chave `anon`; o app conecta como dono das tabelas e não é afetado.
+A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas (a `0002_security_monitoring`, que cria o registro de auditoria e os campos de bloqueio/sessão, faz o mesmo na tabela nova): como o Supabase expõe o schema `public` pela API REST, isso bloqueia o acesso via chave `anon`; o app conecta como dono das tabelas e não é afetado.
 
 > Em plataformas serverless (Vercel etc.) use sempre `DATABASE_URL`: o banco embarcado precisa de disco persistente.
 
@@ -79,7 +87,8 @@ A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas:
 `npm run demo:build` gera **um único arquivo HTML** (`dist-demo/index.html`, ~2,4 MB) com o sistema inteiro rodando no navegador, sem servidor: as mesmas telas, validações e cálculos, com a API substituída por um motor local (`demo/`). Serve para testar e apresentar o painel.
 
 - Os dados ficam no navegador (ou, quando aberto dentro do visualizador do Claude, no armazenamento privado da conta de quem abre).
-- Há uma **conta de exemplo com dados fictícios**, claramente identificada, para explorar os gráficos.
+- Há uma **conta de exemplo com dados fictícios**, claramente identificada, para explorar os gráficos. A senha dela (`Exemplo2026`) aparece no painel da demo, porque ações sensíveis pedem a senha também lá.
+- Bloqueio por tentativas, registro de atividades e confirmação por senha funcionam como na versão instalada; como a demo roda em um único navegador, a lista de sessões mostra só a atual.
 - `dist-demo/artifact.html` é a mesma página no formato usado para publicação como Artifact do Claude.
 - Não substitui a versão instalada: não há banco de dados compartilhado nem login real entre dispositivos.
 
@@ -103,9 +112,9 @@ A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas:
 src/
   app/                    Rotas (App Router)
     (auth)/               login e cadastro
-    (app)/                10 seções do painel (layout com sidebar/topbar)
-    api/                  Route Handlers REST (auth, trades, banca, estratégias, diário, importação, exportação, backup)
-  features/               Telas por domínio (dashboard, trades, bankroll, risk, stats, calendar, journal, goals, reports, settings)
+    (app)/                12 seções do painel (layout com sidebar/topbar)
+    api/                  Route Handlers REST (auth, conta, sessões, auditoria, trades, banca, estratégias, diário, importação, exportação, backup)
+  features/               Telas por domínio (dashboard, monitoring, trades, bankroll, risk, stats, calendar, journal, goals, reports, security, settings, activity)
   components/
     ui/                   Botões, formulários, modal, cards, toasts, seletor de período...
     charts/               Gráficos (Recharts) com padrão visual único
@@ -114,13 +123,14 @@ src/
   hooks/                  AppDataProvider (calcula todas as métricas uma única vez), stores do cliente
   lib/
     domain/               Regras de negócio puras e testadas: dinheiro, datas/fuso, cálculo de operação,
-                          analytics, risco, metas, mapeamento de importação
+                          analytics, risco, metas, mapeamento de importação, catálogo de ativos
+    security.ts           Política de segurança e vocabulário do registro de atividades
     validation/           Schemas Zod compartilhados
     api/                  Cliente HTTP e hooks de dados
   server/
     db/                   Schema Drizzle e conexão (PGlite ou Postgres)
     auth/                 Senhas, sessões, rate limit
-    repositories/         Acesso a dados sempre filtrado por usuário
+    repositories/         Acesso a dados sempre filtrado por usuário (inclui o registro de auditoria)
     services/             Importação, exportação (CSV/XLSX) e backup
 drizzle/                  Migrações SQL
 tests/                    Vitest (domínio + integração do servidor)
@@ -154,11 +164,16 @@ Todos os valores monetários são armazenados em **centavos inteiros** (sem erro
 
 - Todas as rotas da API exigem sessão válida e filtram os dados pelo usuário (testado: outro usuário recebe 404).
 - Validação Zod no cliente **e** no servidor; o servidor recalcula o resultado financeiro.
-- Proteção CSRF (cookies `SameSite=Lax` + verificação de `Origin`), cabeçalhos de segurança, limite de tentativas de login/cadastro.
+- Proteção CSRF (cookies `SameSite=Lax` + verificação de `Origin`), cabeçalhos de segurança, limite de tentativas de login/cadastro por dispositivo.
+- **Bloqueio da conta** por 15 minutos após 5 senhas erradas seguidas (mesmo a senha certa é recusada durante o bloqueio); mensagens genéricas para não revelar se um e-mail existe.
+- **Política de senha**: mínimo de 10 caracteres, com maiúsculas, minúsculas e números, sem conter o nome da pessoa. Senhas com hash scrypt; o cookie guarda um token cujo hash SHA-256 é o que fica no banco.
+- **Sessões**: expiram após 2 h sem uso e, em qualquer caso, 7 dias após o login; podem ser listadas e encerradas. Trocar a senha encerra as outras sessões.
+- **Confirmação por senha** para ações destrutivas: excluir todas as operações, restaurar backup e excluir a conta.
+- **Registro de auditoria** (`audit_events`): acessos, falhas, bloqueios, trocas de senha e toda criação/alteração/exclusão de dados, com IP e horário, visível em Segurança e Monitoramento.
+- RLS habilitado em todas as tabelas (protege contra a Data API do Supabase); o app acessa o banco apenas pelo servidor.
 - Exportações protegidas contra injeção de fórmulas em planilhas.
-- Troca de senha encerra as outras sessões.
 
 ## Testes executados
 
-- `npm test`: 67 testes (cálculos financeiros, datas com fuso/horário de verão, importação, risco, metas, repositórios, importação Excel real, ida e volta CSV, conteúdo do XLSX, backup/restauração entre contas).
-- `npm run test:e2e`: 9 cenários no navegador (cadastro, banca, operações e cálculos, alertas, filtros, edição, exclusão, importação com duplicadas, calendário, diário, metas, relatórios, persistência após recarregar/sair, isolamento entre usuários, navegação no celular sem rolagem horizontal) — aprovados tanto no PGlite quanto em PostgreSQL 16.
+- `npm test`: 75 testes (cálculos financeiros, datas com fuso/horário de verão, importação, risco, metas, catálogo de ativos e payouts, política de senha, bloqueio por tentativas e registro de auditoria, repositórios, importação Excel real, ida e volta CSV, conteúdo do XLSX, backup/restauração entre contas).
+- `npm run test:e2e`: 11 cenários no navegador (cadastro, banca, operações e cálculos, alertas, filtros, edição, exclusão, importação com duplicadas, calendário, diário, metas, estatísticas por abas, relatórios, persistência após recarregar/sair, isolamento entre usuários, seletor de ativos com payout, monitoramento, sessões, confirmação por senha, bloqueio da conta, navegação no celular sem rolagem horizontal) — aprovados tanto no PGlite quanto em PostgreSQL 16.

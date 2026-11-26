@@ -1,6 +1,7 @@
 import { journalInputSchema } from "@/lib/validation/schemas";
 import { getDb } from "@/server/db/client";
-import { json, readJson, requireUser, route } from "@/server/http";
+import { logEvent } from "@/server/repositories/audit";
+import { clientIp, json, readJson, requireUser, route } from "@/server/http";
 import { createJournal, listJournal } from "@/server/repositories/entities";
 
 export const GET = route(async () => {
@@ -11,5 +12,8 @@ export const GET = route(async () => {
 export const POST = route(async (request) => {
   const user = await requireUser();
   const input = await readJson(request, journalInputSchema);
-  return json({ entry: await createJournal(await getDb(), user.id, input) }, { status: 201 });
+  const db = await getDb();
+  const entry = await createJournal(db, user.id, input);
+  await logEvent(db, user.id, "journal.create", { sessionDate: entry.sessionDate }, clientIp(request));
+  return json({ entry }, { status: 201 });
 });

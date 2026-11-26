@@ -1,4 +1,5 @@
 import type { CashMovement, JournalEntry, Strategy, Trade, UserSettings } from "@/lib/domain/types";
+import type { AuditEvent } from "@/lib/security";
 import { notify } from "../notices";
 import { openPersistence, type Persistence, type PersistenceMode } from "./persistence";
 
@@ -10,6 +11,11 @@ export interface Account {
   passwordHash: string;
   createdAt: string;
   example?: boolean;
+  /* Security fields (absent in data saved by older versions of the demo). */
+  failedLoginCount?: number;
+  lockedUntil?: string | null;
+  lastLoginAt?: string | null;
+  passwordChangedAt?: string | null;
 }
 
 type Owned<T> = T & { accountId: string };
@@ -17,12 +23,18 @@ type Owned<T> = T & { accountId: string };
 export interface DemoState {
   version: 1;
   session: string | null;
+  /** When the current sign-in started (the demo has a single browser session). */
+  sessionStartedAt?: string;
+  sessionLastSeenAt?: string;
+  /** Short fingerprint shown in the sessions list. */
+  sessionId?: string;
   accounts: Account[];
   settings: Record<string, UserSettings>;
   trades: Owned<Trade>[];
   cash: Owned<CashMovement>[];
   strategies: Owned<Strategy>[];
   journal: Owned<JournalEntry>[];
+  audit?: Owned<AuditEvent>[];
 }
 
 export const emptyState = (): DemoState => ({
@@ -34,6 +46,7 @@ export const emptyState = (): DemoState => ({
   cash: [],
   strategies: [],
   journal: [],
+  audit: [],
 });
 
 let state: DemoState = emptyState();

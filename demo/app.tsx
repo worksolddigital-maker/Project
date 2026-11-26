@@ -9,8 +9,10 @@ import { CalendarView } from "@/features/calendar/calendar-view";
 import { DashboardView } from "@/features/dashboard/dashboard-view";
 import { GoalsView } from "@/features/goals/goals-view";
 import { JournalView } from "@/features/journal/journal-view";
+import { MonitoringView } from "@/features/monitoring/monitoring-view";
 import { ReportsView } from "@/features/reports/reports-view";
 import { RiskView } from "@/features/risk/risk-view";
+import { SecurityView } from "@/features/security/security-view";
 import { SettingsView } from "@/features/settings/settings-view";
 import { StatsView } from "@/features/stats/stats-view";
 import { OperationsView } from "@/features/trades/operations-view";
@@ -20,6 +22,7 @@ import { navigate, useRoute } from "./router";
 
 const SCREENS: Record<string, () => ReactNode> = {
   dashboard: () => <DashboardView />,
+  monitoramento: () => <MonitoringView />,
   operacoes: () => <OperationsView />,
   banca: () => <BankrollView />,
   risco: () => <RiskView />,
@@ -28,6 +31,7 @@ const SCREENS: Record<string, () => ReactNode> = {
   diario: () => <JournalView />,
   metas: () => <GoalsView />,
   relatorios: () => <ReportsView />,
+  seguranca: () => <SecurityView />,
   configuracoes: () => <SettingsView />,
 };
 

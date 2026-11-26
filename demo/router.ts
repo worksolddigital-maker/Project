@@ -3,6 +3,7 @@ import { useSyncExternalStore } from "react";
 /** Hash router for the standalone build: each screen is a plain `#name`. */
 export const APP_ROUTES = [
   "dashboard",
+  "monitoramento",
   "operacoes",
   "banca",
   "risco",
@@ -11,11 +12,12 @@ export const APP_ROUTES = [
   "diario",
   "metas",
   "relatorios",
+  "seguranca",
   "configuracoes",
 ] as const;
 export const PUBLIC_ROUTES = ["login", "cadastro"] as const;
 /** Settings tabs write their own `#name`; they still belong to the settings screen. */
-const SETTINGS_TABS = ["perfil", "preferencias", "estrategias", "dados", "seguranca"];
+const SETTINGS_TABS = ["perfil", "preferencias", "ativos", "estrategias", "dados"];
 const ALL = new Set<string>([...APP_ROUTES, ...PUBLIC_ROUTES]);
 
 function parse(hash: string): string {

@@ -15,6 +15,13 @@
       "when": 1795654531298,
       "tag": "0001_enable_rls",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795676102257,
+      "tag": "0002_security_monitoring",
+      "breakpoints": true
     }
   ]
 }

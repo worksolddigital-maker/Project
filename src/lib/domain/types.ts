@@ -1,3 +1,5 @@
+import type { AssetPrefs } from "./assets";
+
 /**
  * Core domain types. All monetary values are integer cents to avoid
  * floating point drift in financial calculations.
@@ -111,6 +113,7 @@ export interface UserSettings {
   maxDailyExposurePct: number | null;
   reducedMotion: boolean;
   smoothScroll: boolean;
+  assetPrefs: AssetPrefs;
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
@@ -130,6 +133,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
   maxDailyExposurePct: null,
   reducedMotion: false,
   smoothScroll: true,
+  assetPrefs: { payouts: {}, favorites: [] },
 };
 
 export interface JournalEntry {
@@ -153,5 +157,7 @@ export interface PublicUser {
   id: string;
   name: string;
   email: string;
+  lastLoginAt: string | null;
+  passwordChangedAt: string | null;
   createdAt: string;
 }

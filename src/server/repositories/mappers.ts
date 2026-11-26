@@ -79,5 +79,9 @@ export const toSettings = (r: SettingsRow | undefined): UserSettings =>
         maxDailyExposurePct: r.maxDailyExposurePct,
         reducedMotion: r.reducedMotion,
         smoothScroll: r.smoothScroll,
+        assetPrefs: {
+          payouts: r.assetPrefs?.payouts ?? {},
+          favorites: r.assetPrefs?.favorites ?? [],
+        },
       }
     : { ...DEFAULT_SETTINGS };

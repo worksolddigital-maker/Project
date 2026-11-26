@@ -17,6 +17,7 @@ import { dayKeyOf, formatDateTime } from "@/lib/domain/dates";
 import { formatMoney, formatNumber, formatPct } from "@/lib/domain/money";
 import { formatExpiration, returnPct } from "@/lib/domain/trade-calc";
 import type { Trade } from "@/lib/domain/types";
+import { AssetBadge } from "./asset-picker";
 import { ImportWizard } from "./import-wizard";
 import { DirectionBadge, MoneyText, ResultBadge } from "./trade-bits";
 import { useTradeModal } from "./trade-modal-context";
@@ -298,7 +299,8 @@ function OperationsContent() {
                       <tr key={t.id} className="group border-b border-line/70 transition-colors last:border-0 hover:bg-white/[0.025]" data-testid="trade-row">
                         <td className="num px-3 py-3 whitespace-nowrap text-muted">{formatDateTime(t.executedAt, tz, true)}</td>
                         <td className="px-3 py-3 font-medium whitespace-nowrap text-fg">
-                          <span className="inline-flex items-center gap-1.5">
+                          <span className="inline-flex items-center gap-2">
+                            <AssetBadge symbol={t.asset} className="scale-75" />
                             {t.asset}
                             {t.notes && (
                               <span title={t.notes} className="text-subtle">

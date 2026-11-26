@@ -11,7 +11,9 @@ import { cn } from "@/lib/cn";
 import { hardNavigate } from "@/lib/navigation";
 import { formatMoney } from "@/lib/domain/money";
 import { Logo } from "./logo";
-import { NAV_ITEMS } from "./nav";
+import { NAV_GROUPS, NAV_ITEMS } from "./nav";
+
+const ORDER = new Map(NAV_ITEMS.map((item, i) => [item.href, i]));
 
 function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
@@ -19,67 +21,77 @@ function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (
   const riskCount = alerts.filter((a) => a.level === "danger" || a.level === "warning").length;
 
   return (
-    <nav aria-label="Navegação principal" className="flex flex-col gap-0.5">
-      {NAV_ITEMS.map((item, i) => {
-        const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
-        const Icon = item.icon;
-        return (
-          <motion.div
-            key={item.href}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.04 * i, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Link
-              href={item.href}
-              onClick={onNavigate}
-              title={collapsed ? item.label : undefined}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "group focus-ring relative flex h-10 items-center gap-3 rounded-lg px-3 text-[13.5px] transition-colors duration-200",
-                active ? "text-fg" : "text-muted hover:text-fg",
-                collapsed && "justify-center px-0",
-              )}
-            >
-              {active &&
-                (onNavigate ? (
-                  // Mobile drawer: static indicator. A shared-layout animation inside an
-                  // exiting drawer can block its unmount when reduced motion is on.
-                  <span className="absolute inset-0 rounded-lg border border-line-strong bg-gradient-to-r from-white/[0.08] to-white/[0.02]">
-                    <span className="absolute top-1/2 left-0 h-4 w-[3px] -translate-x-[1px] -translate-y-1/2 rounded-full bg-pos" />
-                  </span>
-                ) : (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg border border-line-strong bg-gradient-to-r from-white/[0.08] to-white/[0.02] shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]"
-                    transition={{ type: "spring", stiffness: 420, damping: 36 }}
-                  >
-                    <span className="absolute top-1/2 left-0 h-4 w-[3px] -translate-x-[1px] -translate-y-1/2 rounded-full bg-pos shadow-[0_0_12px_rgb(30_211_138/0.8)]" />
-                  </motion.span>
-                ))}
-              <Icon
-                className={cn(
-                  "relative z-10 size-[18px] shrink-0 transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover:scale-110",
-                  active ? "text-fg" : "text-subtle group-hover:text-fg",
-                )}
-                strokeWidth={1.75}
-              />
-              {!collapsed && <span className="relative z-10 truncate">{item.label}</span>}
-              {item.href === "/risco" && riskCount > 0 && (
-                <span
+    <nav aria-label="Navegação principal" className="flex flex-col gap-4">
+      {NAV_GROUPS.map((group) => (
+        <div key={group.label} role="group" aria-label={group.label} className="flex flex-col gap-0.5">
+          {collapsed ? (
+            <span className="mx-auto mb-1 h-px w-6 bg-line" aria-hidden />
+          ) : (
+            <p className="px-3 pb-1 text-[10.5px] font-medium tracking-[0.14em] text-subtle uppercase">{group.label}</p>
+          )}
+          {group.items.map((item) => {
+            const i = ORDER.get(item.href) ?? 0;
+            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.href}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.04 * i, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link
+                  href={item.href}
+                  onClick={onNavigate}
+                  title={collapsed ? item.label : undefined}
+                  aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative z-10 grid min-w-5 place-items-center rounded-full bg-neg/90 px-1.5 text-[10px] font-semibold text-white",
-                    collapsed ? "absolute top-1 right-1 h-4 min-w-4 px-1" : "ml-auto h-5",
+                    "group focus-ring relative flex h-10 items-center gap-3 rounded-lg px-3 text-[13.5px] transition-colors duration-200",
+                    active ? "text-fg" : "text-muted hover:text-fg",
+                    collapsed && "justify-center px-0",
                   )}
-                  aria-label={`${riskCount} alertas de risco`}
                 >
-                  {riskCount}
-                </span>
-              )}
-            </Link>
-          </motion.div>
-        );
-      })}
+                  {active &&
+                    (onNavigate ? (
+                      // Mobile drawer: static indicator. A shared-layout animation inside an
+                      // exiting drawer can block its unmount when reduced motion is on.
+                      <span className="absolute inset-0 rounded-lg border border-line-strong bg-gradient-to-r from-white/[0.08] to-white/[0.02]">
+                        <span className="absolute top-1/2 left-0 h-4 w-[3px] -translate-x-[1px] -translate-y-1/2 rounded-full bg-pos" />
+                      </span>
+                    ) : (
+                      <motion.span
+                        layoutId="nav-active"
+                        className="absolute inset-0 rounded-lg border border-line-strong bg-gradient-to-r from-white/[0.08] to-white/[0.02] shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]"
+                        transition={{ type: "spring", stiffness: 420, damping: 36 }}
+                      >
+                        <span className="absolute top-1/2 left-0 h-4 w-[3px] -translate-x-[1px] -translate-y-1/2 rounded-full bg-pos shadow-[0_0_12px_rgb(30_211_138/0.8)]" />
+                      </motion.span>
+                    ))}
+                  <Icon
+                    className={cn(
+                      "relative z-10 size-[18px] shrink-0 transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover:scale-110",
+                      active ? "text-fg" : "text-subtle group-hover:text-fg",
+                    )}
+                    strokeWidth={1.75}
+                  />
+                  {!collapsed && <span className="relative z-10 truncate">{item.label}</span>}
+                  {item.href === "/risco" && riskCount > 0 && (
+                    <span
+                      className={cn(
+                        "relative z-10 grid min-w-5 place-items-center rounded-full bg-neg/90 px-1.5 text-[10px] font-semibold text-white",
+                        collapsed ? "absolute top-1 right-1 h-4 min-w-4 px-1" : "ml-auto h-5",
+                      )}
+                      aria-label={`${riskCount} alertas de risco`}
+                    >
+                      {riskCount}
+                    </span>
+                  )}
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      ))}
     </nav>
   );
 }

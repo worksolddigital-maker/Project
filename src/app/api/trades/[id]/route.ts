@@ -1,17 +1,23 @@
 import { tradeInputSchema } from "@/lib/validation/schemas";
 import { getDb } from "@/server/db/client";
-import { idParam, json, readJson, requireUser, route, type IdContext } from "@/server/http";
+import { logEvent } from "@/server/repositories/audit";
+import { clientIp, idParam, json, readJson, requireUser, route, type IdContext } from "@/server/http";
 import { deleteTrade, updateTrade } from "@/server/repositories/trades";
 
 export const PATCH = route<IdContext>(async (request, ctx) => {
   const user = await requireUser();
   const id = await idParam(ctx);
   const input = await readJson(request, tradeInputSchema);
-  return json({ trade: await updateTrade(await getDb(), user.id, id, input) });
+  const db = await getDb();
+  const trade = await updateTrade(db, user.id, id, input);
+  await logEvent(db, user.id, "trade.update", { asset: trade.asset, direction: trade.direction, result: trade.result, profitCents: trade.profitCents }, clientIp(request));
+  return json({ trade });
 });
 
-export const DELETE = route<IdContext>(async (_request, ctx) => {
+export const DELETE = route<IdContext>(async (request, ctx) => {
   const user = await requireUser();
-  await deleteTrade(await getDb(), user.id, await idParam(ctx));
+  const db = await getDb();
+  const trade = await deleteTrade(db, user.id, await idParam(ctx));
+  await logEvent(db, user.id, "trade.delete", { asset: trade.asset, result: trade.result, profitCents: trade.profitCents }, clientIp(request));
   return json({ ok: true });
 });

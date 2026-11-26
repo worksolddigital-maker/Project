@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { ASSET_CATALOG, EMPTY_ASSET_PREFS, findAsset, suggestedPayout } from "@/lib/domain/assets";
+import { passwordContainsName } from "@/lib/security";
+import { passwordSchema } from "@/lib/validation/schemas";
 import {
   buildLedger,
   buildPortfolio,
@@ -396,5 +399,40 @@ describe("behaviour stats", () => {
     expect(b.daysContinuedAfterLossStreak).toBe(1);
     expect(b.stakeRaisesAfterLoss).toBe(1);
     expect(b.tradingDays).toBe(1);
+  });
+});
+
+describe("asset catalog", () => {
+  it("has unique symbols and payouts captured from the broker screens", () => {
+    const symbols = ASSET_CATALOG.map((a) => a.symbol);
+    expect(new Set(symbols).size).toBe(symbols.length);
+    expect(findAsset("cobre")?.payoutPct).toBe(98);
+    expect(findAsset("EUR/CAD")?.payoutPct).toBe(90);
+    expect(findAsset("BNB")?.category).toBe("cripto");
+    // Payouts that were not visible stay unknown instead of being guessed.
+    expect(findAsset("EUR/NZD")?.payoutPct).toBeNull();
+  });
+
+  it("prefers the account's own payout over the reference value", () => {
+    expect(suggestedPayout("EUR/USD", EMPTY_ASSET_PREFS)).toBe(88);
+    expect(suggestedPayout("eur/usd", { payouts: { "EUR/USD": 91 }, favorites: [] })).toBe(91);
+    expect(suggestedPayout("EUR/NZD", EMPTY_ASSET_PREFS)).toBeNull();
+    expect(suggestedPayout("XYZ/ABC", undefined)).toBeNull();
+  });
+});
+
+describe("password policy", () => {
+  it("requires length, mixed case and digits", () => {
+    expect(passwordSchema.safeParse("curta1A").success).toBe(false);
+    expect(passwordSchema.safeParse("somenteminusculas1").success).toBe(false);
+    expect(passwordSchema.safeParse("SEMNUMEROSaqui").success).toBe(false);
+    expect(passwordSchema.safeParse("Painel2026ok").success).toBe(true);
+  });
+
+  it("detects the person's name inside the password, ignoring accents and case", () => {
+    expect(passwordContainsName("JoaoSilva2026", "João da Silva")).toBe(true);
+    expect(passwordContainsName("Painel2026ok", "João da Silva")).toBe(false);
+    // Short name parts (e.g. "da") are ignored.
+    expect(passwordContainsName("Dados2026Ok", "Ana da Luz")).toBe(false);
   });
 });

@@ -1,8 +1,9 @@
-import { z } from "zod";
-import { tradeInputSchema } from "@/lib/validation/schemas";
+import { deleteAllTradesSchema, tradeInputSchema } from "@/lib/validation/schemas";
 import { getDb } from "@/server/db/client";
-import { json, readJson, requireUser, route } from "@/server/http";
+import { logEvent } from "@/server/repositories/audit";
+import { clientIp, json, readJson, requireUser, route } from "@/server/http";
 import { createTrade, deleteAllTrades, listTrades } from "@/server/repositories/trades";
+import { assertPassword } from "@/server/repositories/users";
 
 export const GET = route(async () => {
   const user = await requireUser();
@@ -12,15 +13,18 @@ export const GET = route(async () => {
 export const POST = route(async (request) => {
   const user = await requireUser();
   const input = await readJson(request, tradeInputSchema);
-  const trade = await createTrade(await getDb(), user.id, input);
+  const db = await getDb();
+  const trade = await createTrade(db, user.id, input);
+  await logEvent(db, user.id, "trade.create", { asset: trade.asset, direction: trade.direction, result: trade.result, profitCents: trade.profitCents }, clientIp(request));
   return json({ trade }, { status: 201 });
 });
 
-const deleteAllSchema = z.object({ confirmation: z.literal("EXCLUIR", { error: 'Digite "EXCLUIR" para confirmar.' }) });
-
 export const DELETE = route(async (request) => {
   const user = await requireUser();
-  await readJson(request, deleteAllSchema);
-  const deleted = await deleteAllTrades(await getDb(), user.id);
+  const input = await readJson(request, deleteAllTradesSchema);
+  const db = await getDb();
+  await assertPassword(db, user.id, input.password);
+  const deleted = await deleteAllTrades(db, user.id);
+  await logEvent(db, user.id, "trade.delete_all", { count: deleted }, clientIp(request));
   return json({ deleted });
 });

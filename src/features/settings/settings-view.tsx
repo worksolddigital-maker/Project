@@ -1,6 +1,6 @@
 "use client";
 
-import { DatabaseBackup, Download, FileSpreadsheet, KeyRound, Layers, LogOut, Pencil, Plus, Save, ShieldAlert, Trash2, Upload, UserRound } from "lucide-react";
+import { DatabaseBackup, Download, FileSpreadsheet, Layers, Pencil, Plus, Save, Trash2, Upload, UserRound } from "lucide-react";
 import { useRef, useState } from "react";
 import { DataGate, PageHeader } from "@/components/layout/page";
 import { Button } from "@/components/ui/button";
@@ -13,12 +13,12 @@ import { useReadyData } from "@/hooks/app-data";
 import { api, ApiClientError, downloadFile } from "@/lib/api/client";
 import { useDeleteAllTrades, useDeleteStrategy, useInvalidateAll, useSaveStrategy, useUpdateProfile, useUpdateSettings } from "@/lib/api/hooks";
 import { COMMON_TIMEZONES } from "@/lib/domain/dates";
-import { hardNavigate } from "@/lib/navigation";
 import { parsePercent } from "@/lib/domain/money";
 import { CURRENCIES, type Currency, type Strategy } from "@/lib/domain/types";
-import { changePasswordSchema, fieldErrors, profileSchema } from "@/lib/validation/schemas";
+import { fieldErrors, profileSchema } from "@/lib/validation/schemas";
+import { AssetsTab } from "./assets-tab";
 
-type Tab = "perfil" | "preferencias" | "estrategias" | "dados" | "seguranca";
+type Tab = "perfil" | "preferencias" | "ativos" | "estrategias" | "dados";
 
 function ProfileTab() {
   const { user } = useReadyData();
@@ -285,6 +285,7 @@ function DataTab() {
   const [busy, setBusy] = useState<string | null>(null);
   const [restoreData, setRestoreData] = useState<{ name: string; json: unknown; counts: string } | null>(null);
   const [confirmDeleteAll, setConfirmDeleteAll] = useState(false);
+  const [confirmError, setConfirmError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const run = async (key: string, fn: () => Promise<void>) => {
@@ -366,10 +367,15 @@ function DataTab() {
       <ImportWizard open={importOpen} onClose={() => setImportOpen(false)} />
       <ConfirmDialog
         open={!!restoreData}
-        onClose={() => setRestoreData(null)}
+        onClose={() => {
+          setRestoreData(null);
+          setConfirmError(null);
+        }}
         title="Restaurar backup?"
         confirmLabel="Substituir dados"
         requireText="RESTAURAR"
+        requirePassword
+        error={confirmError}
         loading={busy === "restore"}
         description={
           restoreData && (
@@ -378,162 +384,46 @@ function DataTab() {
             </>
           )
         }
-        onConfirm={() =>
-          run("restore", async () => {
-            if (!restoreData) return;
-            try {
-              await api("/api/backup", { method: "POST", json: restoreData.json });
-              await invalidateAll();
-              toast.success("Backup restaurado", restoreData.counts);
-              setRestoreData(null);
-            } catch (err) {
-              throw err instanceof ApiClientError ? err : new Error("Falha ao restaurar.");
-            }
-          })
-        }
-      />
-      <ConfirmDialog
-        open={confirmDeleteAll}
-        onClose={() => setConfirmDeleteAll(false)}
-        title="Excluir todas as operações?"
-        confirmLabel="Excluir tudo"
-        requireText="EXCLUIR"
-        loading={deleteAll.isPending}
-        description="Esta ação não pode ser desfeita. Considere baixar um backup antes."
-        onConfirm={async () => {
+        onConfirm={async (password) => {
+          if (!restoreData) return;
+          setBusy("restore");
+          setConfirmError(null);
           try {
-            const r = await deleteAll.mutateAsync();
-            toast.success("Operações excluídas", `${r.deleted} operação(ões) removida(s).`);
-            setConfirmDeleteAll(false);
+            await api("/api/backup", { method: "POST", json: { password, backup: restoreData.json } });
+            await invalidateAll();
+            toast.success("Backup restaurado", restoreData.counts);
+            setRestoreData(null);
           } catch (err) {
-            toast.error("Não foi possível excluir", err instanceof Error ? err.message : undefined);
+            setConfirmError(err instanceof ApiClientError ? err.message : "Falha ao restaurar.");
+          } finally {
+            setBusy(null);
           }
         }}
       />
-    </div>
-  );
-}
-
-function SecurityTab() {
-  const toast = useToast();
-  const [current, setCurrent] = useState("");
-  const [next, setNext] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [saving, setSaving] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deletePassword, setDeletePassword] = useState("");
-  const [deleteText, setDeleteText] = useState("");
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState(false);
-
-  const changePassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const parsed = changePasswordSchema.safeParse({ currentPassword: current, newPassword: next });
-    const fe = parsed.success ? {} : fieldErrors(parsed.error);
-    if (next !== confirm) fe.confirm = "As senhas não conferem.";
-    if (!parsed.success || fe.confirm) return setErrors(fe);
-    setErrors({});
-    setSaving(true);
-    try {
-      const r = await api<{ closedSessions: number }>("/api/account/password", { method: "POST", json: parsed.data });
-      toast.success("Senha alterada", r.closedSessions ? `${r.closedSessions} outra(s) sessão(ões) encerrada(s).` : undefined);
-      setCurrent("");
-      setNext("");
-      setConfirm("");
-    } catch (err) {
-      if (err instanceof ApiClientError) setErrors(Object.keys(err.fields).length ? err.fields : { currentPassword: err.message });
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div className="grid gap-4 xl:grid-cols-2">
-      <Panel title="Alterar senha" subtitle="Ao alterar, as outras sessões abertas são encerradas.">
-        <form onSubmit={changePassword} className="grid max-w-md gap-4" noValidate>
-          <Field label="Senha atual" error={errors.currentPassword}>
-            {(id) => <Input id={id} type="password" value={current} onChange={(e) => setCurrent(e.target.value)} autoComplete="current-password" invalid={!!errors.currentPassword} />}
-          </Field>
-          <Field label="Nova senha" error={errors.newPassword} hint="Mínimo de 8 caracteres, com letras e números.">
-            {(id) => <Input id={id} type="password" value={next} onChange={(e) => setNext(e.target.value)} autoComplete="new-password" invalid={!!errors.newPassword} />}
-          </Field>
-          <Field label="Confirmar nova senha" error={errors.confirm}>
-            {(id) => <Input id={id} type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="new-password" invalid={!!errors.confirm} />}
-          </Field>
-          <div>
-            <Button type="submit" variant="primary" loading={saving} icon={<KeyRound className="size-4" />}>
-              Alterar senha
-            </Button>
-          </div>
-        </form>
-      </Panel>
-      <div className="grid gap-4">
-        <Panel title="Sessões" subtitle="Encerre o acesso em outros dispositivos">
-          <Button
-            variant="secondary"
-            icon={<LogOut className="size-4" />}
-            onClick={async () => {
-              try {
-                const r = await api<{ closedSessions: number }>("/api/account/sessions", { method: "DELETE" });
-                toast.success("Sessões encerradas", `${r.closedSessions} sessão(ões) em outros dispositivos.`);
-              } catch (err) {
-                toast.error("Falha", err instanceof Error ? err.message : undefined);
-              }
-            }}
-          >
-            Encerrar outras sessões
-          </Button>
-        </Panel>
-        <Panel title="Excluir conta" className="border-neg/20">
-          <p className="mb-4 text-sm text-muted">Remove permanentemente a conta e todos os dados (operações, banca, diário, metas).</p>
-          <Button variant="danger" icon={<ShieldAlert className="size-4" />} onClick={() => setDeleteOpen(true)}>
-            Excluir minha conta
-          </Button>
-        </Panel>
-      </div>
-      <Modal
-        open={deleteOpen}
-        onClose={() => setDeleteOpen(false)}
-        size="sm"
-        title="Excluir conta permanentemente"
-        footer={
-          <>
-            <Button variant="ghost" onClick={() => setDeleteOpen(false)}>
-              Cancelar
-            </Button>
-            <Button
-              variant="danger"
-              loading={deleting}
-              disabled={deleteText.trim().toUpperCase() !== "EXCLUIR" || !deletePassword}
-              onClick={async () => {
-                setDeleting(true);
-                setDeleteError(null);
-                try {
-                  await api("/api/account", { method: "DELETE", json: { password: deletePassword, confirmation: "EXCLUIR" } });
-                  hardNavigate("/cadastro");
-                } catch (err) {
-                  setDeleteError(err instanceof Error ? err.message : "Falha ao excluir.");
-                  setDeleting(false);
-                }
-              }}
-            >
-              Excluir conta
-            </Button>
-          </>
-        }
-      >
-        <div className="grid gap-4">
-          <FormError message={deleteError} />
-          <p className="text-sm text-muted">Esta ação não pode ser desfeita. Baixe um backup antes, se quiser guardar seus dados.</p>
-          <Field label="Sua senha">
-            {(id) => <Input id={id} type="password" value={deletePassword} onChange={(e) => setDeletePassword(e.target.value)} autoComplete="current-password" />}
-          </Field>
-          <Field label='Digite "EXCLUIR" para confirmar'>
-            {(id) => <Input id={id} value={deleteText} onChange={(e) => setDeleteText(e.target.value)} />}
-          </Field>
-        </div>
-      </Modal>
+      <ConfirmDialog
+        open={confirmDeleteAll}
+        onClose={() => {
+          setConfirmDeleteAll(false);
+          setConfirmError(null);
+        }}
+        title="Excluir todas as operações?"
+        confirmLabel="Excluir tudo"
+        requireText="EXCLUIR"
+        requirePassword
+        error={confirmError}
+        loading={deleteAll.isPending}
+        description="Esta ação não pode ser desfeita. Considere baixar um backup antes."
+        onConfirm={async (password) => {
+          setConfirmError(null);
+          try {
+            const r = await deleteAll.mutateAsync(password);
+            toast.success("Operações excluídas", `${r.deleted} operação(ões) removida(s).`);
+            setConfirmDeleteAll(false);
+          } catch (err) {
+            setConfirmError(err instanceof Error ? err.message : "Não foi possível excluir.");
+          }
+        }}
+      />
     </div>
   );
 }
@@ -542,7 +432,7 @@ function SettingsContent() {
   // Rendered only on the client (behind DataGate), so the hash can seed the initial tab.
   const [tab, setTab] = useState<Tab>(() => {
     const h = window.location.hash.slice(1) as Tab;
-    return ["perfil", "preferencias", "estrategias", "dados", "seguranca"].includes(h) ? h : "perfil";
+    return ["perfil", "preferencias", "ativos", "estrategias", "dados"].includes(h) ? h : "perfil";
   });
   const change = (t: Tab) => {
     setTab(t);
@@ -550,7 +440,7 @@ function SettingsContent() {
   };
   return (
     <>
-      <PageHeader title="Configurações" description="Conta, preferências, estratégias, dados e segurança." />
+      <PageHeader title="Configurações" description="Conta, preferências, ativos e payouts, estratégias e dados. Senha e sessões ficam em Segurança." />
       <Tabs<Tab>
         className="mb-5"
         value={tab}
@@ -558,16 +448,16 @@ function SettingsContent() {
         tabs={[
           { value: "perfil", label: <span className="inline-flex items-center gap-1.5"><UserRound className="size-3.5" />Perfil</span> },
           { value: "preferencias", label: "Preferências" },
+          { value: "ativos", label: "Ativos e payouts" },
           { value: "estrategias", label: "Estratégias" },
           { value: "dados", label: "Dados e backup" },
-          { value: "seguranca", label: "Segurança" },
         ]}
       />
       {tab === "perfil" && <ProfileTab />}
       {tab === "preferencias" && <PreferencesTab />}
+      {tab === "ativos" && <AssetsTab />}
       {tab === "estrategias" && <StrategiesTab />}
       {tab === "dados" && <DataTab />}
-      {tab === "seguranca" && <SecurityTab />}
     </>
   );
 }

@@ -6,7 +6,8 @@ import { DrawdownChart, type DrawdownDatum } from "@/components/charts/charts";
 import { ALERT_STYLE } from "@/components/layout/alerts-bell";
 import { DataGate, PageHeader } from "@/components/layout/page";
 import { RevealGroup } from "@/components/motion/reveal";
-import { Panel, ProgressBar } from "@/components/ui/misc";
+import { Meter } from "@/components/ui/meter";
+import { Panel } from "@/components/ui/misc";
 import { StatCard, StatGrid } from "@/components/ui/stat-card";
 import { SettingsFieldsForm } from "@/features/settings/settings-fields";
 import { useReadyData } from "@/hooks/app-data";
@@ -14,24 +15,6 @@ import { cn } from "@/lib/cn";
 import { dayKeyOf, formatDateTime, formatDayKey } from "@/lib/domain/dates";
 import { formatMoney, formatNumber, formatPct } from "@/lib/domain/money";
 import { behaviorStats } from "@/lib/domain/risk";
-
-function Meter({ label, current, limit, format, unit }: { label: string; current: number; limit: number | null; format: (v: number) => string; unit?: string }) {
-  const pct = limit && limit > 0 ? (current / limit) * 100 : 0;
-  const tone = !limit ? "neutral" : pct >= 100 ? "neg" : pct >= 80 ? "warn" : "pos";
-  return (
-    <div>
-      <div className="mb-1.5 flex items-baseline justify-between gap-3 text-xs">
-        <span className="text-muted">{label}</span>
-        <span className="num text-fg">
-          {format(current)}
-          {limit ? <span className="text-subtle"> / {format(limit)}</span> : <span className="text-subtle"> · sem limite</span>}
-          {unit}
-        </span>
-      </div>
-      <ProgressBar value={pct} tone={tone} label={label} />
-    </div>
-  );
-}
 
 function RiskContent() {
   const { portfolio: p, settings, risk: m, alerts } = useReadyData();

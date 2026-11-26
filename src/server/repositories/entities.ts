@@ -57,12 +57,13 @@ export async function updateCash(db: Db, userId: string, id: string, input: Cash
   return toCash(row);
 }
 
-export async function deleteCash(db: Db, userId: string, id: string): Promise<void> {
-  const rows = await db
+export async function deleteCash(db: Db, userId: string, id: string): Promise<CashMovement> {
+  const [row] = await db
     .delete(cashMovements)
     .where(and(eq(cashMovements.id, id), eq(cashMovements.userId, userId)))
-    .returning({ id: cashMovements.id });
-  if (!rows.length) throw new ApiError(404, "Movimentação não encontrada.");
+    .returning();
+  if (!row) throw new ApiError(404, "Movimentação não encontrada.");
+  return toCash(row);
 }
 
 /* -------------------------------- Strategies ------------------------------- */
@@ -104,12 +105,13 @@ export async function updateStrategy(
   return toStrategy(row);
 }
 
-export async function deleteStrategy(db: Db, userId: string, id: string): Promise<void> {
-  const rows = await db
+export async function deleteStrategy(db: Db, userId: string, id: string): Promise<Strategy> {
+  const [row] = await db
     .delete(strategies)
     .where(and(eq(strategies.id, id), eq(strategies.userId, userId)))
-    .returning({ id: strategies.id });
-  if (!rows.length) throw new ApiError(404, "Estratégia não encontrada.");
+    .returning();
+  if (!row) throw new ApiError(404, "Estratégia não encontrada.");
+  return toStrategy(row);
 }
 
 /* --------------------------------- Journal --------------------------------- */
@@ -159,10 +161,11 @@ export async function updateJournal(db: Db, userId: string, id: string, input: J
   return toJournal(row);
 }
 
-export async function deleteJournal(db: Db, userId: string, id: string): Promise<void> {
-  const rows = await db
+export async function deleteJournal(db: Db, userId: string, id: string): Promise<JournalEntry> {
+  const [row] = await db
     .delete(journalEntries)
     .where(and(eq(journalEntries.id, id), eq(journalEntries.userId, userId)))
-    .returning({ id: journalEntries.id });
-  if (!rows.length) throw new ApiError(404, "Anotação não encontrada.");
+    .returning();
+  if (!row) throw new ApiError(404, "Anotação não encontrada.");
+  return toJournal(row);
 }

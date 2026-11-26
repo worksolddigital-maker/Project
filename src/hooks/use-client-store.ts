@@ -57,3 +57,10 @@ export function usePolled<T extends string | number | boolean>(read: () => T, in
     () => serverValue,
   );
 }
+
+const readMinute = () => Math.floor(Date.now() / 60_000) * 60_000;
+
+/** Current time rounded to the minute, refreshed every 30 s (0 during prerendering). */
+export function useNowMinute(): number {
+  return usePolled(readMinute, 30_000, 0);
+}

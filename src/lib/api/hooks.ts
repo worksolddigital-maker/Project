@@ -9,6 +9,7 @@ import type {
   Trade,
   UserSettings,
 } from "@/lib/domain/types";
+import type { AuditEvent, SessionInfo } from "@/lib/security";
 import type { CashMovementInput, JournalInput, SettingsUpdate, TradeInput } from "@/lib/validation/schemas";
 import { api } from "@/lib/api/client";
 
@@ -19,6 +20,8 @@ export const qk = {
   cash: ["cash"] as const,
   strategies: ["strategies"] as const,
   journal: ["journal"] as const,
+  audit: (kind: "security" | "activity") => ["audit", kind] as const,
+  sessions: ["sessions"] as const,
 };
 
 export const useMe = () =>
@@ -51,9 +54,20 @@ export const useJournal = () =>
     queryFn: () => api<{ entries: JournalEntry[] }>("/api/journal").then((r) => r.entries),
   });
 
+export const useAudit = (kind: "security" | "activity", opts: { refetchInterval?: number; limit?: number } = {}) =>
+  useQuery({
+    queryKey: qk.audit(kind),
+    queryFn: () => api<{ events: AuditEvent[] }>(`/api/audit?kind=${kind}&limit=${opts.limit ?? 40}`).then((r) => r.events),
+    refetchInterval: opts.refetchInterval,
+  });
+
+export const useSessions = () =>
+  useQuery({ queryKey: qk.sessions, queryFn: () => api<{ sessions: SessionInfo[] }>("/api/account/sessions").then((r) => r.sessions) });
+
+/** After a write, refresh the touched collections and the activity log. */
 function useInvalidate() {
   const qc = useQueryClient();
-  return (...keys: QueryKey[]) => Promise.all(keys.map((k) => qc.invalidateQueries({ queryKey: k })));
+  return (...keys: QueryKey[]) => Promise.all([...keys, ["audit"]].map((k) => qc.invalidateQueries({ queryKey: k })));
 }
 
 /* --------------------------------- Trades --------------------------------- */
@@ -80,7 +94,8 @@ export function useDeleteTrade() {
 export function useDeleteAllTrades() {
   const invalidate = useInvalidate();
   return useMutation({
-    mutationFn: () => api<{ deleted: number }>("/api/trades", { method: "DELETE", json: { confirmation: "EXCLUIR" } }),
+    mutationFn: (password: string) =>
+      api<{ deleted: number }>("/api/trades", { method: "DELETE", json: { confirmation: "EXCLUIR", password } }),
     onSuccess: () => invalidate(qk.trades, qk.journal),
   });
 }
@@ -113,7 +128,10 @@ export function useUpdateSettings() {
   return useMutation({
     mutationFn: (patch: SettingsUpdate) =>
       api<{ settings: UserSettings }>("/api/settings", { method: "PATCH", json: patch }).then((r) => r.settings),
-    onSuccess: (settings) => qc.setQueryData(qk.settings, settings),
+    onSuccess: (settings) => {
+      qc.setQueryData(qk.settings, settings);
+      void qc.invalidateQueries({ queryKey: ["audit"] });
+    },
   });
 }
 
@@ -167,6 +185,17 @@ export function useUpdateProfile() {
     mutationFn: (input: { name: string; email: string }) =>
       api<{ user: PublicUser }>("/api/account", { method: "PATCH", json: input }).then((r) => r.user),
     onSuccess: (user) => qc.setQueryData(qk.me, user),
+  });
+}
+
+export function useRevokeSession() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string): Promise<void> => {
+      // "others" ends every session except this one.
+      await api(id === "others" ? "/api/account/sessions" : `/api/account/sessions/${id}`, { method: "DELETE" });
+    },
+    onSuccess: () => Promise.all([qc.invalidateQueries({ queryKey: qk.sessions }), qc.invalidateQueries({ queryKey: ["audit"] })]),
   });
 }
 

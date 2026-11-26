@@ -152,7 +152,8 @@ export function Modal({ open, onClose, title, description, children, footer, siz
 interface ConfirmProps {
   open: boolean;
   onClose: () => void;
-  onConfirm: () => void | Promise<void>;
+  /** Receives the typed password when `requirePassword` is set. */
+  onConfirm: (password: string) => void | Promise<void>;
   title: string;
   description: ReactNode;
   confirmLabel?: string;
@@ -160,6 +161,10 @@ interface ConfirmProps {
   loading?: boolean;
   /** Requires typing this word to enable the confirm button. */
   requireText?: string;
+  /** Asks for the account password again (re-authentication for sensitive actions). */
+  requirePassword?: boolean;
+  /** Error to show under the inputs (e.g. wrong password). */
+  error?: string | null;
 }
 
 export function ConfirmDialog({
@@ -172,14 +177,23 @@ export function ConfirmDialog({
   tone = "danger",
   loading,
   requireText,
+  requirePassword,
+  error,
 }: ConfirmProps) {
   const [typed, setTyped] = useState("");
+  const [password, setPassword] = useState("");
   const [prevOpen, setPrevOpen] = useState(open);
   if (prevOpen !== open) {
     setPrevOpen(open);
-    if (!open) setTyped("");
+    if (!open) {
+      setTyped("");
+      setPassword("");
+    }
   }
-  const blocked = requireText ? typed.trim().toUpperCase() !== requireText : false;
+  const blocked = (requireText ? typed.trim().toUpperCase() !== requireText : false) || (requirePassword ? !password : false);
+  const confirm = () => {
+    if (!blocked) void onConfirm(password);
+  };
   return (
     <Modal
       open={open}
@@ -193,7 +207,7 @@ export function ConfirmDialog({
           </Button>
           <Button
             variant={tone === "danger" ? "danger" : "primary"}
-            onClick={() => void onConfirm()}
+            onClick={confirm}
             loading={loading}
             disabled={blocked}
             data-testid="confirm-button"
@@ -204,19 +218,52 @@ export function ConfirmDialog({
       }
     >
       <div className="text-sm leading-relaxed text-muted">{description}</div>
-      {requireText && (
-        <div className="mt-4">
-          <label className="text-xs text-muted">
-            Digite <span className="font-mono text-fg">{requireText}</span> para confirmar
-          </label>
-          <input
-            value={typed}
-            onChange={(e) => setTyped(e.target.value)}
-            data-autofocus
-            className="mt-1.5 h-10 w-full rounded-lg border border-line bg-white/[0.03] px-3 font-mono text-sm text-fg outline-none focus:border-white/25"
-          />
-        </div>
-      )}
+      <form
+        className="grid gap-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          confirm();
+        }}
+      >
+        {requireText && (
+          <div className="mt-4">
+            <label className="text-xs text-muted" htmlFor="confirm-text">
+              Digite <span className="font-mono text-fg">{requireText}</span> para confirmar
+            </label>
+            <input
+              id="confirm-text"
+              value={typed}
+              onChange={(e) => setTyped(e.target.value)}
+              data-autofocus
+              autoComplete="off"
+              className="mt-1.5 h-10 w-full rounded-lg border border-line bg-white/[0.03] px-3 font-mono text-sm text-fg outline-none focus:border-white/25"
+            />
+          </div>
+        )}
+        {requirePassword && (
+          <div className={requireText ? "" : "mt-4"}>
+            <label className="text-xs text-muted" htmlFor="confirm-password">
+              Confirme com a sua senha
+            </label>
+            <input
+              id="confirm-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              data-autofocus={!requireText || undefined}
+              data-testid="confirm-password"
+              className="mt-1.5 h-10 w-full rounded-lg border border-line bg-white/[0.03] px-3 text-sm text-fg outline-none focus:border-white/25"
+            />
+          </div>
+        )}
+        {error && (
+          <p className="text-xs text-neg" role="alert">
+            {error}
+          </p>
+        )}
+        <button type="submit" hidden />
+      </form>
     </Modal>
   );
 }

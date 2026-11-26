@@ -3,19 +3,27 @@
  * strategies and banner say so; it only exists so the screens can be explored
  * with data before entering real operations.
  */
+import { EMPTY_ASSET_PREFS, suggestedPayout } from "@/lib/domain/assets";
 import { addDays, todayKey, zonedWallTimeToIso } from "@/lib/domain/dates";
 import { computeProfitCents } from "@/lib/domain/trade-calc";
 import { DEFAULT_SETTINGS, type Direction, type Trade, type TradeResult } from "@/lib/domain/types";
-import { uuid } from "./api";
+import { audit, hashPassword, startSession, uuid } from "./api";
 import { getState, mutate } from "./store";
 
 export const EXAMPLE_EMAIL = "exemplo@demo.local";
+/** Public on purpose: sensitive actions ask for the password, even in the example account. */
+export const EXAMPLE_PASSWORD = "Exemplo2026";
 
-export function openExampleAccount() {
+export async function openExampleAccount() {
+  const salt = uuid();
+  const passwordHash = await hashPassword(EXAMPLE_PASSWORD, salt);
   const existing = getState().accounts.find((a) => a.example);
   if (existing) {
     mutate((s) => {
-      s.session = existing.id;
+      if (!existing.passwordHash) Object.assign(existing, { salt, passwordHash, passwordChangedAt: existing.createdAt });
+      existing.lastLoginAt = new Date().toISOString();
+      startSession(s, existing.id);
+      audit(s, existing.id, "auth.login");
     });
     return;
   }
@@ -31,7 +39,7 @@ export function openExampleAccount() {
 
   const pullback = { id: uuid(), accountId: id, name: "Pullback (exemplo)", description: "Estratégia fictícia da conta de exemplo", createdAt: created };
   const breakout = { id: uuid(), accountId: id, name: "Rompimento (exemplo)", description: "Estratégia fictícia da conta de exemplo", createdAt: created };
-  const assets = ["EUR/USD", "GBP/USD", "USD/JPY", "EUR/USD (OTC)", "BTC/USD"];
+  const assets = ["EUR/USD", "GBP/USD", "EUR/CAD", "USD/JPY", "BITCOIN", "OURO", "COBRE"];
 
   const trades: (Trade & { accountId: string })[] = [];
   for (let d = 40; d >= 0; d--) {
@@ -46,12 +54,13 @@ export function openExampleAccount() {
       const r = rnd();
       const result: TradeResult = r < 0.56 ? "WIN" : r < 0.95 ? "LOSS" : "DRAW";
       const stakeCents = pick([2000, 3000, 5000, 7000]);
-      const payoutPct = 80 + Math.floor(rnd() * 12);
+      const asset = pick(assets);
+      const payoutPct = suggestedPayout(asset, EMPTY_ASSET_PREFS) ?? 85;
       trades.push({
         id: uuid(),
         accountId: id,
         executedAt,
-        asset: pick(assets),
+        asset,
         direction: (rnd() < 0.5 ? "CALL" : "PUT") as Direction,
         stakeCents,
         expirationSeconds: pick([60, 120, 300]),
@@ -70,7 +79,19 @@ export function openExampleAccount() {
   const at = (daysAgo: number, time: string) => zonedWallTimeToIso(addDays(today, -daysAgo), time, tz);
 
   mutate((s) => {
-    s.accounts.push({ id, name: "Conta de exemplo", email: EXAMPLE_EMAIL, salt: "", passwordHash: "", createdAt: created, example: true });
+    s.accounts.push({
+      id,
+      name: "Conta de exemplo",
+      email: EXAMPLE_EMAIL,
+      salt,
+      passwordHash,
+      createdAt: created,
+      example: true,
+      failedLoginCount: 0,
+      lockedUntil: null,
+      lastLoginAt: created,
+      passwordChangedAt: created,
+    });
     s.settings[id] = {
       ...DEFAULT_SETTINGS,
       timezone: tz,
@@ -124,6 +145,7 @@ export function openExampleAccount() {
         updatedAt: created,
       },
     );
-    s.session = id;
+    startSession(s, id);
+    audit(s, id, "auth.login");
   });
 }

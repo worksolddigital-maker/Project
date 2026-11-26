@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { isDayKey, isValidTimeZone } from "@/lib/domain/dates";
+import { SECURITY_POLICY } from "@/lib/security";
 import {
   MAX_EXPIRATION_SECONDS,
   MAX_PAYOUT_PCT,
@@ -46,9 +47,11 @@ export const emailSchema = z
 
 export const passwordSchema = z
   .string()
-  .min(8, { error: "A senha precisa ter pelo menos 8 caracteres." })
+  .min(SECURITY_POLICY.minPasswordLength, { error: `A senha precisa ter pelo menos ${SECURITY_POLICY.minPasswordLength} caracteres.` })
   .max(128, { error: "A senha pode ter no máximo 128 caracteres." })
-  .refine((v) => /[A-Za-z]/.test(v) && /\d/.test(v), { error: "Use letras e números na senha." });
+  .refine((v) => /[a-z]/.test(v) && /[A-Z]/.test(v) && /\d/.test(v), {
+    error: "Use letras maiúsculas, minúsculas e números na senha.",
+  });
 
 export const registerSchema = z.object({
   name: z.string().trim().min(2, { error: "Informe seu nome." }).max(80, { error: "Nome muito longo." }),
@@ -77,8 +80,16 @@ export const changePasswordSchema = z
     path: ["newPassword"],
   });
 
-export const deleteAccountSchema = z.object({
-  password: z.string().min(1, { error: "Informe sua senha." }).max(128),
+/** Sensitive actions ask for the password again (re-authentication). */
+export const reauthSchema = z.object({
+  password: z.string().min(1, { error: "Confirme com a sua senha." }).max(128),
+});
+
+export const deleteAccountSchema = reauthSchema.extend({
+  confirmation: z.literal("EXCLUIR", { error: 'Digite "EXCLUIR" para confirmar.' }),
+});
+
+export const deleteAllTradesSchema = reauthSchema.extend({
   confirmation: z.literal("EXCLUIR", { error: 'Digite "EXCLUIR" para confirmar.' }),
 });
 
@@ -140,6 +151,13 @@ const nullableCount = (label: string, max: number) =>
     .max(max, { error: `${label}: máximo de ${max}.` })
     .nullable();
 
+const symbolKey = z.string().trim().min(1).max(40);
+
+export const assetPrefsSchema = z.object({
+  payouts: z.record(symbolKey, z.number().min(1, { error: "Payout mínimo de 1%." }).max(500, { error: "Payout máximo de 500%." })),
+  favorites: z.array(symbolKey).max(200),
+});
+
 export const settingsSchema = z.object({
   currency: z.enum(CURRENCIES),
   timezone: z.string().refine(isValidTimeZone, { error: "Fuso horário inválido." }),
@@ -157,6 +175,7 @@ export const settingsSchema = z.object({
   maxDailyExposurePct: nullablePct("Exposição diária máxima", 10000),
   reducedMotion: z.boolean(),
   smoothScroll: z.boolean(),
+  assetPrefs: assetPrefsSchema.optional(),
 });
 
 export const settingsUpdateSchema = settingsSchema.partial();
@@ -273,6 +292,8 @@ export const backupSchema = z.object({
   ),
 });
 export type Backup = z.infer<typeof backupSchema>;
+
+export const restoreBackupSchema = reauthSchema.extend({ backup: backupSchema });
 
 /** Flattens zod issues into { field: message } for forms. */
 export function fieldErrors(error: z.ZodError): Record<string, string> {

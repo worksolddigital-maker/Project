@@ -6,11 +6,11 @@ import { ApiError, clientIp, json, readJson, route } from "@/server/http";
 import { registerUser } from "@/server/repositories/users";
 
 export const POST = route(async (request) => {
-  const limit = rateLimit(`register:${clientIp(request)}`, 10, 60 * 60 * 1000);
+  const ip = clientIp(request);
+  const limit = rateLimit(`register:${ip}`, 10, 60 * 60 * 1000);
   if (!limit.ok) throw new ApiError(429, `Muitas tentativas. Tente novamente em ${limit.retryAfterSec}s.`);
   const input = await readJson(request, registerSchema);
-  const db = await getDb();
-  const user = await registerUser(db, input);
-  await createSession(user.id, request.headers.get("user-agent") ?? "");
+  const user = await registerUser(await getDb(), input, ip);
+  await createSession(user.id, request.headers.get("user-agent") ?? "", ip);
   return json({ user }, { status: 201 });
 });

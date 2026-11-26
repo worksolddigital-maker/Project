@@ -7,6 +7,7 @@ import {
   doublePrecision,
   index,
   integer,
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -25,6 +26,11 @@ export const users = pgTable(
     name: text("name").notNull(),
     email: text("email").notNull(),
     passwordHash: text("password_hash").notNull(),
+    /** Consecutive wrong passwords; reset on success. */
+    failedLoginCount: integer("failed_login_count").notNull().default(0),
+    lockedUntil: timestamp("locked_until", { withTimezone: true, mode: "date" }),
+    lastLoginAt: timestamp("last_login_at", { withTimezone: true, mode: "date" }),
+    passwordChangedAt: timestamp("password_changed_at", { withTimezone: true, mode: "date" }),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
@@ -40,7 +46,9 @@ export const sessions = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }).notNull(),
+    lastSeenAt: timestamp("last_seen_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
     userAgent: text("user_agent").notNull().default(""),
+    ip: text("ip").notNull().default(""),
     createdAt: createdAt(),
   },
   (t) => [index("sessions_user_idx").on(t.userId)],
@@ -66,6 +74,7 @@ export const userSettings = pgTable("user_settings", {
   maxDailyExposurePct: doublePrecision("max_daily_exposure_pct"),
   reducedMotion: boolean("reduced_motion").notNull().default(false),
   smoothScroll: boolean("smooth_scroll").notNull().default(true),
+  assetPrefs: jsonb("asset_prefs").$type<{ payouts: Record<string, number>; favorites: string[] }>().notNull().default({ payouts: {}, favorites: [] }),
   updatedAt: updatedAt(),
 });
 
@@ -153,4 +162,20 @@ export const journalEntries = pgTable(
     updatedAt: updatedAt(),
   },
   (t) => [index("journal_user_date_idx").on(t.userId, t.sessionDate)],
+);
+
+/** Activity and security trail of each account: what was done, when and from where. */
+export const auditEvents = pgTable(
+  "audit_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    action: text("action").notNull(),
+    detail: text("detail").notNull().default(""),
+    ip: text("ip").notNull().default(""),
+    createdAt: createdAt(),
+  },
+  (t) => [index("audit_user_created_idx").on(t.userId, t.createdAt)],
 );

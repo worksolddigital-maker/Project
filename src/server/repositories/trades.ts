@@ -65,12 +65,13 @@ export async function updateTrade(db: Db, userId: string, id: string, input: Tra
   return toTrade(row);
 }
 
-export async function deleteTrade(db: Db, userId: string, id: string): Promise<void> {
-  const deleted = await db
+export async function deleteTrade(db: Db, userId: string, id: string): Promise<Trade> {
+  const [row] = await db
     .delete(trades)
     .where(and(eq(trades.id, id), eq(trades.userId, userId)))
-    .returning({ id: trades.id });
-  if (!deleted.length) throw new ApiError(404, "Operação não encontrada.");
+    .returning();
+  if (!row) throw new ApiError(404, "Operação não encontrada.");
+  return toTrade(row);
 }
 
 export async function deleteAllTrades(db: Db, userId: string): Promise<number> {

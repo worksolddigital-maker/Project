@@ -7,15 +7,13 @@ import { authenticate } from "@/server/repositories/users";
 
 export const POST = route(async (request) => {
   const input = await readJson(request, loginSchema);
-  const key = `login:${clientIp(request)}:${input.email}`;
-  const limit = rateLimit(key, 8, 15 * 60 * 1000);
-  if (!limit.ok) {
-    throw new ApiError(429, `Muitas tentativas de login. Aguarde ${Math.ceil(limit.retryAfterSec / 60)} min.`);
-  }
-  const db = await getDb();
-  const user = await authenticate(db, input.email, input.password);
-  if (!user) throw new ApiError(401, "E-mail ou senha incorretos.");
+  const ip = clientIp(request);
+  // Per device, on top of the per-account lockout done in authenticate().
+  const key = `login:${ip}`;
+  const limit = rateLimit(key, 20, 15 * 60 * 1000);
+  if (!limit.ok) throw new ApiError(429, `Muitas tentativas deste dispositivo. Aguarde ${Math.ceil(limit.retryAfterSec / 60)} min.`);
+  const user = await authenticate(await getDb(), input.email, input.password, ip);
   resetRateLimit(key);
-  await createSession(user.id, request.headers.get("user-agent") ?? "");
+  await createSession(user.id, request.headers.get("user-agent") ?? "", ip);
   return json({ user });
 });

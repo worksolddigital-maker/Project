@@ -414,3 +414,74 @@ export function DrawdownChart({ data, currency, height = 240 }: { data: Drawdown
     </div>
   );
 }
+
+/* ------------------------------- Intraday P&L -------------------------------- */
+
+export interface IntradayDatum {
+  label: string;
+  detail: string;
+  cumulative: number; // cents
+  delta: number; // cents
+}
+
+/** Cumulative result of the day, trade by trade, with the goal and loss limit as references. */
+export function IntradayChart({
+  data,
+  currency,
+  goal,
+  lossLimit,
+  height = 240,
+}: {
+  data: IntradayDatum[];
+  currency: Currency;
+  goal: number | null;
+  lossLimit: number | null;
+  height?: number;
+}) {
+  const gid = useId().replace(/:/g, "");
+  if (data.length < 2) return <ChartEmpty height={height} message="Nenhuma operação hoje. O gráfico aparece a partir da primeira." />;
+  const last = data[data.length - 1].cumulative;
+  const color = last >= 0 ? C.pos : C.neg;
+  const values = data.map((d) => d.cumulative);
+  const lo = Math.min(0, ...values, lossLimit ? -lossLimit : 0);
+  const hi = Math.max(0, ...values, goal ?? 0);
+  return (
+    <div style={{ height }} role="img" aria-label="Resultado acumulado do dia">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 12, right: 12, bottom: 0, left: 0 }}>
+          <defs>
+            <linearGradient id={`in-${gid}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity={0.2} />
+              <stop offset="100%" stopColor={color} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid stroke={C.grid} vertical={false} />
+          <XAxis dataKey="label" {...axisCommon} minTickGap={24} interval="preserveStartEnd" />
+          <YAxis {...axisCommon} width={72} domain={[lo * 1.1, hi * 1.1 || 1]} tickFormatter={(v: number) => compactMoney(v, currency)} />
+          <ReferenceLine y={0} stroke="rgba(255,255,255,0.2)" />
+          {goal !== null && <ReferenceLine y={goal} stroke={C.pos} strokeOpacity={0.6} label={{ value: "Meta", position: "insideTopRight", fill: C.muted, fontSize: 11 }} />}
+          {lossLimit !== null && (
+            <ReferenceLine y={-lossLimit} stroke={C.neg} strokeOpacity={0.6} label={{ value: "Limite de perda", position: "insideBottomRight", fill: C.muted, fontSize: 11 }} />
+          )}
+          <Tooltip
+            cursor={{ stroke: "rgba(255,255,255,0.18)" }}
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
+              const d = payload[0].payload as IntradayDatum;
+              return (
+                <ChartTooltipBox
+                  title={d.detail}
+                  rows={[
+                    { label: "Acumulado", value: formatMoney(d.cumulative, currency, { signed: true }), tone: toneOfValue(d.cumulative) },
+                    { label: "Operação", value: formatMoney(d.delta, currency, { signed: true }), tone: toneOfValue(d.delta) },
+                  ]}
+                />
+              );
+            }}
+          />
+          <Area type="linear" dataKey="cumulative" stroke={color} strokeWidth={2} fill={`url(#in-${gid})`} dot={{ r: 3, fill: color, stroke: C.surface, strokeWidth: 2 }} activeDot={{ r: 5, stroke: C.surface, strokeWidth: 2, fill: color }} animationDuration={700} />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}

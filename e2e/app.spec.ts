@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { addTrade, login, money, register, trackErrors, uniqueEmail } from "./helpers";
+import { addTrade, login, money, PASSWORD, register, trackErrors, uniqueEmail } from "./helpers";
 
 test.describe.configure({ mode: "serial" });
 
@@ -203,8 +203,11 @@ test("calendário, diário, metas, estatísticas e relatórios", async ({ page }
   await expect(page.getByTestId("goal-maxTrades")).toContainText("/ 5");
 
   await page.goto("/estatisticas");
-  await expect(page.getByTestId("comparison-table")).toBeVisible();
   await expect(page.getByTestId("stats-net")).toBeVisible();
+  await page.getByRole("tab", { name: "Comparação" }).click();
+  await expect(page.getByTestId("comparison-table")).toBeVisible();
+  await page.getByRole("tab", { name: "Ativos e estratégias" }).click();
+  await expect(page.getByTestId("stats-section-ativos")).toBeVisible();
 
   await page.goto("/relatorios");
   await page.getByTestId("report-period").locator("select").selectOption("all");
@@ -253,4 +256,73 @@ test("isolamento: outro usuário não vê nem altera dados alheios", async ({ pa
 
   const still = await (await page.request.get("/api/trades")).json();
   expect(still.trades.some((t: { id: string }) => t.id === targetId)).toBe(true);
+});
+
+test("catálogo de ativos, monitoramento, segurança e confirmação por senha", async ({ page }) => {
+  const errors = trackErrors(page);
+  const mine = uniqueEmail("seguro");
+  await register(page, mine);
+
+  // Asset picker: choosing an asset fills its reference payout.
+  await page.goto("/operacoes");
+  await page.getByTestId("new-trade").click();
+  const dialog = page.getByRole("dialog");
+  await dialog.locator('input[name="asset"]').click();
+  await expect(dialog.getByTestId("asset-picker")).toBeVisible();
+  await dialog.getByRole("tab", { name: "Commodities" }).click();
+  await dialog.getByTestId("asset-option-COBRE").click();
+  await expect(dialog.locator('input[name="asset"]')).toHaveValue("COBRE");
+  await expect(dialog.locator('input[name="payout"]')).toHaveValue("98");
+  await dialog.getByRole("radio", { name: "CALL" }).click();
+  await dialog.getByRole("radio", { name: "WIN", exact: true }).click();
+  await dialog.locator('input[name="stake"]').fill("10");
+  await dialog.getByRole("button", { name: "Registrar operação" }).click();
+  await expect(dialog).toBeHidden();
+
+  // Monitoring shows today's result and the change in the activity log.
+  await page.goto("/monitoramento");
+  await expect(page.getByTestId("live-indicator")).toBeVisible();
+  await expect(page.getByTestId("session-status")).toContainText("R$ 9,80");
+  await expect(page.getByTestId("activity-log")).toContainText("Registrou operação");
+  await expect(page.getByTestId("activity-log")).toContainText("COBRE");
+
+  // Security: current session and sign-in history.
+  await page.goto("/seguranca");
+  await expect(page.getByTestId("sessions-list")).toContainText("Este dispositivo");
+  await expect(page.getByTestId("security-log")).toContainText("Conta criada");
+
+  // Deleting every trade asks for the password again.
+  await page.goto("/configuracoes#dados");
+  await page.getByRole("button", { name: "Excluir operações" }).click();
+  const confirm = page.getByRole("dialog");
+  await confirm.locator("#confirm-text").fill("EXCLUIR");
+  await confirm.getByTestId("confirm-password").fill("SenhaErrada123");
+  await confirm.getByTestId("confirm-button").click();
+  await expect(confirm.getByRole("alert")).toHaveText("Senha incorreta.");
+  await confirm.getByTestId("confirm-password").fill(PASSWORD);
+  await confirm.getByTestId("confirm-button").click();
+  await expect(confirm).toBeHidden();
+  expect((await (await page.request.get("/api/trades")).json()).trades).toHaveLength(0);
+  // The browser logs the intentional 422 (wrong password); nothing else may fail.
+  expect(errors.filter((e) => !e.includes("status of 422"))).toEqual([]);
+});
+
+test("bloqueio da conta após senhas incorretas", async ({ page, request }) => {
+  const victim = uniqueEmail("bloqueio");
+  await register(page, victim);
+  await page.getByTestId("logout").click();
+  await page.waitForURL("**/login");
+
+  const attempt = (password: string) => request.post("/api/auth/login", { data: { email: victim, password }, headers: { Origin: new URL(page.url()).origin } });
+  for (let i = 0; i < 4; i++) expect((await attempt("SenhaErrada123")).status()).toBe(401);
+  const locked = await attempt("SenhaErrada123");
+  expect(locked.status()).toBe(423);
+  expect((await locked.json()).error).toContain("bloqueada");
+  // The right password is refused while the lock lasts.
+  expect((await attempt(PASSWORD)).status()).toBe(423);
+
+  await page.fill('input[name="email"]', victim);
+  await page.fill('input[name="password"]', PASSWORD);
+  await page.click('[data-testid="login-submit"]');
+  await expect(page.getByText("Conta bloqueada por segurança")).toBeVisible();
 });

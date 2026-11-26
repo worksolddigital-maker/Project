@@ -3,9 +3,10 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { normalizeRow, suggestMapping } from "@/lib/domain/import-mapping";
 import { getDb, type Db } from "@/server/db/client";
 import { ApiError } from "@/server/http";
+import { listEvents } from "@/server/repositories/audit";
 import { createCash, createJournal, createStrategy, getSettings, listCash, listJournal, listStrategies, updateSettings } from "@/server/repositories/entities";
 import { createTrade, deleteTrade, listTrades, updateTrade } from "@/server/repositories/trades";
-import { authenticate, registerUser } from "@/server/repositories/users";
+import { assertPassword, authenticate, changePassword, registerUser } from "@/server/repositories/users";
 import { exportBackup, restoreBackup } from "@/server/services/backup";
 import { buildTradesCsv, buildWorkbook } from "@/lib/reports/export-builders";
 import { commitImport, parseImportFile } from "@/server/services/import";
@@ -31,16 +32,55 @@ const base = {
 
 beforeAll(async () => {
   db = await getDb();
-  alice = (await registerUser(db, { name: "Alice", email: "alice@test.dev", password: "senha1234", timezone: TZ })).id;
-  bob = (await registerUser(db, { name: "Bob", email: "bob@test.dev", password: "senha1234", timezone: TZ })).id;
+  alice = (await registerUser(db, { name: "Alice", email: "alice@test.dev", password: "SenhaForte123", timezone: TZ })).id;
+  bob = (await registerUser(db, { name: "Bob", email: "bob@test.dev", password: "SenhaForte123", timezone: TZ })).id;
 });
 
 describe("users and auth", () => {
   it("rejects duplicate e-mails (case-insensitive) and checks passwords", async () => {
-    await expect(registerUser(db, { name: "X", email: "ALICE@test.dev", password: "senha1234" })).rejects.toBeInstanceOf(ApiError);
-    expect(await authenticate(db, "alice@test.dev", "senha1234")).not.toBeNull();
-    expect(await authenticate(db, "alice@test.dev", "errada123")).toBeNull();
-    expect(await authenticate(db, "ninguem@test.dev", "senha1234")).toBeNull();
+    await expect(registerUser(db, { name: "X", email: "ALICE@test.dev", password: "SenhaForte123" })).rejects.toBeInstanceOf(ApiError);
+    expect((await authenticate(db, "alice@test.dev", "SenhaForte123")).id).toBe(alice);
+    await expect(authenticate(db, "alice@test.dev", "Errada12345")).rejects.toMatchObject({ status: 401, message: "E-mail ou senha incorretos." });
+    await expect(authenticate(db, "ninguem@test.dev", "SenhaForte123")).rejects.toMatchObject({ status: 401, message: "E-mail ou senha incorretos." });
+  });
+
+  it("refuses passwords that contain the person's name", async () => {
+    await expect(registerUser(db, { name: "Carla Mendes", email: "carla@test.dev", password: "MENDES2026abc" })).rejects.toMatchObject({ status: 422 });
+    const id = (await registerUser(db, { name: "Carla Mendes", email: "carla@test.dev", password: "Painel2026ok" })).id;
+    await expect(changePassword(db, id, "Painel2026ok", "CarlaNova2026")).rejects.toMatchObject({ status: 422 });
+  });
+
+  it("locks the account after repeated wrong passwords and logs every attempt", async () => {
+    const id = (await registerUser(db, { name: "Dora", email: "dora@test.dev", password: "Painel2026ok" })).id;
+    for (let i = 1; i < 5; i++) {
+      await expect(authenticate(db, "dora@test.dev", "Errada12345", "10.0.0.9")).rejects.toMatchObject({ status: 401 });
+    }
+    await expect(authenticate(db, "dora@test.dev", "Errada12345", "10.0.0.9")).rejects.toMatchObject({ status: 423 });
+    // While locked, even the right password is refused.
+    await expect(authenticate(db, "dora@test.dev", "Painel2026ok")).rejects.toMatchObject({ status: 423 });
+
+    const security = await listEvents(db, id, "security");
+    expect(security.filter((e) => e.action === "auth.login_failed")).toHaveLength(4);
+    expect(security[0]).toMatchObject({ action: "auth.locked", ip: "10.0.0.9" });
+    expect(JSON.parse(security[0].detail)).toEqual({ attempts: 5 });
+    expect(security.at(-1)?.action).toBe("auth.register");
+    // Security events never show up in the activity log.
+    expect(await listEvents(db, id, "activity")).toHaveLength(0);
+  });
+
+  it("resets the failure counter after a successful sign-in", async () => {
+    const id = (await registerUser(db, { name: "Enzo", email: "enzo@test.dev", password: "Painel2026ok" })).id;
+    for (let i = 0; i < 4; i++) await expect(authenticate(db, "enzo@test.dev", "Errada12345")).rejects.toMatchObject({ status: 401 });
+    const user = await authenticate(db, "enzo@test.dev", "Painel2026ok");
+    expect(user.lastLoginAt).not.toBeNull();
+    // Four more wrong attempts do not lock, because the counter started over.
+    for (let i = 0; i < 4; i++) await expect(authenticate(db, "enzo@test.dev", "Errada12345")).rejects.toMatchObject({ status: 401 });
+    expect((await authenticate(db, "enzo@test.dev", "Painel2026ok")).id).toBe(id);
+  });
+
+  it("re-authenticates sensitive actions with the current password", async () => {
+    await expect(assertPassword(db, alice, "SenhaForte123")).resolves.toBeUndefined();
+    await expect(assertPassword(db, alice, "outra")).rejects.toMatchObject({ status: 422, fields: { password: "Senha incorreta." } });
   });
 });
 

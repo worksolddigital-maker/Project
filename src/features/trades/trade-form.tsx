@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownRight, ArrowUpRight, Plus, TriangleAlert } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, LayoutGrid, Plus, TriangleAlert } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, FormError, Input, Select, Textarea, Switch } from "@/components/ui/form";
@@ -9,14 +9,16 @@ import { Segmented, toneOf, TONE_TEXT } from "@/components/ui/misc";
 import { useToast } from "@/components/ui/toast";
 import { useReadyData } from "@/hooks/app-data";
 import { ApiClientError } from "@/lib/api/client";
-import { useSaveStrategy, useSaveTrade } from "@/lib/api/hooks";
+import { useSaveStrategy, useSaveTrade, useUpdateSettings } from "@/lib/api/hooks";
 import { cn } from "@/lib/cn";
 import { dayKeyOf, todayKey, wallTimeOf, zonedWallTimeToIso } from "@/lib/domain/dates";
 import { centsToInput, currencySymbol, formatMoney, formatPct, parseMoneyToCents, parsePercent } from "@/lib/domain/money";
 import { checkDraftTrade } from "@/lib/domain/risk";
-import { COMMON_ASSETS, computeProfitCents, EXPIRATION_PRESETS, normalizeAsset, returnPct } from "@/lib/domain/trade-calc";
+import { findAsset, suggestedPayout } from "@/lib/domain/assets";
+import { computeProfitCents, EXPIRATION_PRESETS, normalizeAsset, returnPct } from "@/lib/domain/trade-calc";
 import type { Direction, Trade, TradeResult } from "@/lib/domain/types";
 import { fieldErrors, tradeInputSchema } from "@/lib/validation/schemas";
+import { AssetBadge, AssetPicker } from "./asset-picker";
 
 interface FormState {
   date: string;
@@ -98,18 +100,31 @@ export function TradeFormModal({ open, onClose, trade, defaultDayKey }: TradeFor
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [newStrategy, setNewStrategy] = useState<string | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  // Once the person types a payout, picking an asset no longer overwrites it.
+  const [payoutTouched, setPayoutTouched] = useState(!!trade);
+  const updateSettings = useUpdateSettings();
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
     setErrors((e) => (e[key] ? { ...e, [key]: "" } : e));
   };
 
-  const assetSuggestions = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const t of trades) counts.set(t.asset, (counts.get(t.asset) ?? 0) + 1);
-    const used = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([a]) => a);
-    return [...new Set([...used, ...COMMON_ASSETS])];
-  }, [trades]);
+  const recentAssets = useMemo(() => [...new Set(trades.map((t) => t.asset))].slice(0, 9), [trades]);
+
+  const chooseAsset = (symbol: string, payout: number | null) => {
+    set("asset", symbol);
+    if (!payoutTouched && payout !== null) set("payout", String(payout).replace(".", ","));
+    setPickerOpen(false);
+  };
+
+  const toggleFavorite = (symbol: string) => {
+    const favs = settings.assetPrefs.favorites;
+    const next = favs.includes(symbol) ? favs.filter((f) => f !== symbol) : [...favs, symbol];
+    updateSettings.mutate({ assetPrefs: { ...settings.assetPrefs, favorites: next } });
+  };
+
+  const assetInfo = findAsset(form.asset);
 
   const stakeCents = parseMoneyToCents(form.stake);
   const payoutPct = parsePercent(form.payout);
@@ -225,6 +240,10 @@ export function TradeFormModal({ open, onClose, trade, defaultDayKey }: TradeFor
     >
       <form
         className="grid gap-4"
+        onFocus={(e) => {
+          const t = e.target as HTMLElement;
+          if (pickerOpen && t.tagName !== "BUTTON" && (t as HTMLInputElement).name !== "asset") setPickerOpen(false);
+        }}
         onSubmit={(e) => {
           e.preventDefault();
           void submit(false);
@@ -239,29 +258,67 @@ export function TradeFormModal({ open, onClose, trade, defaultDayKey }: TradeFor
           <Field label="Horário" className="col-span-1">
             {(id) => <Input id={id} type="time" step={1} value={form.time} onChange={(e) => set("time", e.target.value)} name="time" />}
           </Field>
-          <Field label="Ativo" error={errors.asset} className="col-span-2">
-            {(id) => (
-              <>
-                <Input
-                  id={id}
-                  list="asset-suggestions"
-                  value={form.asset}
-                  onChange={(e) => set("asset", e.target.value)}
-                  placeholder="EUR/USD"
-                  autoComplete="off"
-                  invalid={!!errors.asset}
-                  name="asset"
-                  data-autofocus={!trade || undefined}
-                />
-                <datalist id="asset-suggestions">
-                  {assetSuggestions.map((a) => (
-                    <option key={a} value={a} />
-                  ))}
-                </datalist>
-              </>
+          <Field
+            label="Ativo"
+            error={errors.asset}
+            className="col-span-2"
+            hint={assetInfo ? `Payout de referência: ${suggestedPayout(assetInfo.symbol, settings.assetPrefs) ?? "—"}%` : undefined}
+          >
+            {(id, d) => (
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  {assetInfo && <AssetBadge symbol={assetInfo.symbol} className="pointer-events-none absolute top-1/2 left-1.5 -translate-y-1/2 scale-[0.8]" />}
+                  <Input
+                    id={id}
+                    aria-describedby={d}
+                    value={form.asset}
+                    onChange={(e) => {
+                      set("asset", e.target.value);
+                      const exact = findAsset(e.target.value);
+                      if (exact && !payoutTouched) {
+                        const p = suggestedPayout(exact.symbol, settings.assetPrefs);
+                        if (p !== null) set("payout", String(p).replace(".", ","));
+                      }
+                    }}
+                    onFocus={() => setPickerOpen(true)}
+                    placeholder="Pesquisar um ativo…"
+                    autoComplete="off"
+                    invalid={!!errors.asset}
+                    name="asset"
+                    className={cn(assetInfo && "pl-12")}
+                    data-autofocus={!trade || undefined}
+                    role="combobox"
+                    aria-expanded={pickerOpen}
+                    aria-controls="asset-picker"
+                  />
+                </div>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  onClick={() => setPickerOpen((v) => !v)}
+                  aria-label="Ver lista de ativos"
+                  title="Ver lista de ativos"
+                  data-testid="asset-picker-toggle"
+                >
+                  <LayoutGrid className="size-4" />
+                </Button>
+              </div>
             )}
           </Field>
         </div>
+
+        {pickerOpen && (
+          <div id="asset-picker">
+            <AssetPicker
+              value={form.asset}
+              prefs={settings.assetPrefs}
+              recent={recentAssets}
+              onPick={chooseAsset}
+              onToggleFavorite={toggleFavorite}
+              onClose={() => setPickerOpen(false)}
+            />
+          </div>
+        )}
 
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Tipo de operação">
@@ -317,7 +374,10 @@ export function TradeFormModal({ open, onClose, trade, defaultDayKey }: TradeFor
                 inputMode="decimal"
                 suffix="%"
                 value={form.payout}
-                onChange={(e) => set("payout", e.target.value)}
+                onChange={(e) => {
+                  setPayoutTouched(true);
+                  set("payout", e.target.value);
+                }}
                 placeholder="85"
                 invalid={!!errors.payout}
                 name="payout"

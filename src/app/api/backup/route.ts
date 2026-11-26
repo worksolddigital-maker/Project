@@ -1,7 +1,9 @@
 import { todayKey } from "@/lib/domain/dates";
-import { backupSchema } from "@/lib/validation/schemas";
+import { restoreBackupSchema } from "@/lib/validation/schemas";
 import { getDb } from "@/server/db/client";
-import { json, readJson, requireUser, route } from "@/server/http";
+import { logEvent } from "@/server/repositories/audit";
+import { clientIp, json, readJson, requireUser, route } from "@/server/http";
+import { assertPassword } from "@/server/repositories/users";
 import { exportBackup, restoreBackup } from "@/server/services/backup";
 
 export const GET = route(async () => {
@@ -18,7 +20,10 @@ export const GET = route(async () => {
 
 export const POST = route(async (request) => {
   const user = await requireUser();
-  const backup = await readJson(request, backupSchema);
-  const restored = await restoreBackup(await getDb(), user.id, backup);
+  const input = await readJson(request, restoreBackupSchema);
+  const db = await getDb();
+  await assertPassword(db, user.id, input.password);
+  const restored = await restoreBackup(db, user.id, input.backup);
+  await logEvent(db, user.id, "backup.restore", restored, clientIp(request));
   return json({ restored });
 });
