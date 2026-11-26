@@ -257,7 +257,7 @@ describe("market service", () => {
     expect(snap.quotes.map((q) => q.symbol)).toEqual(["BTC"]);
     expect(snap.news.map((n) => n.title)).toEqual(["Bitcoin cai 4% com aversão a risco"]);
     expect(snap.sources.find((s) => s.id === "coingecko")).toMatchObject({ ok: true, count: 1 });
-    expect(snap.sources.find((s) => s.id === "b3")).toMatchObject({ ok: false, error: "Fonte respondeu HTTP 500" });
+    expect(snap.sources.find((s) => s.id === "b3")).toMatchObject({ ok: false, error: "Fonte indisponível no momento (HTTP 500)" });
     expect(snap.sources.some((s) => s.id === "ibovespa")).toBe(false);
     expect(snap.hints[0]).toContain("BRAPI_TOKEN");
     expect(notableMoves(snap.quotes)[0].direction).toBe("down");

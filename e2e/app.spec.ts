@@ -358,3 +358,46 @@ test("mercado ao vivo: destaques, notícias com filtros e widget no dashboard", 
   expect(res.status()).toBe(503);
   expect(errors.filter((e) => !e.includes("status of 503"))).toEqual([]);
 });
+
+test("academia de velas: 3D, leitura automática, padrões, horários e plano de parada", async ({ page }) => {
+  const errors = trackErrors(page);
+  await register(page, uniqueEmail("academia"));
+  await page.getByRole("link", { name: "Academia de velas" }).first().click();
+  await page.waitForURL("**/academia");
+
+  // Anatomy: the 3D canvas renders and the reading follows the candle.
+  await expect(page.getByTestId("candles-3d").locator("canvas")).toBeVisible();
+  await page.getByRole("button", { name: "Doji", exact: true }).click();
+  await expect(page.getByTestId("candle-name")).toHaveText("Doji");
+  await page.getByRole("button", { name: "Marubozu de baixa" }).click();
+  await expect(page.getByTestId("candle-name")).toHaveText("Marubozu de baixa");
+  await page.getByTestId("ohlc-l").fill("90");
+  await expect(page.getByTestId("candle-name")).not.toHaveText("Marubozu de baixa");
+
+  await page.getByRole("tab", { name: "Padrões", exact: true }).click();
+  await page.getByTestId("pattern-engolfo-alta").click();
+  await expect(page.getByTestId("pattern-detail")).toContainText("Engolfo de alta");
+  await expect(page.getByTestId("pattern-detail")).toContainText("Confirma quando");
+
+  await page.getByRole("tab", { name: "Compra × Venda" }).click();
+  await expect(page.getByTestId("setup")).toHaveCount(16);
+
+  await page.getByRole("tab", { name: "Tempos e sessões" }).click();
+  await expect(page.getByTestId("sessions")).toContainText("Londres");
+  await expect(page.getByTestId("sessions")).toContainText("Nova York");
+
+  // New account: no limits yet, default payout 85% needs 54,1% to break even.
+  await page.getByRole("tab", { name: "Operar com consciência" }).click();
+  await expect(page.getByTestId("plan-today")).toContainText("ainda não definiu limites");
+  await expect(page.getByTestId("break-even")).toContainText("54,1%");
+  const boxes = page.getByTestId("checklist").getByRole("checkbox");
+  for (let i = 0; i < (await boxes.count()); i++) await boxes.nth(i).check();
+  await expect(page.getByTestId("checklist-result")).toContainText("Entrada dentro das suas regras");
+
+  await page.getByRole("tab", { name: "Treino" }).click();
+  await page.getByTestId("quiz-option").first().click();
+  await expect(page.getByTestId("quiz-feedback")).toBeVisible();
+  await page.getByTestId("quiz-next").click();
+  await expect(page.getByTestId("quiz")).toContainText("Pergunta 2 de 8");
+  expect(errors).toEqual([]);
+});

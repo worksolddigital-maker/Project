@@ -16,7 +16,7 @@ async function fetchText(url: string, headers: Record<string, string> = {}): Pro
     cache: "no-store",
     signal: AbortSignal.timeout(9000),
   });
-  if (!res.ok) throw new Error(res.status === 429 ? "Limite de consultas da fonte atingido (HTTP 429)" : `Fonte respondeu HTTP ${res.status}`);
+  if (!res.ok) throw new Error(res.status === 429 ? "Limite de consultas da fonte atingido (HTTP 429)" : `Fonte indisponível no momento (HTTP ${res.status})`);
   return res.text();
 }
 

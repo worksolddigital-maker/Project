@@ -4,6 +4,7 @@ import {
   CalendarDays,
   CandlestickChart,
   FileSpreadsheet,
+  GraduationCap,
   Globe,
   LayoutDashboard,
   NotebookPen,
@@ -59,6 +60,10 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/estatisticas", label: "Estatísticas", short: "Estatísticas", icon: BarChart3, description: "Gráficos e análises de desempenho" },
       { href: "/relatorios", label: "Relatórios", short: "Relatórios", icon: FileSpreadsheet, description: "Exportação CSV, Excel e impressão" },
     ],
+  },
+  {
+    label: "Aprender",
+    items: [{ href: "/academia", label: "Academia de velas", short: "Academia", icon: GraduationCap, description: "Velas em 3D, padrões, horários e quando parar" }],
   },
   {
     label: "Conta",

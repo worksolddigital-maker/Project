@@ -4,6 +4,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { LogoMark } from "@/components/layout/logo";
 import { Providers } from "@/components/providers";
 import { LoginForm, RegisterForm } from "@/features/auth/auth-forms";
+import { AcademyView } from "@/features/academy/academy-view";
 import { BankrollView } from "@/features/bankroll/bankroll-view";
 import { CalendarView } from "@/features/calendar/calendar-view";
 import { DashboardView } from "@/features/dashboard/dashboard-view";
@@ -33,6 +34,7 @@ const SCREENS: Record<string, () => ReactNode> = {
   diario: () => <JournalView />,
   metas: () => <GoalsView />,
   relatorios: () => <ReportsView />,
+  academia: () => <AcademyView />,
   seguranca: () => <SecurityView />,
   configuracoes: () => <SettingsView />,
 };

@@ -28,6 +28,7 @@ Se a Hezilex publicar uma API oficial no futuro, basta criar um novo serviço em
 | **Diário de trading** | Emocional, estratégia, seguiu o gerenciamento, impulso, principal erro, acertos e melhorias. Vínculo com uma operação ou com a sessão (data). Histórico filtrável e indicadores de disciplina cruzados com o resultado real dos dias. |
 | **Metas** | Metas diária/semanal/mensal, máximo de operações por dia e de perdas consecutivas, com anéis de progresso, histórico de 30 dias e 12 semanas contra a meta e aproveitamento. |
 | **Relatórios** | Relatório por período (resumo, por ativo, por estratégia, por dia, movimentações), exportação **CSV** e **Excel** (7 abas formatadas) e impressão/PDF. |
+| **Academia de velas** | Aula interativa de leitura de velas. **Anatomia em 3D** (Three.js): corpo, pavios, abertura, fechamento, máxima e mínima rotulados; você mexe nos preços e o painel diz na hora que vela é aquela e o que ela significa. **19 padrões clássicos** (martelo, estrela cadente, engolfos, harami, estrelas da manhã e da tarde, três soldados/corvos, pinças, doji, marubozu...) em 3D, com como reconhecer, onde vale, o que confirma e o que invalida, e 9 formações gráficas (topo/fundo duplo, OCO, triângulos, bandeiras). Tabela **Compra × Venda** no formato "lugar + vela = sinal", sem notas de estrelas. **Sessões do mercado** (Sydney, Tóquio, Londres, Nova York) convertidas para o seu fuso com horário de verão, e o que observar em cada tempo gráfico. **Operar com consciência**: seu plano do dia com os seus limites reais, o acerto mínimo para empatar com o seu payout médio, tamanho de entrada por % do saldo, o custo do martingale e checklist antes de cada entrada. Treino com perguntas. |
 | **Segurança** | Troca de senha, sessões abertas (dispositivo, IP, último acesso) com encerramento individual ou de todas as outras, registro de acessos (entradas, tentativas com senha errada, bloqueios, trocas de senha) e exclusão da conta. |
 | **Configurações** | Perfil, moeda, fuso horário, payout padrão, animações reduzidas, rolagem suave, **ativos e payouts** (seu payout por ativo e favoritos), estratégias, importação/exportação, **backup e restauração (JSON)** e exclusão de todas as operações. |
 
@@ -62,7 +63,7 @@ Alertas aparecem no sino do topo, no dashboard e na página de risco; quando um 
 - **Drizzle ORM** + **PostgreSQL** — embarcado (**PGlite**) por padrão ou externo (**Supabase**/qualquer Postgres) via `DATABASE_URL`
 - **Zod** (validação compartilhada entre cliente e servidor)
 - **ExcelJS** e **Papa Parse** (importação/exportação)
-- Animações: **GSAP** (ScrollTrigger, SplitText, DrawSVG), **Motion** (`motion/react`) e **Lenis**
+- Animações: **GSAP** (ScrollTrigger, SplitText, DrawSVG), **Motion** (`motion/react`) e **Lenis**; **Three.js** para as velas em 3D da Academia (sombras, rótulos, giro; pausa fora da tela e libera a memória ao sair)
 - Testes: **Vitest** (unitários e integração) e **Playwright** (E2E)
 
 ### Por que não Supabase Auth?
@@ -143,6 +144,7 @@ src/
     domain/               Regras de negócio puras e testadas: dinheiro, datas/fuso, cálculo de operação,
                           analytics, risco, metas, mapeamento de importação, catálogo de ativos
     market/               Leitor de RSS, temas das notícias, destaques e "por quê", prompt da IA, formatação
+    academy/              Leitura de velas, catálogo de padrões, tabela Compra × Venda, sessões e tempos gráficos
     security.ts           Política de segurança e vocabulário do registro de atividades
     validation/           Schemas Zod compartilhados
     api/                  Cliente HTTP e hooks de dados
@@ -195,5 +197,5 @@ Todos os valores monetários são armazenados em **centavos inteiros** (sem erro
 
 ## Testes executados
 
-- `npm test`: 92 testes (leitura de RSS e datas dos feeds, temas das notícias, PTAX, destaques e manchetes relacionadas, prompt e validação da explicação com IA, fontes falhando sem derrubar o painel, cálculos financeiros, datas com fuso/horário de verão, importação, risco, metas, catálogo de ativos e payouts, política de senha, bloqueio por tentativas e registro de auditoria, repositórios, importação Excel real, ida e volta CSV, conteúdo do XLSX, backup/restauração entre contas).
-- `npm run test:e2e`: 12 cenários no navegador (mercado ao vivo com retrato gravado, cadastro, banca, operações e cálculos, alertas, filtros, edição, exclusão, importação com duplicadas, calendário, diário, metas, estatísticas por abas, relatórios, persistência após recarregar/sair, isolamento entre usuários, seletor de ativos com payout, monitoramento, sessões, confirmação por senha, bloqueio da conta, navegação no celular sem rolagem horizontal) — aprovados tanto no PGlite quanto em PostgreSQL 16.
+- `npm test`: 102 testes (leitura automática das velas e presets, consistência dos padrões e da tabela Compra × Venda, sessões com horário de verão de Londres e Nova York, ponto de equilíbrio do payout, leitura de RSS e datas dos feeds, temas das notícias, PTAX, destaques e manchetes relacionadas, prompt e validação da explicação com IA, fontes falhando sem derrubar o painel, cálculos financeiros, datas com fuso/horário de verão, importação, risco, metas, catálogo de ativos e payouts, política de senha, bloqueio por tentativas e registro de auditoria, repositórios, importação Excel real, ida e volta CSV, conteúdo do XLSX, backup/restauração entre contas).
+- `npm run test:e2e`: 13 cenários no navegador (academia com 3D, leitura automática, padrões, sessões, plano e checklist, mercado ao vivo com retrato gravado, cadastro, banca, operações e cálculos, alertas, filtros, edição, exclusão, importação com duplicadas, calendário, diário, metas, estatísticas por abas, relatórios, persistência após recarregar/sair, isolamento entre usuários, seletor de ativos com payout, monitoramento, sessões, confirmação por senha, bloqueio da conta, navegação no celular sem rolagem horizontal) — aprovados tanto no PGlite quanto em PostgreSQL 16.

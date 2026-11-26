@@ -13,18 +13,22 @@ export const APP_ROUTES = [
   "diario",
   "metas",
   "relatorios",
+  "academia",
   "seguranca",
   "configuracoes",
 ] as const;
 export const PUBLIC_ROUTES = ["login", "cadastro"] as const;
 /** Settings tabs write their own `#name`; they still belong to the settings screen. */
 const SETTINGS_TABS = ["perfil", "preferencias", "ativos", "estrategias", "dados"];
+/** Academy tabs also write their own `#name`. */
+const ACADEMY_TABS = ["anatomia", "padroes", "compra-venda", "tempos", "consciencia", "conhecer", "treino"];
 const ALL = new Set<string>([...APP_ROUTES, ...PUBLIC_ROUTES]);
 
 function parse(hash: string): string {
   const name = hash.replace(/^#/, "");
   if (ALL.has(name)) return name;
   if (SETTINGS_TABS.includes(name)) return "configuracoes";
+  if (ACADEMY_TABS.includes(name)) return "academia";
   return "";
 }
 
