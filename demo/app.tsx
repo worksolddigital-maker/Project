@@ -9,6 +9,7 @@ import { CalendarView } from "@/features/calendar/calendar-view";
 import { DashboardView } from "@/features/dashboard/dashboard-view";
 import { GoalsView } from "@/features/goals/goals-view";
 import { JournalView } from "@/features/journal/journal-view";
+import { MarketView } from "@/features/market/market-view";
 import { MonitoringView } from "@/features/monitoring/monitoring-view";
 import { ReportsView } from "@/features/reports/reports-view";
 import { RiskView } from "@/features/risk/risk-view";
@@ -23,6 +24,7 @@ import { navigate, useRoute } from "./router";
 const SCREENS: Record<string, () => ReactNode> = {
   dashboard: () => <DashboardView />,
   monitoramento: () => <MonitoringView />,
+  mercado: () => <MarketView />,
   operacoes: () => <OperationsView />,
   banca: () => <BankrollView />,
   risco: () => <RiskView />,

@@ -9,6 +9,8 @@ import type {
   Trade,
   UserSettings,
 } from "@/lib/domain/types";
+import type { ExplanationResult } from "@/lib/market/explain";
+import type { MarketSnapshot } from "@/lib/market/types";
 import type { AuditEvent, SessionInfo } from "@/lib/security";
 import type { CashMovementInput, JournalInput, SettingsUpdate, TradeInput } from "@/lib/validation/schemas";
 import { api } from "@/lib/api/client";
@@ -22,7 +24,24 @@ export const qk = {
   journal: ["journal"] as const,
   audit: (kind: "security" | "activity") => ["audit", kind] as const,
   sessions: ["sessions"] as const,
+  market: ["market"] as const,
 };
+
+/** Market panel: refreshed every minute while the tab is visible (the server caches each source). */
+export const useMarket = (opts: { enabled?: boolean } = {}) =>
+  useQuery({
+    queryKey: qk.market,
+    queryFn: () => api<{ market: MarketSnapshot }>("/api/market").then((r) => r.market),
+    refetchInterval: 60_000,
+    staleTime: 30_000,
+    enabled: opts.enabled ?? true,
+  });
+
+export const useExplainMarket = () =>
+  useMutation({
+    mutationFn: (focus: string | null) =>
+      api<{ result: ExplanationResult }>("/api/market/explain", { method: "POST", json: { focus } }).then((r) => r.result),
+  });
 
 export const useMe = () =>
   useQuery({ queryKey: qk.me, queryFn: () => api<{ user: PublicUser }>("/api/auth/me").then((r) => r.user) });

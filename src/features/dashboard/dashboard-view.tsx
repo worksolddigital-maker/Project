@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState, Panel } from "@/components/ui/misc";
 import { StatCard, StatGrid } from "@/components/ui/stat-card";
 import { dailySeries, equitySeries, lastNDaysRange } from "@/features/analytics/series";
+import { MarketWidget } from "@/features/market/market-widget";
 import { MoneyText, TradeRow } from "@/features/trades/trade-bits";
 import { useTradeModal } from "@/features/trades/trade-modal-context";
 import { useReadyData } from "@/hooks/app-data";
@@ -218,6 +219,7 @@ function DashboardContent() {
             </ul>
           )}
         </Panel>
+        <MarketWidget data-reveal className="xl:col-span-3" />
         <Panel
           data-reveal
           className="xl:col-span-3"

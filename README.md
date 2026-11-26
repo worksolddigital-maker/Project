@@ -17,6 +17,7 @@ Se a Hezilex publicar uma API oficial no futuro, basta criar um novo serviço em
 
 | Seção | O que faz |
 |---|---|
+| **Mercado ao vivo** | O que está acontecendo agora na bolsa, no câmbio e em cripto: faixa de cotações animada, **destaques do que mais subiu ou caiu com as manchetes que citam cada ativo** ("por que?"), cotações com minigráficos (ações B3, dólar e euro PTAX, câmbio do BCE, Selic, 10 criptomoedas), notícias filtráveis por tema (bolsa, câmbio, juros, exterior, commodities, cripto, empresas) e, opcionalmente, **explicação com IA** que resume o motivo dos movimentos citando as manchetes. Atualiza a cada minuto. Também aparece como "Mercado agora" no dashboard. |
 | **Monitoramento** | Acompanhamento ao vivo da sessão do dia (atualiza a cada 20 s enquanto a página está aberta): status dentro/fora dos parâmetros, resultado acumulado operação a operação com a meta e o limite de perda como referência, consumo dos limites em tempo real, alertas ativos, operações de hoje, resumo de segurança e **registro de atividades** (tudo o que foi criado, alterado ou excluído na conta). |
 | **Dashboard** | Saldo total, capital inicial, lucro e prejuízo acumulados, resultado líquido, rentabilidade, taxa de acerto, total de operações, vencedoras/perdedoras, média de lucro e de perda, melhor e pior operação. Evolução do saldo, distribuição WIN/LOSS, P&L dos últimos 30 dias, alertas ativos e operações recentes. Atualiza a cada operação registrada. |
 | **Operações** | Cadastro, edição e exclusão (com confirmação). **Seletor de ativos** com o catálogo da corretora (Cripto, Forex, Ações, Commodities), favoritos, recentes e busca; ao escolher o ativo o payout de referência é preenchido (editável). Pesquisa por ativo, filtros por período, resultado, estratégia e tipo; ordenação; paginação; resumo do filtro; exportação CSV; importação CSV/Excel. Lucro/prejuízo e retorno calculados automaticamente (WIN = valor × payout; LOSS = −valor; EMPATE = 0), com opção de informar o valor manualmente quando a corretora creditar outro valor. |
@@ -31,6 +32,21 @@ Se a Hezilex publicar uma API oficial no futuro, basta criar um novo serviço em
 | **Configurações** | Perfil, moeda, fuso horário, payout padrão, animações reduzidas, rolagem suave, **ativos e payouts** (seu payout por ativo e favoritos), estratégias, importação/exportação, **backup e restauração (JSON)** e exclusão de todas as operações. |
 
 O menu lateral é agrupado em **Visão geral, Operacional, Capital e risco, Análise e Conta**, e as Estatísticas são divididas em abas (Desempenho, Ativos e estratégias, Horários, Comparação).
+
+### Mercado ao vivo: fontes
+
+Todas as fontes são serviços públicos documentados ou feeds RSS oferecidos pelos próprios veículos; nenhuma exige login e nada é raspado de páginas.
+
+| Dado | Fonte | Observação |
+|---|---|---|
+| Ações B3 (PETR4, VALE3, ITUB4, MGLU3) | [brapi](https://brapi.dev) | Sem token; pode ter atraso. |
+| Ibovespa | brapi | Exige `BRAPI_TOKEN` (gratuito). |
+| Dólar e euro (PTAX), Selic | API oficial do **Banco Central** (Olinda/PTAX e SGS 432) | Boletins de abertura, intermediários e fechamento. |
+| EUR/USD, GBP/USD, USD/JPY, AUD/USD | Frankfurter (taxas de referência do **BCE**) | Uma vez por dia útil. |
+| 10 criptomoedas | [CoinGecko](https://www.coingecko.com/en/api) | Variação de 24 h e gráfico de 7 dias. |
+| Notícias | RSS de Money Times, InfoMoney, Investing.com Brasil e buscas do Google Notícias | Título, fonte e link para o site original (uso pessoal). |
+
+Cada fonte tem cache próprio no servidor (1 a 10 min) e, se uma falhar, o restante continua aparecendo com o último dado bom. O "por que?" de cada destaque mostra as manchetes recentes que citam o ativo, ordenadas pelas que descrevem o movimento e o motivo; isso indica o que a imprensa associou ao movimento, sem afirmar causa. Com `ANTHROPIC_API_KEY`, o botão **Explicar com IA** envia ao Claude (modelo `claude-opus-5-5`) apenas as cotações e as manchetes numeradas; a resposta precisa citar os números das manchetes, diz quando elas não explicam o movimento e não faz previsões nem recomendações. Se o modelo recusar o pedido, a API repete a chamada num modelo alternativo (`fallbacks: "default"`).
 
 ### Catálogo de ativos
 
@@ -89,6 +105,7 @@ A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas 
 - Os dados ficam no navegador (ou, quando aberto dentro do visualizador do Claude, no armazenamento privado da conta de quem abre).
 - Há uma **conta de exemplo com dados fictícios**, claramente identificada, para explorar os gráficos. A senha dela (`Exemplo2026`) aparece no painel da demo, porque ações sensíveis pedem a senha também lá.
 - Bloqueio por tentativas, registro de atividades e confirmação por senha funcionam como na versão instalada; como a demo roda em um único navegador, a lista de sessões mostra só a atual.
+- **Mercado ao vivo na demo:** a demo não tem servidor para consultar as fontes, então o build grava um retrato real das cotações e manchetes (`demo/market-snapshot.json`, com data e hora na tela) e a página avisa que ele não se atualiza. Dentro do Claude, "Explicar com IA" funciona usando a conta de quem abre a página.
 - `dist-demo/artifact.html` é a mesma página no formato usado para publicação como Artifact do Claude.
 - Não substitui a versão instalada: não há banco de dados compartilhado nem login real entre dispositivos.
 
@@ -104,7 +121,8 @@ A migração `0001_enable_rls` ativa **Row Level Security** em todas as tabelas 
 | `npm run test:e2e` | Testes ponta a ponta (Playwright; faz o build e sobe um servidor com banco novo) |
 | `npm run db:generate` | Gera nova migração após alterar `src/server/db/schema.ts` |
 | `npm run db:migrate` | Aplica migrações (PGlite ou `DATABASE_URL`) |
-| `npm run demo:build` | Gera a versão de demonstração em um único arquivo HTML |
+| `npm run demo:build` | Grava um retrato do mercado e gera a versão de demonstração em um único arquivo HTML |
+| `npm run market:snapshot -- arquivo.json` | Grava as cotações e manchetes atuais (fixture offline / demo) |
 
 ## Arquitetura
 
@@ -124,6 +142,7 @@ src/
   lib/
     domain/               Regras de negócio puras e testadas: dinheiro, datas/fuso, cálculo de operação,
                           analytics, risco, metas, mapeamento de importação, catálogo de ativos
+    market/               Leitor de RSS, temas das notícias, destaques e "por quê", prompt da IA, formatação
     security.ts           Política de segurança e vocabulário do registro de atividades
     validation/           Schemas Zod compartilhados
     api/                  Cliente HTTP e hooks de dados
@@ -132,6 +151,7 @@ src/
     auth/                 Senhas, sessões, rate limit
     repositories/         Acesso a dados sempre filtrado por usuário (inclui o registro de auditoria)
     services/             Importação, exportação (CSV/XLSX) e backup
+    market/               Fontes de cotações e notícias, cache por fonte, explicação com IA (Anthropic SDK)
 drizzle/                  Migrações SQL
 tests/                    Vitest (domínio + integração do servidor)
 e2e/                      Playwright (desktop e celular)
@@ -175,5 +195,5 @@ Todos os valores monetários são armazenados em **centavos inteiros** (sem erro
 
 ## Testes executados
 
-- `npm test`: 75 testes (cálculos financeiros, datas com fuso/horário de verão, importação, risco, metas, catálogo de ativos e payouts, política de senha, bloqueio por tentativas e registro de auditoria, repositórios, importação Excel real, ida e volta CSV, conteúdo do XLSX, backup/restauração entre contas).
-- `npm run test:e2e`: 11 cenários no navegador (cadastro, banca, operações e cálculos, alertas, filtros, edição, exclusão, importação com duplicadas, calendário, diário, metas, estatísticas por abas, relatórios, persistência após recarregar/sair, isolamento entre usuários, seletor de ativos com payout, monitoramento, sessões, confirmação por senha, bloqueio da conta, navegação no celular sem rolagem horizontal) — aprovados tanto no PGlite quanto em PostgreSQL 16.
+- `npm test`: 92 testes (leitura de RSS e datas dos feeds, temas das notícias, PTAX, destaques e manchetes relacionadas, prompt e validação da explicação com IA, fontes falhando sem derrubar o painel, cálculos financeiros, datas com fuso/horário de verão, importação, risco, metas, catálogo de ativos e payouts, política de senha, bloqueio por tentativas e registro de auditoria, repositórios, importação Excel real, ida e volta CSV, conteúdo do XLSX, backup/restauração entre contas).
+- `npm run test:e2e`: 12 cenários no navegador (mercado ao vivo com retrato gravado, cadastro, banca, operações e cálculos, alertas, filtros, edição, exclusão, importação com duplicadas, calendário, diário, metas, estatísticas por abas, relatórios, persistência após recarregar/sair, isolamento entre usuários, seletor de ativos com payout, monitoramento, sessões, confirmação por senha, bloqueio da conta, navegação no celular sem rolagem horizontal) — aprovados tanto no PGlite quanto em PostgreSQL 16.

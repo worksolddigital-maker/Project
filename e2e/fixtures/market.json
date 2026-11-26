@@ -1,0 +1,2064 @@
+{
+ "quotes": [
+  {
+   "symbol": "PETR4",
+   "name": "Petrobras PN",
+   "category": "acao",
+   "price": 41.36,
+   "unit": "BRL",
+   "changePct": 2,
+   "changeLabel": "no dia",
+   "updatedAt": "2026-11-26T03:11:17.000Z",
+   "sourceId": "brapi",
+   "note": "B3 via brapi · pode ter atraso",
+   "spark": [
+    40.95,
+    40.95,
+    41.16,
+    40.91,
+    41.11,
+    40.99,
+    40.5,
+    40.77,
+    40.91,
+    40.86,
+    40.97,
+    41.13,
+    41.08,
+    40.96,
+    41.02,
+    41.23,
+    41.25,
+    41.3,
+    41.45,
+    41.19,
+    41.25,
+    41.31,
+    41.43,
+    41.41,
+    41.45,
+    41.46,
+    41.4
+   ],
+   "sparkLabel": "último pregão",
+   "keywords": [
+    "petrobras|petr4|petr3"
+   ]
+  },
+  {
+   "symbol": "VALE3",
+   "name": "Vale ON",
+   "category": "acao",
+   "price": 56.9,
+   "unit": "BRL",
+   "changePct": 3.1,
+   "changeLabel": "no dia",
+   "updatedAt": "2026-11-26T03:11:17.000Z",
+   "sourceId": "brapi",
+   "note": "B3 via brapi · pode ter atraso",
+   "spark": [
+    55.4,
+    55.39,
+    55.34,
+    55.15,
+    54.76,
+    54.84,
+    55.25,
+    55.59,
+    56.01,
+    55.95,
+    55.99,
+    56.03,
+    56.02,
+    55.92,
+    56.07,
+    56.27,
+    56.52,
+    56.64,
+    56.7,
+    56.88,
+    56.92,
+    56.87,
+    56.81,
+    57,
+    57.09,
+    57.24,
+    57.12
+   ],
+   "sparkLabel": "último pregão",
+   "keywords": [
+    "vale3|vale(?! a pena| do| dos)|mineradora"
+   ]
+  },
+  {
+   "symbol": "ITUB4",
+   "name": "Itaú Unibanco PN",
+   "category": "acao",
+   "price": 40.01,
+   "unit": "BRL",
+   "changePct": 0.68,
+   "changeLabel": "no dia",
+   "updatedAt": "2026-11-26T03:11:17.000Z",
+   "sourceId": "brapi",
+   "note": "B3 via brapi · pode ter atraso",
+   "spark": [
+    39.72,
+    39.77,
+    40,
+    39.87,
+    39.91,
+    39.87,
+    39.33,
+    39.56,
+    39.62,
+    39.48,
+    39.57,
+    39.61,
+    39.43,
+    39.46,
+    39.5,
+    39.77,
+    39.84,
+    39.88,
+    39.86,
+    39.89,
+    40.01,
+    40.26,
+    40.38,
+    40.27,
+    40.14,
+    40.16,
+    40.08
+   ],
+   "sparkLabel": "último pregão",
+   "keywords": [
+    "itau unibanco|itau|itub4"
+   ]
+  },
+  {
+   "symbol": "MGLU3",
+   "name": "Magazine Luiza ON",
+   "category": "acao",
+   "price": 9.29,
+   "unit": "BRL",
+   "changePct": 6.17,
+   "changeLabel": "no dia",
+   "updatedAt": "2026-11-26T03:11:17.000Z",
+   "sourceId": "brapi",
+   "note": "B3 via brapi · pode ter atraso",
+   "spark": [
+    8.93,
+    8.97,
+    8.88,
+    8.81,
+    8.88,
+    9.02,
+    8.86,
+    8.97,
+    9,
+    8.9,
+    8.83,
+    8.9,
+    8.91,
+    8.98,
+    9.02,
+    9.05,
+    9.1,
+    9.23,
+    9.15,
+    9.21,
+    9.19,
+    9.27,
+    9.43,
+    9.42,
+    9.38,
+    9.38,
+    9.38
+   ],
+   "sparkLabel": "último pregão",
+   "keywords": [
+    "magazine luiza|magalu|mglu3"
+   ]
+  },
+  {
+   "symbol": "USD/BRL",
+   "name": "Dólar (PTAX)",
+   "category": "cambio",
+   "price": 5.8825,
+   "unit": "BRL",
+   "changePct": 0.43023235961961803,
+   "changeLabel": "vs. PTAX do dia útil anterior",
+   "updatedAt": "2026-11-25T16:02:42.418Z",
+   "sourceId": "bcb",
+   "note": "Banco Central · fechamento",
+   "spark": [
+    5.8279,
+    5.7978,
+    5.7937,
+    5.8212,
+    5.8102,
+    5.8901,
+    5.8862,
+    5.869,
+    5.9101,
+    5.8889,
+    5.9931,
+    5.9609,
+    5.9487,
+    5.9806,
+    5.9708,
+    5.8666,
+    5.8368,
+    5.848,
+    5.8776,
+    5.8573,
+    5.9045,
+    5.894,
+    5.8791,
+    5.8524,
+    5.8825
+   ],
+   "sparkLabel": "últimos dias úteis",
+   "keywords": [
+    "dolar|cambio|ptax|moeda americana"
+   ]
+  },
+  {
+   "symbol": "EUR/BRL",
+   "name": "Euro (PTAX)",
+   "category": "cambio",
+   "price": 6.4413,
+   "unit": "BRL",
+   "changePct": 0.23809523809523603,
+   "changeLabel": "vs. PTAX do dia útil anterior",
+   "updatedAt": "2026-11-25T16:02:42.418Z",
+   "sourceId": "bcb",
+   "note": "Banco Central · fechamento",
+   "spark": [
+    6.3897,
+    6.3602,
+    6.3597,
+    6.3841,
+    6.372,
+    6.4779,
+    6.4742,
+    6.4524,
+    6.4905,
+    6.4672,
+    6.56,
+    6.5176,
+    6.5013,
+    6.5183,
+    6.5076,
+    6.431,
+    6.4006,
+    6.4176,
+    6.4483,
+    6.426,
+    6.4619,
+    6.448,
+    6.4311,
+    6.4084,
+    6.4413
+   ],
+   "sparkLabel": "últimos dias úteis",
+   "keywords": [
+    "euro"
+   ]
+  },
+  {
+   "symbol": "SELIC",
+   "name": "Selic (meta)",
+   "category": "juros",
+   "price": 13.75,
+   "unit": "% a.a.",
+   "changePct": null,
+   "changeLabel": "",
+   "updatedAt": "2026-11-26T07:35:18.124Z",
+   "sourceId": "bcb",
+   "note": "Meta definida pelo Copom · Banco Central",
+   "spark": [],
+   "sparkLabel": "",
+   "keywords": [
+    "selic|copom|juros"
+   ]
+  },
+  {
+   "symbol": "EUR/USD",
+   "name": "Euro / Dólar",
+   "category": "cambio",
+   "price": 1.09351,
+   "unit": "",
+   "changePct": -0.254786821069667,
+   "changeLabel": "vs. dia útil anterior",
+   "updatedAt": "2026-11-25T14:15:00.000Z",
+   "sourceId": "ecb",
+   "note": "Referência diária do BCE",
+   "spark": [
+    1.1080946312815114,
+    1.1052044075551772,
+    1.1013943652664273,
+    1.0989010989010988,
+    1.096803913396363,
+    1.099203077768618,
+    1.0989977140847547,
+    1.0939004113065547,
+    1.096298894930714,
+    1.0935056698268981
+   ],
+   "sparkLabel": "2 semanas",
+   "keywords": [
+    "euro|bce|zona do euro"
+   ]
+  },
+  {
+   "symbol": "GBP/USD",
+   "name": "Libra / Dólar",
+   "category": "cambio",
+   "price": 1.30598,
+   "unit": "",
+   "changePct": -0.29123297331887055,
+   "changeLabel": "vs. dia útil anterior",
+   "updatedAt": "2026-11-25T14:15:00.000Z",
+   "sourceId": "ecb",
+   "note": "Referência diária do BCE",
+   "spark": [
+    1.325556733828208,
+    1.3226638449837973,
+    1.3198358124249343,
+    1.3191219924018573,
+    1.3168464162024782,
+    1.3151319077303454,
+    1.3124737505249895,
+    1.3073433475833758,
+    1.3097920050296012,
+    1.3059774588290607
+   ],
+   "sparkLabel": "2 semanas",
+   "keywords": [
+    "libra|banco da inglaterra|reino unido"
+   ]
+  },
+  {
+   "symbol": "USD/JPY",
+   "name": "Dólar / Iene",
+   "category": "cambio",
+   "price": 159.32,
+   "unit": "",
+   "changePct": 0.15716351291884076,
+   "changeLabel": "vs. dia útil anterior",
+   "updatedAt": "2026-11-25T14:15:00.000Z",
+   "sourceId": "ecb",
+   "note": "Referência diária do BCE",
+   "spark": [
+    159.7,
+    160,
+    159.6,
+    159.3,
+    159.42,
+    159.97,
+    158.64,
+    159.07,
+    159.07,
+    159.32
+   ],
+   "sparkLabel": "2 semanas",
+   "keywords": [
+    "iene|japao|banco do japao"
+   ]
+  },
+  {
+   "symbol": "AUD/USD",
+   "name": "Dólar australiano / Dólar",
+   "category": "cambio",
+   "price": 0.65699,
+   "unit": "",
+   "changePct": -1.0774587740621433,
+   "changeLabel": "vs. dia útil anterior",
+   "updatedAt": "2026-11-25T14:15:00.000Z",
+   "sourceId": "ecb",
+   "note": "Referência diária do BCE",
+   "spark": [
+    0.682081713389264,
+    0.6785181164337087,
+    0.6756756756756757,
+    0.6734913793103449,
+    0.6731287022078621,
+    0.6711409395973155,
+    0.6665777896280496,
+    0.6616819956328988,
+    0.6641429235571494,
+    0.6569870573549701
+   ],
+   "sparkLabel": "2 semanas",
+   "keywords": [
+    "dolar australiano|australia"
+   ]
+  },
+  {
+   "symbol": "BTC",
+   "name": "Bitcoin",
+   "category": "cripto",
+   "price": 60438,
+   "unit": "USD",
+   "changePct": 2.50623,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    63662.92620612519,
+    63747.051733626664,
+    63500.296779678545,
+    62825.886712951375,
+    62126.33215456202,
+    62136.78390280897,
+    62000.443800111796,
+    61749.56260692069,
+    59402.031842923374,
+    58502.25711367506,
+    58817.925597578746,
+    56642.54250458825,
+    57894.25694314426,
+    58122.0742397364,
+    59843.295813952165,
+    60260.617226165574,
+    60121.30168956966,
+    59259.28726744821,
+    59074.162206118766,
+    60992.18487189543,
+    60817.55127334065,
+    60837.960560545376,
+    61227.54200446,
+    61168.680913866745,
+    61443.51453651883,
+    61239.94816306289,
+    62195.53153640934,
+    61191.66983124435,
+    61240.05131395519,
+    60307.91317840163,
+    60199.88328851875,
+    60390.425387152296,
+    59375.7634694417,
+    59689.318503717346,
+    59588.227101307726,
+    59083.66459581014,
+    58985.89506177399,
+    58012.72069559045,
+    59547.643749052615,
+    60189.22323392566,
+    60792.10788005175,
+    60743.81821582787
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "bitcoin|btc|criptomoedas?|criptoativos?"
+   ]
+  },
+  {
+   "symbol": "ETH",
+   "name": "Ethereum",
+   "category": "cripto",
+   "price": 1687.26,
+   "unit": "USD",
+   "changePct": 2.07548,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    1805.64124426024,
+    1802.1015148950044,
+    1796.9100249065134,
+    1776.0219498159713,
+    1759.192586803212,
+    1746.3954273900856,
+    1748.2874261056559,
+    1746.9846478132706,
+    1652.5363296475566,
+    1606.7730017938934,
+    1619.5095309045366,
+    1569.8436315859537,
+    1628.0974460644452,
+    1650.2330256370824,
+    1681.719904578891,
+    1684.2467910835983,
+    1682.8520025853304,
+    1658.4764176491299,
+    1663.731589960692,
+    1706.3917329334063,
+    1716.4539695788997,
+    1718.6264979207235,
+    1718.3276343265145,
+    1725.0654306615083,
+    1723.1053318134632,
+    1720.1733883422332,
+    1767.6320425239755,
+    1723.602491759791,
+    1708.528038072436,
+    1698.1690950753932,
+    1691.294125508699,
+    1701.3686994797702,
+    1667.0531818639815,
+    1673.670270471702,
+    1671.3152983031714,
+    1655.3314259282693,
+    1642.205889551496,
+    1630.071137786688,
+    1677.6338170497847,
+    1684.707992351644,
+    1700.0325776094817,
+    1692.9984945065357
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "ethereum|ether"
+   ]
+  },
+  {
+   "symbol": "BNB",
+   "name": "BNB",
+   "category": "cripto",
+   "price": 553.98,
+   "unit": "USD",
+   "changePct": 2.39086,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    589.2601518319228,
+    591.5177773493753,
+    590.3271698192466,
+    586.1135492601335,
+    580.5344700024332,
+    574.6953178199439,
+    572.1946635625508,
+    569.5794886840202,
+    545.9979373309513,
+    535.0243255822629,
+    539.6332187921867,
+    517.2857307782141,
+    523.9006434110445,
+    529.3593946584328,
+    545.7275028185421,
+    548.9533248188472,
+    547.6898349181746,
+    540.6181788784709,
+    539.813911783785,
+    552.2853806364416,
+    556.2395423325488,
+    556.5353287526633,
+    559.5841351981287,
+    557.0205145133104,
+    558.8569285175097,
+    555.7642819649003,
+    565.1983538338253,
+    557.6069827685076,
+    557.6550036885875,
+    552.6146893239267,
+    549.736613344262,
+    550.6627223784865,
+    544.3175044990406,
+    548.2836226245363,
+    545.9709679093226,
+    541.7804175967656,
+    539.9805125763805,
+    533.3296837946067,
+    548.1873000753409,
+    552.6672209421275,
+    557.0765019621372,
+    557.8793111981714
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "bnb|binance"
+   ]
+  },
+  {
+   "symbol": "XRP",
+   "name": "XRP",
+   "category": "cripto",
+   "price": 0.950427,
+   "unit": "USD",
+   "changePct": 3.50639,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    0.9830463890990783,
+    0.9814245468538769,
+    0.9862583060455661,
+    0.973327235934541,
+    0.9608302460109149,
+    0.9579610351522722,
+    0.9711432618360967,
+    0.9515142316989847,
+    0.9088421283725391,
+    0.8941263781214032,
+    0.9092904883713346,
+    0.8801532804261786,
+    0.8903574830537845,
+    0.902402261650891,
+    0.9227970024686637,
+    0.9353996169883412,
+    0.9309196532178046,
+    0.9178428853702947,
+    0.9144867447927923,
+    0.9277461115928611,
+    0.9237056107595994,
+    0.9257379976262275,
+    0.9232090677787572,
+    0.932264631120041,
+    0.9397652258594885,
+    0.939361439052524,
+    0.9728306754618122,
+    0.9365049330081819,
+    0.9420816730137228,
+    0.950208780424531,
+    0.9386053250483467,
+    0.9273499766042166,
+    0.9103324529860817,
+    0.9186629030858068,
+    0.9213851446367294,
+    0.9162635181329362,
+    0.9146223542242943,
+    0.8935662606902145,
+    0.9238540578590413,
+    0.9403534797163994,
+    0.9510015520295109,
+    0.9583162420367034
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "xrp|ripple"
+   ]
+  },
+  {
+   "symbol": "DOGE",
+   "name": "Dogecoin",
+   "category": "cripto",
+   "price": 0.056443,
+   "unit": "USD",
+   "changePct": 3.35861,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    0.059384173623433976,
+    0.05931256148444584,
+    0.059312485505485325,
+    0.05880523898744211,
+    0.05818228097218122,
+    0.057643999322828425,
+    0.05765680423751606,
+    0.056832022204479526,
+    0.05375618737598735,
+    0.05311181698127309,
+    0.054290546673735555,
+    0.05202487172602577,
+    0.052825822934513246,
+    0.05368514413655391,
+    0.05508057612882492,
+    0.055202171931524484,
+    0.055214937688960325,
+    0.05429989449357975,
+    0.054208940672835076,
+    0.055344268748461836,
+    0.05522637916435902,
+    0.05518974669907334,
+    0.05503647949648407,
+    0.05533408356937691,
+    0.05566512062359167,
+    0.05558900318665859,
+    0.05814806998913458,
+    0.056633514432988405,
+    0.05653301434959626,
+    0.05632432942982542,
+    0.05597208688852108,
+    0.05552529368915518,
+    0.05471586804257816,
+    0.05521630939499387,
+    0.05504525372738193,
+    0.05467790015402826,
+    0.05397081111394381,
+    0.052845917653683426,
+    0.054872515176182336,
+    0.05590058219179068,
+    0.05665967659765716,
+    0.056672061514759176
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "dogecoin|doge"
+   ]
+  },
+  {
+   "symbol": "ADA",
+   "name": "Cardano",
+   "category": "cripto",
+   "price": 0.147642,
+   "unit": "USD",
+   "changePct": 3.13004,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    0.15362390801393866,
+    0.15364677766258977,
+    0.15430498535150547,
+    0.1533945189542455,
+    0.1513736209189115,
+    0.1499519056154178,
+    0.15023759230460243,
+    0.14697415655932244,
+    0.13981849489391313,
+    0.13954026399497707,
+    0.1429392791009785,
+    0.13620468448308248,
+    0.13853359596521847,
+    0.14021704058620463,
+    0.1441925883216643,
+    0.14507352883672617,
+    0.14425520782211204,
+    0.1418327451932117,
+    0.14195337477539008,
+    0.14562187612256006,
+    0.14457982006067405,
+    0.14458327360584428,
+    0.14370015475211145,
+    0.1445682493273596,
+    0.14647882622486286,
+    0.14532013497778665,
+    0.15323672546475328,
+    0.14758695184046378,
+    0.14880211578202146,
+    0.1482291586050928,
+    0.14739462613691542,
+    0.14543475550347987,
+    0.14339013282153246,
+    0.14390434857391612,
+    0.1437438237173013,
+    0.1427643146775262,
+    0.14114172891776094,
+    0.1373127268012014,
+    0.14338422199872605,
+    0.1464617465316349,
+    0.1476931789395473,
+    0.14912984731970194
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "cardano"
+   ]
+  },
+  {
+   "symbol": "AVAX",
+   "name": "Avalanche",
+   "category": "cripto",
+   "price": 6.64,
+   "unit": "USD",
+   "changePct": 2.22959,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    7.060957261681346,
+    7.073654987272373,
+    7.082599631561191,
+    7.035889748048855,
+    6.980237904785453,
+    6.919631738267086,
+    6.910539130669176,
+    6.864088118284644,
+    6.482725679959184,
+    6.497306538883784,
+    6.512172044414959,
+    6.187343803455726,
+    6.273222855166036,
+    6.428462269714648,
+    6.605273985429389,
+    6.629595372853013,
+    6.573365082846861,
+    6.509457617988597,
+    6.51688808009993,
+    6.689117243225009,
+    6.673115591149826,
+    6.670911880463899,
+    6.651388195705499,
+    6.661377414672139,
+    6.7157746001074825,
+    6.6984969295397505,
+    6.96185442757096,
+    6.7915964941127385,
+    6.800046531454859,
+    6.789054306670674,
+    6.723749591081621,
+    6.689256412184965,
+    6.4985009305188814,
+    6.563030027238599,
+    6.544498678895387,
+    6.506436151334633,
+    6.451189368494325,
+    6.327852345548923,
+    6.51142905713569,
+    6.607868972068281,
+    6.671354292202884,
+    6.6885190486028225
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "avalanche|avax"
+   ]
+  },
+  {
+   "symbol": "SUI",
+   "name": "Sui",
+   "category": "cripto",
+   "price": 0.667149,
+   "unit": "USD",
+   "changePct": 3.91668,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    0.7267560435564235,
+    0.7277204479281494,
+    0.7251660359078292,
+    0.7170468658440973,
+    0.7074906903672418,
+    0.7041957631306996,
+    0.6997365431929974,
+    0.6858553907114899,
+    0.6522672948827254,
+    0.6406061123351493,
+    0.6504947118880091,
+    0.6097918594770402,
+    0.6154872184096349,
+    0.6273301740086219,
+    0.6457603064903189,
+    0.6459601514833536,
+    0.6477294287691151,
+    0.6364696575150093,
+    0.6387607472120489,
+    0.6593551135314122,
+    0.656681495181478,
+    0.655476507136046,
+    0.6521156766878591,
+    0.6590436255656558,
+    0.6677998351095602,
+    0.667256042755607,
+    0.702700123982468,
+    0.6734240337625901,
+    0.6734597828479478,
+    0.6717394271553403,
+    0.6646823707936568,
+    0.6548699884165654,
+    0.6409414109229068,
+    0.6441802945498337,
+    0.6449600757557641,
+    0.6429059083680819,
+    0.6371682549973857,
+    0.6192243430667966,
+    0.6483138987986785,
+    0.6633210152693637,
+    0.6754136326041053,
+    0.671233454001505
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "sui"
+   ]
+  },
+  {
+   "symbol": "LINK",
+   "name": "Chainlink",
+   "category": "cripto",
+   "price": 9.14,
+   "unit": "USD",
+   "changePct": 4.50722,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    9.159389692185847,
+    9.18180884383029,
+    9.168018862650593,
+    9.059159700752659,
+    8.981053060913148,
+    8.903962193295428,
+    8.895573265882089,
+    8.782893756896163,
+    8.333486288508146,
+    8.359994314724814,
+    8.5307018966073,
+    8.174857176603469,
+    8.319092740444631,
+    8.444843768934426,
+    8.58448056621732,
+    8.637314272639319,
+    8.599329963989764,
+    8.530600115093595,
+    8.555705622201764,
+    8.7947834417754,
+    8.804966943533023,
+    8.798770396601508,
+    8.835483553792809,
+    8.89546206867881,
+    8.927001442230484,
+    8.888936989897683,
+    9.242956881836488,
+    8.980073316166457,
+    9.033718029886447,
+    9.055203270428281,
+    9.055789755753258,
+    8.945905177011586,
+    8.786608061040138,
+    8.822266000484717,
+    8.802513524374572,
+    8.74755337517994,
+    8.649349550859329,
+    8.539987561317881,
+    8.86737771278422,
+    9.056759175804366,
+    9.185950636440378,
+    9.215498772326042
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "chainlink"
+   ]
+  },
+  {
+   "symbol": "XLM",
+   "name": "Stellar",
+   "category": "cripto",
+   "price": 0.128295,
+   "unit": "USD",
+   "changePct": 3.73241,
+   "changeLabel": "em 24 h",
+   "updatedAt": "2026-11-26T07:33:51.000Z",
+   "sourceId": "coingecko",
+   "note": "CoinGecko · média de corretoras",
+   "spark": [
+    0.1372858594422037,
+    0.13815089259493052,
+    0.13678715105034103,
+    0.13376871223750558,
+    0.1325978255037819,
+    0.13321664646787504,
+    0.1344057917788462,
+    0.13208816981357374,
+    0.12690088459133286,
+    0.1260365109549994,
+    0.12738070803485407,
+    0.12185199915543446,
+    0.12343409238645384,
+    0.1257083450240492,
+    0.1284896191501917,
+    0.12953119182027395,
+    0.1289631714452178,
+    0.12693204840686576,
+    0.1271103068196693,
+    0.1292023022844391,
+    0.12738539601555515,
+    0.12752648340318212,
+    0.1270918659225803,
+    0.12711429392379622,
+    0.12840269439878033,
+    0.12818611826167,
+    0.1333364786828151,
+    0.1302816257184387,
+    0.13108678772988777,
+    0.12973308612087156,
+    0.12874400517459988,
+    0.12592785973853965,
+    0.12278936061699115,
+    0.12380698660765627,
+    0.12337312544960641,
+    0.12343766568170725,
+    0.1226897638591871,
+    0.12049590262664003,
+    0.1255818449775323,
+    0.12789907432436587,
+    0.1291473468733913,
+    0.12894126031264366
+   ],
+   "sparkLabel": "7 dias",
+   "keywords": [
+    "stellar|xlm"
+   ]
+  }
+ ],
+ "news": [
+  {
+   "id": "54e486e4",
+   "title": "Dólar cai a R$ 5,81, com novas tarifas de Trump; Ibovespa sobe 1,58%",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNTjFrZ3NKOTdHRmsyYWplY3VLY2hneW9ZN0tSbEd6OHQ2UDRlYjluMWZFT3gtVUFLNk1fUW4yZHRDMHF4X3VqUXVGeEVjdFNHNHdZaGxOM3F0MXZPQjEtc1ZFcFpNbkk4eXVqd185Q2FTWE5XYklFTmZWbkJjb3loajJDb1IxTmhXVHNPTGhzdkx1Y2tQcjJ5WVozSlFkb0lEYUZ4YzlqTlZDdw?oc=5",
+   "source": "brasilagro.com.br",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T07:32:19.000Z",
+   "topics": [
+    "bolsa",
+    "cambio",
+    "exterior"
+   ]
+  },
+  {
+   "id": "3117b65c",
+   "title": "CMN e BC anunciam novas regras para conter endividamento das famílias",
+   "summary": "O Conselho Monetário Nacional (CMN) e o Banco Central (BC) aprovaram na noite desta quarta-feira (25) um conjunto de medidas para prevenir o endividamento excessivo no Brasil. As novas regras estabelecem critérios mais rigorosos para a…",
+   "url": "https://www.moneytimes.com.br/cmn-e-bc-anunciam-novas-regras-para-conter-endividamento-das-familias-fets/",
+   "source": "Money Times",
+   "via": "Money Times",
+   "publishedAt": "2026-11-26T07:14:00.000Z",
+   "topics": [
+    "juros"
+   ]
+  },
+  {
+   "id": "cbc942aa",
+   "title": "Hill&Smith prevê lucro de 2026 acima das expectativas com forte demanda nos EUA",
+   "summary": "",
+   "url": "https://br.investing.com/news/stock-market-news/hillsmith-preve-lucro-de-2026-acima-das-expectativas-com-forte-demanda-nos-eua-93CH-2138660",
+   "source": "Investing.com",
+   "via": "Investing.com Brasil",
+   "publishedAt": "2026-11-26T07:13:09.000Z",
+   "topics": [
+    "exterior",
+    "empresas"
+   ]
+  },
+  {
+   "id": "8e49f049",
+   "title": "Japão - Ações fecharam o pregão em alta e o Índice Nikkei 225 avançou 0,84%",
+   "summary": "",
+   "url": "https://br.investing.com/news/stock-market-news/japao--acoes-fecharam-o-pregao-em-alta-e-o-indice-nikkei-225-avancou-084-2138657",
+   "source": "Investing.com",
+   "via": "Investing.com Brasil",
+   "publishedAt": "2026-11-26T07:00:26.000Z",
+   "topics": [
+    "bolsa",
+    "exterior"
+   ]
+  },
+  {
+   "id": "1598a316",
+   "title": "HSBC rebaixa HP Inc após orientação fraca para 2027 e preocupações com tarifas",
+   "summary": "",
+   "url": "https://br.investing.com/news/analyst-ratings/hsbc-rebaixa-hp-inc-apos-orientacao-fraca-para-2027-e-preocupacoes-com-tarifas-93CH-2138656",
+   "source": "Investing.com",
+   "via": "Investing.com Brasil",
+   "publishedAt": "2026-11-26T06:54:20.000Z",
+   "topics": [
+    "exterior",
+    "empresas"
+   ]
+  },
+  {
+   "id": "921b6007",
+   "title": "Macquarie rebaixa Zscaler para neutro após revisão de perspectivas",
+   "summary": "",
+   "url": "https://br.investing.com/news/analyst-ratings/macquarie-rebaixa-zscaler-para-neutro-apos-revisao-de-perspectivas-93CH-2138653",
+   "source": "Investing.com",
+   "via": "Investing.com Brasil",
+   "publishedAt": "2026-11-26T06:48:17.000Z",
+   "topics": [
+    "empresas"
+   ]
+  },
+  {
+   "id": "96e4eaee",
+   "title": "Wall Street cai com crise de IA e tarifas de Trump",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9SN1dQbmhlbW1WTVRwaTEwMnVueUIzXzZ1c0w3aHZKNVpSTTVYQjhSMXlxRF9TYVBtSnk0UFZwNk12dHh4ZWdtQUxudWdJQk5NbUdwVnZjWmhrVTlJam95TnBhZlF1amJ5XzBoZEI0Y2ZMZHJteEM1YWppRQ?oc=5",
+   "source": "Acia Araçatuba",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T06:37:13.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "e3141f53",
+   "title": "Ibovespa sobe com fiscal e PCE dos EUA no radar",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBJS0U5Q2w3bmlZbDJoNmF4cnBvSjR1dnJHRlBDSWtMeWFfeHM5M2F2dkpPa25GclBBeklPVXdla0U0QVpkclZuRE1yQ0hsWWlMcXpMbi1DcHhuZVNfYTN4dWhBbmcxQzBORHFNaVBSeExxQ0VuOVZv?oc=5",
+   "source": "Acia Araçatuba",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T06:35:55.000Z",
+   "topics": [
+    "bolsa",
+    "juros",
+    "exterior"
+   ]
+  },
+  {
+   "id": "d7d9891f",
+   "title": "Bitcoin se recupera para US$ 60,5 mil, mas temores sobre juros e regulação persistem",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNYkdBVWo2TWo2aklzSmg4MEJZbmZSOWVDaER5Si1iNU1YNHluWF9fQkdzcDh3T3I2X1J1NWZPVEdTYWpOU2U1UVdrT0tjenJ3eE1JTlpiX3hLOWxtUHBqaXppdmVOdmFTejNfNndXcG1GbjJTdFNWWFRob0dtU0J3Z2RsbVRURVFKNVZaY3ZKV2M0cmhRODNNdEVkR0tnVWs1eEsyM3hnYl9pLVdQNm9qYTlXbEp1TEtOeHV0SGU2UDc2ZVY4ZXQ3THRmMzdCRjRwQUtlVDJn?oc=5",
+   "source": "Investing.com Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T06:32:00.000Z",
+   "topics": [
+    "juros",
+    "cripto"
+   ]
+  },
+  {
+   "id": "a3fcdd4d",
+   "title": "Alta do dólar eleva perda com swaps a R$ 38,96 bilhões",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPQWhsRW9kZUFkdjJybGVfTE1aS0VMWDljRi1VRGhTaldPc0dZYmlxYzA2MzhRSkhudVNvajZ2QlBmRmZYc2lBQV82Vm9yMEZhdkJZaVA1QklBWVAyVkltbTdzd3R2UDhoSFlzano2VXVaTXN4eUt4b3MxWGU0Q2lWNXNzd291bktwNEhyOUM0OUlpUjNOYVE4TE9uZXdSRkdlVkd0eGl3?oc=5",
+   "source": "Agrolink",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T05:45:00.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "841e4f84",
+   "title": "Bitcoin retoma patamar de US$ 60 mil com volta do apetite ao risco",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPaUwxYjhYMHJTN29yNXZ6eW1kc3N5anlpdWh0UFNmZU0xdFlJZjlLb1FEblBNaUM0aEJGWERlT3NmaEFLTDNJVlZFendOS3VCNkJtbVJpS0htcnlrWk10WFpDNzZlYnZxeEdLeXQ1RVJxOHhMQ3RZbDZWSUwtaVRmRkIwTm5WT2FOcjc0VW11VjZ2cUZNT094X3VySFlNSVlSaW0xVzMyeU9YNUJYQ29LbW5PeHBOb3pXeHJCQVNYV1XSAc8BQVVfeXFMTVRWRUtiOHJHOE12QjVxS2tQd0xsNWpLdkExQlNaNmd4djlTOWJhbnQ3a0t4QkpEMXZkQXN4SW1YVGRsRUIyYUJQUmNLNmtxdDYzeVFEOGxIUkxyTVR4Mi1qWmNMbF85MGxlVFFtNzAtOWxFWmNhT2FQNkNHN2t1WXFtZWFNcUlmVnptd3dGdjZhRXFXLUJza0RWNGU2WVp2MW9kWTAxT3FLX1AwQWgxenBlbTBxa09WYmJ3WFlzZmE4MXNMRkQ1aUNvUGk2N1Vv?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T03:11:38.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "5caefaf4",
+   "title": "Bitcoin hoje: acompanhe ao vivo a cotação",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOdEdwcUpLcGdyWHhPTU5mNy1PRHVaVFRoOFZUZGI3bURVazdtRERlcHB6YzhHYXU3OGtoRUxUY2w3ckNYZTRya01hSkEyV0NEYmxOa1FSRy1hcDlsV3NHaE94Y0dxU1Zwc05uRm9IejBiZVZHMkcxaWZLZFNndjBuajBfeW9fWlhaYzdROGRVTnJ5TFU1MDR3MG1tM0trWVZqUTJrZloyZldCMW92cVVzSDFUcWN6S05PQ3ppSkt4cWQ5UEE?oc=5",
+   "source": "GZH",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T03:04:07.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "3f204cea",
+   "title": "Entenda esquema que simulava obras para extrair milhões de toneladas de minério ilegal em MG",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQRlJWcUVtc1FUSU41enFfNEx6c0ZzWVVOQlhXV2xSNGFCX2xjM2NWNVlOYjVaN3hqemM5VUlvdklZSUtkTnlDODZGSHFWYUx2bElJT2pwTGVFV2VzcG1mTHNPVjUtczZlTHcyMUpsRHBuNjBwc21obWpZRTgwcTVsMHQxU3pBcld5RzJ4OVUzX2VwRWRIUW81SGpRUzM1Z2FWTWowcENkdG85dEtwRnhIQk1GZGFKUmRPaW9uYUFySkxZQ2d5c1lVeU5TN3l3Y1BreHhURnRGSVRoakQ0cWRncmV5ak9QS3FlN2fSAfgBQVVfeXFMTlVrZ2Fia1hOY29xejJTcTB4dFZoWGVpa21xRXBMUXZDMUFwcmlJN3JkWHhVRU5MMkJkSlA3Z18tRGNTMkJsR0JIZWgyLUFMY3lEWFlGZjY5RE00TXR3NHV6WGZYZXF3Y19iWkktOHZHdlRpY0NJeEY0S3JWQTRiYlRTNEN5bWFRNW81bDBNQVpJZlJBVFdGSXJLVFhNbFJTY2dLVWhZX3hZQ0hzRkpKOFc0RVZfVE96TnQzSE9CdnJqa2QyeWh0ZGNETkFaaF9teWlLQlBjdkY1cTBlR0d1bGpNNmprWHB3bVJXdzZlRWlnZFFVcTA4dXA?oc=5",
+   "source": "G1",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T03:00:00.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "23605a03",
+   "title": "Previsão de preço do Bitcoin (BTC) 2024 2025 2026 2027 - 2030",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPV3d6VzI3d090Z1diaFNNX1h0S3FjVllDMk1xWXB4UkI0SkdHaDl5OU5reDQzdi1fWllDOTJsc0hja214a3JxSkNzbm5PY1d5UWYzUGEya1lBdE5KeTZybkxVbEtQZno1S1pVMmpxSEdGbkoxMUl0Xy1qRkVoM0tlMVN5Tkl0dw?oc=5",
+   "source": "Changelly",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T02:47:25.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "dd9e07ba",
+   "title": "Até onde o Bitcoin, o Ethereum e o XRP podem cair? 4 níveis de preço para acompanhar",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQYnJJWGowSTJ2YlBqMjZCdFJJTHlpTGQtclg1czIzck5YQ2w4b3Jqa3BDYjY2THFvWkFNZF8xejhuVEMtTzdDVU1SMFpiOFdmWFpLZi1XdHJQNHRGeTZUSlVBd1JqVVl3TTNJZjY5dnlmc1N1Z0U4T1dUVU01ZFFRUWM2RQ?oc=5",
+   "source": "BeInCrypto",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T01:50:46.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "769f95e7",
+   "title": "Hoje em cripto: satélites da SpaceX, saídas de stablecoins e o Bitcoin da CleanSpark",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5fSlFTMUNyeWpEdDFEbTFWX0VCZWU4ZTFJWVc1b0Z4X0xUbkljeUE4TTd4ZVE2LU82eHpRYk8tYy1WZ2QtbWJpVU1oRHVLT1hsWXozQnlzM09FZlZHVC1KeVpwcTJaZmt0bVpTSFhIWXU?oc=5",
+   "source": "Cointelegraph Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T01:44:11.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "5c2cc4d1",
+   "title": "Dólar cai 1,58% com fiscal e rumores sobre Trabuco na Fazenda; Ibov sobe",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNcXh5NTBQZXlzSzdobjBWQ1hYXzBqYjdabVZZc1NWcFlublR5cnVTalNaOHdLelBOY1pfYllURUhaM2FITDNFOXctTjFmaXZqYktGNWNIbEpUZThwQUd2bWUxSW1ScVpFTjhvMlM4SUxlcnl6MVYxZDF6bW1fTWl5dEpfbGRNQzhZWTZ6YTJqOHU2NHFQQWlIX0tIbkpZdHFta25xMkdteG5sYkxxQlpkNWtn?oc=5",
+   "source": "UOL Economia",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T01:14:34.000Z",
+   "topics": [
+    "bolsa",
+    "cambio",
+    "juros"
+   ]
+  },
+  {
+   "id": "433bcd4d",
+   "title": "Bolsa sobe e o dólar cai com expectativa por novas medidas de controle das contas públicas",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxPcnZCMHRUc0swNXhTWGkweVpScFpYN0RmSHNSRzdTZUcxZXRIeWp3eTlJWjVuRGtNOUp5bXJPUTNldlpCYjBlRG9BZjhacjkzVGdfb1V5NFlXLVoxMTNCdzdYOGZzUmttQjFVQUxKeDBuUWVOQTJuTzQ4bXJZNVBObENFeEl2VllSbUdaUzlTcXFmdG12SVY4dEdWcUZJaVJXY1QzMDFrQW5YVVhiWEs3S2RYemVmYjR1SUJHLWZoSmNjeVctR19RZ0hEY1MzYlJoUk5GTzNlNlZINlMwZjB4aS1JZzlremvSAfYBQVVfeXFMUDdCSThoa2ZTNW9EZ2ZBd1JuLU5IOE1qZldpZlcwTXBhUk03WXhXMmdhR01NeGdCMWx0ZEgxb1FYalZXdWhHYkhTMUt4eFJXNHJIRDUtTTRVU0syMEgwYmlkc21JUTM1Q1JhYm9kdXpiNW54ZVFYeW5kYUc0QVR5Wmp4VzVGNWlROHpXRXluaExXYUVUd3QtaFpFb2U3N3FraXZ2YmtTSDhUNE5ON1h2SjZGWENpMUo5a0ZlRDdtWTRldWVpSDJTdk1ZdEpFNHJRbm5xaElMN2RQQ0lvRVJOalN2RUpGa0x5M2RkbFo2c3ZOTWV2aXl3?oc=5",
+   "source": "G1",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T00:26:13.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "5438855e",
+   "title": "Petróleo e gás: produção recorde mas exploração em ritmo lento",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOY2FGeEhuRzBTbGFqb0RraGtHX2I5c0xjcXdBWHNlU3d5QzBtc2VpZU1DczVueVRBUVB6N2hoQUFBdENFSzNFZHJGZTJCY0hiRWZQUFNTeWFvOEJONk01UmtsNjdDeUp0RFJzYnpqRkxjSFlCLXNWWnhvNWFFdV96SkpYU3hlb1kxZ21yWnFVaHZyZU9TeE5DNktR?oc=5",
+   "source": "Monitor Mercantil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-26T00:12:00.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "469b26c6",
+   "title": "Dólar recua pelo terceiro pregão seguido e fecha a R$ 5,81",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxONlJXY1A3TmNQSHBnQjBWTmN0VHViNFplcDZhRnBsN2xUdDVCUVF3clFxd3E5LTk4a0l4TllaSC01TWhtMVFCVjNLX0dCeTlteTZGU3Y3NllFYUVNcXBWQmdqMHdJNm5jLTdmbkkxSlRKVTlBQURaZWpaV01zUWx1X2xoa1VmZXJUZU1OamVwR2dGa2Jxay1TSWp6Ukhuc3JDS2Vn?oc=5",
+   "source": "Campo Grande News",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T23:49:00.000Z",
+   "topics": [
+    "bolsa",
+    "cambio"
+   ]
+  },
+  {
+   "id": "9bf17588",
+   "title": "Suíça autoriza 57 jurisdições para troca de dados fiscais sobre criptomoedas",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQbW8tOTB2ZEFvV2EtWUJ6Q2x5OHNETERua3J2ZEcta0xyMkFvLVBUZlc3R21kUUxJWGdudnRUS215X21WUlBWVWZmaW5ZU3BYRlVmQ3hNdUZpSk1Cb0t6RWJiLVZ2b0J1SWE0QndVZVR3LXp4NmhsWDNZTmd3ZThoT3otSUJ3THByOUxMS0RUQmJadkV5VXphUA?oc=5",
+   "source": "Cointelegraph Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T22:53:45.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "9c1c2ccf",
+   "title": "Yduqs (YDUQ3) vai aumentar capital em R$ 2,5 bi",
+   "summary": "A Yduqs (YDUQ3) aprovou em assembleia a incorporação da Afya, em uma operação que vai aumentar o capital social da companhia em R$ 2,54 bilhões e emitir 569,6 milhões de novas ações ordinárias. A transação, já aprovada também pelos…",
+   "url": "https://www.moneytimes.com.br/yduqs-yduq3-vai-aumentar-capital-em-r-25-bi/",
+   "source": "Money Times",
+   "via": "Money Times",
+   "publishedAt": "2026-11-25T22:44:45.000Z",
+   "topics": [
+    "empresas"
+   ]
+  },
+  {
+   "id": "6f194c70",
+   "title": "Exército dos EUA declara sucesso na detonação de explosivos à base de chumbo em Iowa",
+   "summary": "Moradores da cidade mais próxima do depósito de munições foram retirados com antecedência como medida de precaução The post Exército dos EUA declara sucesso na detonação de explosivos à base de chumbo em Iowa appeared first on InfoMoney .",
+   "url": "https://www.infomoney.com.br/mundo/exercito-dos-eua-declara-sucesso-na-detonacao-de-explosivos-a-base-de-chumbo-em-iowa/",
+   "source": "InfoMoney",
+   "via": "InfoMoney",
+   "publishedAt": "2026-11-25T22:43:07.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "d5994de3",
+   "title": "Governo eleva o tom, reage a possível tarifa dos EUA sobre açúcar e aeronaves e fala em reciprocidade",
+   "summary": "O governo brasileiro manifestou indignação com a recomendação do Escritório de Representação de Comércio dos Estados Unidos (USTR) para a imposição de novas tarifas sobre as importações de açúcar e aeronaves do Brasil. Em nota divulgada…",
+   "url": "https://www.moneytimes.com.br/governo-eleva-o-tom-reage-a-possivel-tarifa-dos-eua-sobre-acucar-e-aeronaves-e-fala-em-reciprocidade/",
+   "source": "Money Times",
+   "via": "Money Times",
+   "publishedAt": "2026-11-25T22:35:28.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "ca753fc8",
+   "title": "Ibovespa ganha 2,5 mil pontos com especulações sobre a Fazenda; Bradesco (BBDC4) sobe 4%",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFAwRkNfNFhzRWhkYnZuRGRRS21vV0FqeUFiby1nRVdjSmZaRE5QcHVkQlpYeDNNemhMcy1teHhGVVRKTWQwZy00Z3FFb21tWHdNX3FOMkNRMTVmNllSeHpHdjBLVlVaRm54UU9aQ2toT0RxVzVxaHN6cWl4S0ItUdIBgwFBVV95cUxNQmNEZEloR1BSNHJMZ002TnRkb3k3T2lld1lMOFNwRjE2Y1JlaVh4aENJMTFoOFltTDFCZUdOT3UyWFFGa1c0QVVoczBEUDFKbFJyUnpZbmthSHo5R2t4Um5FeDNhWXh6RVdDZ2lfVjd6TGthb0h0Q3dXcGcySmxjZnJQRQ?oc=5",
+   "source": "Suno",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T22:31:35.000Z",
+   "topics": [
+    "bolsa",
+    "empresas"
+   ]
+  },
+  {
+   "id": "6a31b7f1",
+   "title": "Petróleo fecha em alta com tensões entre Houthis e Arábia Saudita e ataques da Ucrânia",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQcjE4RE5zZG9OdUpFVzVHLXVJZm0xUlQzWkhuSlQxbjJXX2Z3S1FzRk96UHJqdTl2aHFqQ3pLMTlsZmM5bnNGRlZ2bTB4Qm0yMjRGUlNoVjlFNG15S0ZkS0NZc1YxM250RUpjZFVqUzU2SGJLaFJiODM0TDJpZlJfOUk3MTNlbnNvY0FPVlZSbDVCR2dLaUFwXzM4anRRdzhFd0M1NTZ5OUxKcHAtNmFDalgwVlRrNzRLNTJGeWhNcDM?oc=5",
+   "source": "eixos",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T22:28:02.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "a7326c27",
+   "title": "Especulação com banqueiro na Fazenda derruba dólar e anima Bolsa",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxORHZQNDl2TUFNMnBLbllnSTRPTy1FbjFlVW10VmlfMWNDUWFKZ1VQODhJdFpmbnRxaWhfa1ZFM1AxOVJRSlIzalFlZnZPTWtUWElLNUNRUjhFd25wSWdiTDJwMVJ2cjJxVkk4UmZOZVkzTFcwc2RwYjVmM1pWUFVzNnJyUkFjZWc4VEdKdjZBOWVHb3QwUlhITXdzTUQ3UQ?oc=5",
+   "source": "Monitor Mercantil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T22:27:04.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "d9db8157",
+   "title": "Em novembro, royalties do petróleo destina R$ 8,2 milhões para cinco municípios do litoral Norte",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQMGtkbUVWWEhKQ2pDMHpuVXg0eUJ0WkNPTDFkM29FMVJVbmhfTWRiSEtKeEhGbWxMRkNKRGF3N1UwWkZiU3JUU2VNRVdWcXI3ME9SZVlmYzZxSWhCLVhNOTRDd1dYUHhZakRTeFpTekFwd0dIT29mdTJfVzdwS183dkt4SUd6RTZSeHc5cVJ5djhxSzBpQzYxenAxZlF5X1Z1LVdUT1VGTmU0dV83SzN6dmZVbHZMYXZhT2JSOUJGM2VkWW1Da3NxR2Vqc3hLcDhrakE?oc=5",
+   "source": "Da Praia News",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T22:24:45.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "8f6b0cb2",
+   "title": "Segurança alimentar global é oportunidade para Brasil, diz Tomazoni, da JBS",
+   "summary": "Em encontro com a imprensa na sede da companhia, em São Paulo, os executivos da JBS ligaram as novas operações no exterior a projetos de segurança alimentar de governos estrangeiros, disseram por que as tarifas incomodam pouco e detalharam…",
+   "url": "https://www.infomoney.com.br/business/seguranca-alimentar-global-e-oportunidade-para-brasil-diz-tomazoni-da-jbs/",
+   "source": "InfoMoney",
+   "via": "InfoMoney",
+   "publishedAt": "2026-11-25T22:21:38.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "8d761e6c",
+   "title": "Cosan (CSAN3) negocia reduzir participação na Rumo, Compass e Moove, dizem fontes",
+   "summary": "A Cosan (CSAN3) está avançando em negociações para vender participações minoritárias em três subsidiárias, a fim de reduzir dívida, afirmaram três fontes a par do assunto. A companhia contratou o banco de investimentos BTG Pactual para…",
+   "url": "https://www.moneytimes.com.br/cosan-csan3-negocia-reduzir-participacao-na-rumo-compass-e-moove-dizem-fontes-pads/",
+   "source": "Money Times",
+   "via": "Money Times",
+   "publishedAt": "2026-11-25T22:19:08.000Z",
+   "topics": [
+    "empresas"
+   ]
+  },
+  {
+   "id": "530c9ce6",
+   "title": "Ibovespa fecha em forte alta, acima de 1%, com expectativa de nova rodada de ajuste fiscal",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1nRkd2YjktU0paekNSX2psWmJxbzJaSVpxdFdrTDVxOHJXclk2TE1BQlotMS1VYjh4eHRnaVBETko5dVprdjVvYVJ4anBOSFJzNVVxZ05VY3ZaSFBhY2FDWDNYdG1UM2F0cXlV?oc=5",
+   "source": "Exame",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T22:18:15.000Z",
+   "topics": [
+    "bolsa",
+    "juros"
+   ]
+  },
+  {
+   "id": "9e9ec8a9",
+   "title": "Dólar cai para R$ 5,81, em meio à discussão de nomes para Fazenda",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxON05kUWR3YzhSSEJQR0o1Z2xGZml6OGIwbGJhdVBWLWMyRmhXLW5Rd3U3SGhpOUVyckNrUFpEMDBCZDZkMnBfT19zSWNIRVhHa3lWZlJSZlhhRmN6WHNEbEt0anZrdnVrV3lCWlluMzRZZTYzX1NVel9lZDhmemNGWThIU3Z5aDNkRHlqVF9TXy1SdFNxWWlHQmhWN18ydkZFU2xVRTFXN0x2WVdtOGNGN05WOWc1OGd1MHc?oc=5",
+   "source": "Agência Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T22:08:00.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "28fd2e13",
+   "title": "IFIX encerra sessão com alta de 2,12%, acima do Ibovespa",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5Ha1FzTWRranM1MjlDSFNGcXJZUWhvTVRQT3hQMkdOS1JfT3QxNkFySFNYS3VuY1hILTFsX1BYTmVQbm9QcFhBRThac1QybG5jQjJxV1hUUWhTTHVOZ2NSZnVIZnA1Mjd4eURLQmlmenRMdTYxRG5vSGZ1bGjSAYIBQVVfeXFMTXdHN0FFWkpMV2RqYWo0RWNZU1llaHF2cTVQTkFXc0JzZWFfM0ttNnMwTlBKaGZ2ZFZCdGNSTTBLeVBHZ1VyYmZ4dGhxM28tSWEzbHBJNGY4YVRvOVdoNjRUM3UzSlB0MW95WUZiajUzY1dwdG9RVHlBZ0V5cjVfWGFoQQ?oc=5",
+   "source": "Suno",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:57:46.000Z",
+   "topics": [
+    "bolsa"
+   ]
+  },
+  {
+   "id": "4d42bec5",
+   "title": "IBOV sobe na sombra dos bancões e dólar cai na casa dos R$ 5,80",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOX0tjbkdYTmppaXhKQ2JZbW5qTW9INTdHeDhmZXZOUjZuSnNVN2RZM3BZMDNvc19Rb3JoNE1ncjMyamgwc3RFOVp6NUN5Y1F2LWF5QWk3VE0zYXE3MldaTGYzY1g2R2VHUU9HbnNjNDllNEw1VWNBR0QyRzhsMkR1OG11YzlJR3pCN3dHYjBvaTlCZ0Q1aEVyTkpPQkFiY3RBanV6czlMVnNxSDQwNUZhRNIBsAFBVV95cUxOX0tjbkdYTmppaXhKQ2JZbW5qTW9INTdHeDhmZXZOUjZuSnNVN2RZM3BZMDNvc19Rb3JoNE1ncjMyamgwc3RFOVp6NUN5Y1F2LWF5QWk3VE0zYXE3MldaTGYzY1g2R2VHUU9HbnNjNDllNEw1VWNBR0QyRzhsMkR1OG11YzlJR3pCN3dHYjBvaTlCZ0Q1aEVyTkpPQkFiY3RBanV6czlMVnNxSDQwNUZhRA?oc=5",
+   "source": "Investidor10",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:56:00.000Z",
+   "topics": [
+    "bolsa",
+    "cambio"
+   ]
+  },
+  {
+   "id": "5f7246ec",
+   "title": "Citigroup avalia retorno à Venezuela após cinco anos e negocia sanções com os EUA",
+   "summary": "Banco discute com a administração Trump condições para voltar a operar no país; movimento pode ajudar a reintegrar a Venezuela ao sistema financeiro americano The post Citigroup avalia retorno à Venezuela após cinco anos e negocia sanções…",
+   "url": "https://www.infomoney.com.br/mercados/citigroup-avalia-retorno-a-venezuela-apos-cinco-anos-e-negocia-sancoes-com-os-eua/",
+   "source": "InfoMoney",
+   "via": "InfoMoney",
+   "publishedAt": "2026-11-25T21:51:32.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "a9c2f46f",
+   "title": "Especulações para Fazenda e fiscal: o que fez Ibovespa subir 1,6% após 4 quedas",
+   "summary": "Embora não haja confirmação oficial, o mercado costuma reagir positivamente a nomes associados à previsibilidade econômica The post Especulações para Fazenda e fiscal: o que fez Ibovespa subir 1,6% após 4 quedas appeared first on InfoMoney…",
+   "url": "https://www.infomoney.com.br/mercados/ibovespa-tem-alta-modesta-com-fiscal-no-foco/",
+   "source": "InfoMoney",
+   "via": "InfoMoney",
+   "publishedAt": "2026-11-25T21:49:44.000Z",
+   "topics": [
+    "bolsa",
+    "juros"
+   ]
+  },
+  {
+   "id": "a72b956f",
+   "title": "Brasileira no Brasil e americana nos EUA: como a JBS cresce sendo local pelo mundo",
+   "summary": "Em encontro com a imprensa na sede da companhia, em São Paulo, os principais executivos da JBS detalharam por que a maior empresa de proteína do mundo trata cada país em que atua como casa — e não como \"resto do mundo\" The post Brasileira…",
+   "url": "https://www.infomoney.com.br/business/brasileira-no-brasil-e-americana-nos-eua-como-a-jbs-cresce-sendo-local-no-mundo/",
+   "source": "InfoMoney",
+   "via": "InfoMoney",
+   "publishedAt": "2026-11-25T21:48:21.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "be024531",
+   "title": "Wall Street fecha no vermelho com pressão do setor tech — mas Dow Jones tem recuperação surpreendente",
+   "summary": "Às vésperas do feriado de Ação de Graças nos Estados Unidos, o clima de aversão ao risco dominou Wall Street. As bolsas de Nova York registraram fortes perdas após a divulgação de dados de inflação norte-americanos e do anúncio de novas…",
+   "url": "https://www.moneytimes.com.br/wall-street-fecha-no-vermelho-com-pressao-do-setor-tech-mas-dow-jones-tem-recuperacao-surpreendente-davs/",
+   "source": "Money Times",
+   "via": "Money Times",
+   "publishedAt": "2026-11-25T21:43:54.000Z",
+   "topics": [
+    "bolsa",
+    "juros",
+    "exterior"
+   ]
+  },
+  {
+   "id": "83fcb5e4",
+   "title": "Ibovespa B3 sobe 1,58%, com recuperação de Vale e Petrobras; dólar cai a R$ 5,81",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPRkNhcDBzRHVxRi1KbklnMXhid2NPWkJWMjNWV3kzMnpkUkF2UUlRSFhNWVdCMjFTY3I1RGY4a3BLTDZfNVZvbDcyQ0tuSGNWMk04Wi1ySHBqSFZQTnJLZjhkOGp5MkNuLS0xU1JOVHBfUm5YQ1BPNnJZSENGSDQzNThKdlgxRXhGUnJKbmVGb2o2N3R5NmYwRlRyLS12dEl0eGFqT3ZCbnhJbDY5NVA4UVgyaTFFQ0xIa1pYRC1uUnc?oc=5",
+   "source": "Bora Investir",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:43:00.000Z",
+   "topics": [
+    "bolsa",
+    "cambio"
+   ]
+  },
+  {
+   "id": "48a28cec",
+   "title": "Nasdaq e S&P 500 caem, mas longe de mínima com investidor de olho em oportunidade",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPb3R6Y3oxZ0VnVDBUVm51dU5mNkZ3RGpyV0p2cE94VlBCcU1qTGVnVmY4MkhOSHRGM3NkV2MwZVVYRDlGUkJZR3pPbksxMjBXdEkyS1NWREtZUWNuenZaZUJOa3NwUDU4eGlPR2E1Z3ZuZmE4UE5RaU5lQUh4Mm9rb2tvb1RlWUR2NTE4LUVVZjFkZ1R4OG5vNXU4SGt2Snd4YlZJWjlvZGdyM2ZVVWlhYUxGRElFazRncVHSAb8BQVVfeXFMTV93ME40bDVyRHJocTEtejNnMzhnTVlpMlljUTdNRU9LUk80UUIxZ2RoTzZTLXN1SEN1Nm5FMXZsSEVEeVk1LURYaFJjbmd6bXdxWWIzSDNnSnR6czI3LV8yVnhDVmlfb3Y4ZzJQaG5XQjRuMU9YaWtuZmx2NkphdGZBMUd3THEtQ3dVNnhiTEktWExnZk8wTXM3YWdhblVmMmozWlh5WVdWdWR6ZW1YSnY4a2tDYWtkcmxHYmJLM3c?oc=5",
+   "source": "InfoMoney",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:40:49.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "6f7c7736",
+   "title": "Nvidia concorda com acordo de US$ 290 milhões sobre divulgações de receita de mineração de criptomoedas",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPWXNfT2szRXJOcjVnRGFINndEdW16amk4eG93dGZINEtWNGZTTjdMcjJhZ0Q4YV90NFJTelFjZEtUT1B5LU9fUFUzcEduZHV6SmtLZ1FFaWFUQlJTc202QWYxS1R3ZWJxV04wbFltWDNHWlMyVktEbVdQU2dXdEtrc3Y1dU1OUXNmbEYybWtBRzFveko2TWtHWDNHc0oxdw?oc=5",
+   "source": "Cointelegraph Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:33:43.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "422161d4",
+   "title": "Nasdaq e S&P 500 fecham em baixa, mas acima das mínimas com investidores aproveitando oportunidades de compra",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxPcFBfTkhJX2xrdjJaSkJqV2NtU0wxbmxENVNublB5X0JTVlZuNTZKR0w5bGdKSWE2WEdUeWl1OW9kOGZXX0xYenhMSzkyX3h3UDM5c0RlUWhqMnc4bmZJQ2tYUjJiRTRuYUxSMFNab0hCRWw0NGo4bW4yM1kwNUdVRFFhbXVOQ0poQmp1N0tYNjcxbDM3X3d2QTBHQ2FPY3ppWU5zWFZPeHlTc2ZDaC1pMEpUYThraS1vOEZJNnFncnVkT2F3bi1HT0J4QWJqSmJmekdJbGFibTYySjl4bW41VGtLSkZnSW9rYlVMUlZwcFBrYWIwX2dGeTdlWQ?oc=5",
+   "source": "UOL Economia",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:29:45.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "11d31a1c",
+   "title": "Ibovespa fecha em alta com dados econômicos dos EUA e cenário fiscal no radar",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5uM05JeWJwNFo5R3lTY254M3dsSWdrRzY5dGswbnVjaUxBWDcwb2gwcjJYTHUtNjRvbkpWbk0zNGcyMW1WZ3JfdmQzek1IaDExTVJYRV9UM3A?oc=5",
+   "source": "TradeMap",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:29:00.000Z",
+   "topics": [
+    "bolsa",
+    "juros",
+    "exterior"
+   ]
+  },
+  {
+   "id": "f4d1d3b7",
+   "title": "Ibovespa dispara com notícias sobre ministério e fiscal; dólar recua a R$ 5,81",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQQ1RjWkZvaVEzX2VESmpsSHN4bFBBUEU3RFNWYzhIcGRXcU42YkFXbGRKYUM1MVVBeTVwdVJwNGRZb2V0Yl9VdXYzbVNCZ3JuelVVcThUSkpia3ItRFpnbHotV0JBNlR0TVBxRHZJTkFNcm9qazZ0SHpESFZNNHBkRnAyWlJMSDlJR1lmQnBYOA?oc=5",
+   "source": "InfoMoney",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:28:29.000Z",
+   "topics": [
+    "bolsa",
+    "cambio",
+    "juros"
+   ]
+  },
+  {
+   "id": "b96a9346",
+   "title": "Ibovespa fecha em alta e recupera os 166 mil pontos com PEC fiscal e expectativas sobre equipe econômica de Lula",
+   "summary": "Nem mesmo o mau humor de Wall Street foi capaz de segurar a bolsa brasileira, que passou boa parte do pregão desta quarta-feira (25) no campo positivo. Em meio à animação dos investidores, o Ibovespa (IBOV) conseguiu recuperar os 166 mil…",
+   "url": "https://www.moneytimes.com.br/ibovespa-fecha-em-alta-e-recupera-os-166-mil-pontos-com-pec-fiscal-e-expectativas-sobre-equipe-economica-de-lula-davs/",
+   "source": "Money Times",
+   "via": "Money Times",
+   "publishedAt": "2026-11-25T21:26:30.000Z",
+   "topics": [
+    "bolsa",
+    "juros",
+    "exterior"
+   ]
+  },
+  {
+   "id": "804b527b",
+   "title": "Nasdaq ameniza após cair até 4% e entrar em bear market, mas fecha em baixa de 0,62%",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNWFB5T2hNbzQ4TEk3VkNfdnNLTVRXaDE1MU5IU3hRSEVkdnkyUkpEdUVTRTdhbWd2amZ4T044aHFuaFpYUTBKZ1BvUGtSb0VKcEhwZHhRXzZDRnRFREdDUjYxRklaYXhjVjRubFhDaElMM0ZROFBFSG1MZkxqVWgzS0trVE1tVkxjUjRwcDZ1bDBJLU1IdFNPbnZNUmYtcFpaUW1veG5WRWIzTVNHZjg0NzVjS2fSAboBQVVfeXFMUHI1bWJGclJYZXRRWkhwV183enc5cWU2M05Hb3dEeEdIb3YyYV9QTXdPRDEwTDhrd0ZFWm96NnJIOEtVNWlFZFlKbFBubVFROS1wQThRTVdvWE9EQ01vVnY1WjhZNFgtYkdwaXZxa0QzaVFaQnFaaDVKYlI0VHNRNEFzaDNicktqbEJFbUVRdW5Dc1lWc0ZEaV9oZUhIbUt0MVBTMURySWgwS0JzTHgtVDlOS3dCdmV0MnBR?oc=5",
+   "source": "InfoMoney",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:26:25.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "f3d20208",
+   "title": "Klabin (KLBN11) atualiza informações sobre acidente em Santa Catarina e adia Investor Day",
+   "summary": "A Klabin (KLBN11) informou nesta quarta-feira (25) o adiamento do Klabin Day, evento voltado a acionistas que estava previsto para ocorrer em 9 de dezembro de 2026. Segundo a companhia, a decisão foi tomada para concentrar esforços na…",
+   "url": "https://www.moneytimes.com.br/klabin-klbn11-atualiza-informacoes-sobre-acidente-em-santa-catarina-e-adia-investor-day-pads/",
+   "source": "Money Times",
+   "via": "Money Times",
+   "publishedAt": "2026-11-25T21:26:16.000Z",
+   "topics": [
+    "empresas"
+   ]
+  },
+  {
+   "id": "eb26ed7e",
+   "title": "Ibovespa dispara com expectativa sobre Lula 4, exterior e retomada de compra de opções de EWZ",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOQVd5S1RXTUI0NUFyd3ZRLWlVZWhFYm1iaGc3b1VNMi1lVlFNd1NIV1ZHZmZxalNhNXM4cUtoOWxBSzdMcEZjMFhzZmVES045SlhSeHdyVUhTaFFneW5BRDR2UVpqWkVrSkoyekJkeXgwTkxIZmdaRXdSWnU0T1dnWUFJUC15ZGNSYzk4TjNCejVieUFjek1PQVAybmVEVVNtUnJTRHplUGJlY09wRDFUU0hSTFVoTkZRdzVIb1FFN09QNUxhNV94RHc1Q0N5THNIQlM1Z0VESHdKY2RYbjNUWDJHU1LSAfMBQVVfeXFMTUpFMV9zY1VJQ05EUENYM3kyNzJqeC0zYkc3RXV4Y3JYb09IaTNIWDh2OEU0TXZUZXJlRDNoVm43a0dIVTF5TGJaemlTOVltZVpGRk5BdVVMMEZBZUJsOXNEem55ZDdtMGQwRUh3c2NBbmhUOE54Q2YwT1l5NGRBb0JGZzA3MW5jcFlCTUxGQWg3THVsTEJJZHlQUGxYTEE5ajFfcGJjd1dnOUt5a012S0lmS01fZXhLb2pFeXNsUm1QSU45TXNHRTdCaEEteGtPZ05vSDJ2SW1oYXo1YUJxNmVPSThJRWo5YkpZQkZSN3F3dnZj?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:25:11.000Z",
+   "topics": [
+    "bolsa"
+   ]
+  },
+  {
+   "id": "29082d87",
+   "title": "Apesar de tombo pela manhã, Bolsas de NY fecham em direção única com techs e tarifas",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOa1JtOE1wa25wWXFiQ2czX01weV90aEJDREFHc3kwSEhMenhuUGYzZmZjWFo5SUw3eWN0ZWN4MjVUTE1hd1U3eTVDblZVYUt2ZG8xZGUxR2ZFMmxFTmFnQ0hTeU1KcWpoNW05eXpSdFBMb1p1RjJ6OTZ5SEMxaVlsTE84Nmx4QTdUTXQxSGh1Z2RXMjhlcmU4SWFJVkppY3F5YkExeWo3VGNtZmU0S3lkNHBQSWtYRmVXNkhYUWdVR0F5YW5HcE03VlVPa1A0ajYtQklMd2FfeGJXXzRNdkVXSNIB5gFBVV95cUxNNWNfUVFZYTVFdUlCZ2JMdlpPVnNYNTVIcTBKM0RGc3lBT3p1U1dFaUlTaDAwRGdwY2djbUdaTEFyWUFEaXFQRVVaU0U2ek1oeFNJdzQ3YjFDX0hFVzlpTTd2YnhBS3BYeDNGVFJ2VVM3WGotcW02UXhEeVZlTC1mV2FIOGs5TVZGXzBZbE1MeFlBMi1MMkdGajJ6Z2lRZjNiRnRjcUlOOFptbkFSQnpOVFRoQU5VOFJ4ZkpFQUkxOGVLT1lHSk1zWDNDUjJlV0lvYVlJQ2FpXzg4VThTX0RGb2hHOXpHdw?oc=5",
+   "source": "Estadão",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:22:01.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "4a4d03ee",
+   "title": "S&P 500 e Nasdaq caem, mas se recuperam do ‘sell-off’; Dow Jones sobe com rotação para economia real",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQOE5jNlBpN2t2aTR1QWRidnMtTFQ4R1NiZjNDSHZabV95X21tbWhIdC1VV0hwQVVSaUFwVkRNdDlPWEc3V0tWUGFkUTN1V09tVUx4SlNteHVDYW1MamtPSml1c01xSkpocGlFN1A4RzBNMzQ2Nkt1TmQ0TmVtZURzdUhacXlpNm84UDhzYV9KSGhVcVcyWkZLOEpRNjg1alNacUtnR2VKcFlmeGpPSGNCTkZMZ3J6UHJGbjNfUDFuMkpzcjdreVZtOFNnYUtLNWV3TWQ2SE1BZmpkSEYwSVBpYlYwWFJGZURMbEU0bNIB-wFBVV95cUxQTE5LalhRSndPakNFNjlWNE1sX0ZYRmhwWTIzOGtfRVlsZTNTd19maFVyZDN5WHFfZE02TkR6X3hzNHpVM3Yzb002X3AyNVBvVXZqQm9JUWNvdTJDaWJDbTd0T3puU2ktRThNRWdRQlZaUTVtZ3I3RXJGT2dxMm5RQUFsdXZ4MjVmelNmQXEzRDlaYlpPc0xXTzBIbTd5ZGYwVWFwU09ZMVlYTFN6MzB4YkRtLXg5NFlPZkRnekdPVlBJVFhkX2tYbFVabEROM0s1VDFndXJZeHJQeHdYbnViVElUY3ZNWGw3NlZpMS1uU0hQNFEySHQydDE4TQ?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:16:18.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "e110647b",
+   "title": "Número de empresas de petróleo e gás cresce 26% no RN",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPV1hTSGFFZW92VE0tZ01oeXBzbjlESzBVOEVNZmtmdVdOSkRRSHhac0RmbU12NmRYdVBsSzlUOTZhT1NYYWwwX1Z3SmRlQjI3ZE5QeXRob2l4YmhoeXJPYVBma0lZVFVUajFQeDZmMklDX1pDdmdoOTYzSHhPR1BkRXoxSjMzeV93dlcwbXRIY25fSEY5VVY1aEtLVktkNjFNal9PVHRfZ05WZk00aU8yaGM2cGRoTXY5VGZZb0dJZGU?oc=5",
+   "source": "Editora Brasil Energia",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:16:05.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "590d95d7",
+   "title": "Ultrapar lidera as altas do Ibovespa em 2026",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBBSE9aM1FHMk5YR2JteEcxZ1BhcHpTckFudzI0TVZPLWVEM3JRNThIazA3NGxzb0FheTZzelE5T1Q3Nl9hQklZd3EzVEQyQm5sb1VQdzZsbHc?oc=5",
+   "source": "TradeMap",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:15:00.000Z",
+   "topics": [
+    "bolsa"
+   ]
+  },
+  {
+   "id": "893588b8",
+   "title": "Petróleo fecha em alta com tensão entre Houthis e Arábia Saudita e ataques da Ucrânia",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQeERiYWtVRk14ZVFoNjhKdXZDbHI0T09iaW10NllYRmtLVUxfNGlBN0dWbGlIS3RnTXpNRTdQX3JBTlZ4RmMxZjNNTVhQZGRxd3otYW96MTJOUDN0QWM1TzFoQlJwY0RMX05ObjBIbHJEY1YzeVlmQUhRVk1DNldrbHR3c0xBMEJzR3BRV9IBkgFBVV95cUxNb1NPaWdQM1draFJraTlPTVduU1hKTGFyOVF4Q3c1ZGJsME1ldGs3LVdSMF94U24xYk1LV2xscEg4c1ZTRTNCUnJtZzZfeklXdGtKMDRZcGVkbGxxRmtMelpSMnFVUlRjZlJzMkVLcnpVZVdpN1pkaDVmamNuVVhiOElhOUFoTWJLV0wySHZWc2ViUQ?oc=5",
+   "source": "InfoMoney",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:12:01.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "5ca46ecd",
+   "title": "Indústria de petróleo e gás pode contribuir para agenda regulatória da ANP",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPNGszSmVrNW45OXNjakNyZHVvNGYxOE5KWVBIanVYOGtMOUZTekp1c2Q4X3p1aWJOdUhYUGR5WGMwZUZJSXFzeElUVVJWTmFneS1udDI0dFlhN0tpNng5UjdOVEFtb2xpdldDT0pWTTF5Nll6TGEzZ1FZdlFGNTVMLWRSRy1DV2RwLXZnMjBQYVdXM3NNdXRqT0FKM0RPLUViWnBobkctQnVLZEk?oc=5",
+   "source": "Monitor Mercantil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T21:00:00.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "458c7874",
+   "title": "Bitcoin oscila perto da estabilidade com apostas em juros em alta",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNYnRqbGxESnRyT2tqYmZ5MzZfTmROeTktNEotcThfZ3prVzlNazZ5ZnYxUTRVMVBPTmx6RnRWczJzaUFYNTNSM2J6RWlnVjZIQUNNWmlZOXFyaVd0UFhMWDlzZkctQkh1NFlOamlMakQ5SHVERl9MVFBjcy10dXdBYnJCLXZuckNkQW41VS1zN3EzMFNsdWVlV3RXdXY1eVBZSnBoWjlZbllDT054U0xId2tiVzlJYnZBUjFEcGFFRW9FZ1I2eDFUcnI5Wno1YktleW9kbnI5XzdLWkJidW81Vw?oc=5",
+   "source": "CNN Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:55:04.000Z",
+   "topics": [
+    "juros",
+    "cripto"
+   ]
+  },
+  {
+   "id": "6b971caa",
+   "title": "Bitcoin esbarra nos US$ 60 mil em meio a dois fatores que ameaçam sua recuperação",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQZWdmWUM5NmVGcW1YZGN2bkxEYWx2dWxfNXhodzhpMjQycVhMekx1QTk1VjFHRlNZU1dmMHV6bTh3bEo0NGRkRmlzSkpBTzZNQkxSc3YyQlo4R3k1NFluUVNLemNzN2JzUVdlVVh1SnlwcmZQWWFVenBBYm1YVWFabW4xNzl1VlhoTGNQajV4V09obF9FbkQ4c3JxZFJlcWFnbVppOFVCdjd2TWdjQUtZdE9PWUh2YzJYRGstS0N0endqTzhNOVHSAcsBQVVfeXFMTkVDNDdUX0lsS00yOVdhM0NoaUJhVjhtRW9RZTdoNmlOQVZjRGZuN0pwcnlsMW91eTBUaGJ5MDdDU3Zhdll4LVJpN3FGdkU4WGQtVUpkQnUzYUpQM0JZUVFkQ3Nhb3o1V0wzTjQyUnJmMEJ1WWRrOHdXYWVkTWNVN3JITTI4UVlqSGI5anc3QzU0djhodC1DRHVzS09GWDVRdUdzcUtFYnltNFE4OFg4V3NIeW5VNmtNOUVWV1NDZDFYdmFmRnZtVTlxMmM?oc=5",
+   "source": "Estadão",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:54:00.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "ef222142",
+   "title": "Juros futuros têm forte queda com apoio de expectativas sobre Lula 4 e exterior",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNcnhOVkljbGVCSE5YdWtHNEVCOUJEZ3JERkZyaEg1YjlVNWZpWnZqVGtIZUxDTnVfY1VHU2dNUWRSUFk5MEVLMUhWa21RWENadDNxMlJPa3RhWlFESFE3bDJsM1Y0WW5DazBpV01QalBGNVZfUWtVOUFZX2hXMWVETDlyc1ZRbDlfdXJaMmVwd2lsUDE1UEJTZGVOcmNNckJnaGlIa0wzczI4dTV6ZWVkUXpOQldzdDZFa2VLS2JIMFVHOGhWRUoyVEtIdjJYR20yaGp0eDN30gHkAUFVX3lxTE9FX1cxZXp6WENmSzdkeTNPZGVtNlNQMmJ4Sk0yZEVXeDJZbFc5YkFUVmZQeWJQaTI0cHFHazRyN2JzUjZlQW92RDVNVnpqT3U3UlpEM3p4R25VMC1ldk5JekVhcEpQWFlZc2o5TFcxWXR3V2dHME5tbWtKNmUzWWEyMVpDN0d0Y0xERlZON09TeDB6UFFuV3d4UkV0SWhIX1RDa2R5SmZzelZMb3NNOVB4eTRwSHRnRUJud0pyS3NlQ05abk9PLW9uSVlOWFRoVWxKWVQxREk2OTBRblJST0RWV0hOXw?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:33:00.000Z",
+   "topics": [
+    "juros"
+   ]
+  },
+  {
+   "id": "e8ee0a2f",
+   "title": "Dólar fecha com queda de 1,5%, a R$ 5,81, com especulações sobre ministro da Fazenda",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQcEpha3pvUHNvaFpaWF9BZlhGQkZoWVF6aDZlaWE5ODhMc3NJc2l1RDJkQ2wyT0JoclJ2d2ZmRV96OVA3MDlacEJyNVRGbVhnNk9qM0xDTXIyOUotbmQzZ3ZRSHdFZ1owS3FfRXhyaXp0b1BESTFoV3V3Yk9CTlRvc01Qc1VNb3lVWVpMWWllSU5WaW01RUJXUjNGczLSAaIBQVVfeXFMUF9PSWJHUGdUWFBkR09VOFRibjlTX1RKQjZoV1JULUliV1dFd0tjN2xOLXBuVXpEQUNUMFd4bXFyeEphaDYyUGdpU3NtNDJzdUstTzZWYWtTMnVQdnJfdzJta2pSVUZ0bVlnVzV2dkYtU1dvSjVpQ3JBQ2lZRE12SjRrZDlRWjZxallhT3dhM0M2cWVad1oxOHdfcG1WZ0JWaWt3?oc=5",
+   "source": "InfoMoney",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:25:28.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "dd10c436",
+   "title": "Dólar encerra a quarta-feira (25) cotado a R$ 5,82",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNTk9TbndwSncyaTM4RXFMNm5qX2JTNlp6U0RDaVBLc3huNkNlMDJCLUh6SVRjM1M5d1BWQVNZTDBmOUZid3J0X0dUQllBaWc0MGpCWE40N0twX1NBMS1JaHphanR6RHNlNmNJZnhnV0h4T1lBdTJaZUg2SVBNY0dmMkc2MWpCcGVTT0ZQXzktMUxCV0pJWlZ0TkFZdFp0aWVG?oc=5",
+   "source": "Agrolink",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:22:00.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "7e694e7c",
+   "title": "Ibovespa sobe após mercado ‘comprar’ boato de que Trabuco pode assumir a Fazenda",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxONGtSWUlaZnZuMGZzUjFOT2dISG9TS3BodkRQS1RORVhSWTlUbEVQa3RWYXp0S2lEbXNEbnU1eWtlUzhWTHZEVjBVcGl0QjZtTTNfaHZLSU9RQjJVeXNpMHJDelc3bVVLUzFrVzBzbFQ4QUl1dlhUdnZuQi1XSDgxa3hHMHVmYkFiUjFZZ2FWbFkwSWxScmtabU5QV0tGNmU4R2h0cm1LazZJN01JTVZKQmNEZk8?oc=5",
+   "source": "VEJA",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:21:00.000Z",
+   "topics": [
+    "bolsa"
+   ]
+  },
+  {
+   "id": "5f3d1b93",
+   "title": "Dólar recua e vai a R$ 5,81 com expectativa sobre política econômica brasileira | Finanças",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxORkE2QTNYemxpazRSTjhDeGczTTJNRVlJM1NLbzloZy1rUlp2eUdDMDlYUUtnMjFjbmlhZEx4d051eGtYaVVYT2FEakg2OW43UWlkWW9JZ3Nsa19wTlI0S1NBUGdQNHNoRTB6VEFSUmZsRHpNWVRMRlpBLXd4OFdvUFZoekR3RWdqRkNjRDRXSkU1TVl6bzNDUjB2VjgyUXhCRjBVZnZBR0NNVVlFX2lhMzhHM3ZqZl91UlhSVnNaODVyU3VXX1o1R2VTbDBhcjVE?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:16:41.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "22d43976",
+   "title": "Dólar fecha em baixa, aos R$ 5,81, com avaliação de novas medidas fiscais no governo e mudança no cenário externo",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQZ0p0NVJGSnFXbU5CMm92U2tOZ09PTUdtWHZYVkQ0Z3VzYXRfdkN5QU1BSWtKcFNhNTFLMmIyMkdDUmlhT2V2bUV4QlN1bWIxT1BpUEs1VmFpczYyeFBwVkk0QUVvS3REellHNU05THNlTmNKNlE3TzV0dGRkR2FPV0xmVjgxTlFCYmJBWdIBmwFBVV95cUxNMTYxR2hPZ2s1bEJhNzJ2dW5QdGJlYmJjUGFIeWx5VEh6Rl9kbFQ0NGV5SXBldDMzcHg2My0wSC1mcV91N0pwdUoyR3VpYUkxWU5jT1M0TEN6UHFFV05Yc0pTNHRBVVRQWjFPMEtlR1Z0S1lLa1pzaHVhWjUyaDdDelZWWXpyUGhNSGVxUVBvQ29HZVJhQW9Xa19aaw?oc=5",
+   "source": "O GLOBO",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T20:00:18.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "44235ce1",
+   "title": "Petróleo sobe com aumento na percepção de risco global e novos ataques no Golfo",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPSEh0N1B5ZXhiTGhzbGRHRHVqRkVncHJIa2ZWRkhMY1RFZG1BS3ZnSmVEMnVsTnV5a3VtNi1hNzZMcXp5QTUxVUFCdlJJZVA0U05Hc2g1bGd6N1hjMm55LVZrREplZlhoVVRHQzU3enJGSVU0UTgzTnBaZkIzRlMwMWNESkNqV1JVeFRjYkpkVV9oZlI0b2tmWGhzRkJHM05QZE00N0JsTlktLWMwV1BiNVUwanRab203cTYtaXNDMWNkaEUxYUc5MjFHZVRpX0l4aDRR0gHiAUFVX3lxTE5GV3JSTzhpVllpNTRiZ3k1S2NOVUV3V1VBWlhTVTNvLVZJbmhoNHdsTkFxSHJyMmg3eXU2QmlZbi1QQUtZdzBJbGhrRmhzcndkWWRjTENUNUJVcV9YRlM1M0FoUVhfb18ta0dMTnU2al9NZW1iak5HdDcyMVdQdUU5eWEzRkI2NjFJclJIU3c2Z1RYYVg1cmptejQwX3IwT0FiZDRnVXUwTUgxOHBXdG0xS1F0N2xXSTVPYjZoa2VZT2JWVVRRMFdIT3FoVjI0bjFMZ1o4QWlxdmtqTUZzdjYyNnc?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T19:53:10.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "948651df",
+   "title": "Dólar cai e fecha a R$ 5,81 com expectativa sobre novas medidas fiscais do governo",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPNVhZTVc3SWVmN0lFVWJjMzJaaFI0MWp1VFhzeDdrbVZ2OXVoSnd2M29NX05VNkNmbE01anBTTVNOQzNjaEZIaXhpYjZfQjVQWGFYVk9rVXUwNG5qV0M0RW1tYUtJY2tVR3BvNE0xMVkwXzBSQTRTUVhRVHU5Y2w5c2hZc3FyclpNYVJLUDZ3RFlONDBKNnRzTnFtdTNPUHhSNmxKcFg2RG8zNi1Ka2RaaUN6NXpMcGFJVHIzSW5nZHlzZ015aEE?oc=5",
+   "source": "GZH",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T19:24:01.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "631a8e83",
+   "title": "Desmontagem de plataformas de petróleo já representa 50% do caixa do Porto do Açu",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQQ3VrdmdUS19JQWw1b2NyY3daREJIbkMyOUhnbmd6enlMaUM3MmNkRFZpLS1hdjhQR2lUaDJWbXlyZm1WcHBjTFNPQkNJY243VmdCcUg2Y3owZndrSGNmZVVhUDFqcWs4X2pVMXhxem9Mc1RRSlA1V2xSdVF2dUxfVFZKenlCelU5ZEZNUlpZM2tmc29jZFVvbFpNRE54a0diZVIyUUdMRHNNNE5iZUZDaUF1UGUwSDN0S2tvU29SeDl4Ti1OSzkzVTJYanRfbXpsRGg0RjVWRGg4MW5WcTJHbzZLdVZzMVRkaXfSAfgBQVVfeXFMTnJXSGtGZ1g0d1BqRG9Rc25pdUEtdmQ0X1pLOWV3T0ppTV8zd0Rod0NOUEhSa0JpQjhKTk9QR2J5OUJIeWhEeE9VUlBTLThkYzBrSE5fY080QzBxOUF3NVN4bEpZdU5aTnphVUg5MnBsZl9KMDRPNHZtY25LSm5qTjRaZmFyY1R2NnFqVlpBalJCMGVLaUZ3TDM0dUFPT21EOUtxRmxodzFDWGZ3cl9rZUtlb1hOTXFsR19Zb0kwOGtTS1V6ai1EWUJ3RjRXajRBa0ZLWnpGamVCWms4Uk1yeVFjeWlWTVJpTkJiYXNaNEMtMUFDdTg5aWU?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T18:43:49.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "42a80593",
+   "title": "Procon-CG capacita equipe de fiscalização em parceria com a Agência Nacional do Petróleo",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPZFRGX1pUMnRFQXV5bFV4ZEZpcjJnU196VDR0azZkQ3pQT2V3ZmxNUGhEckFscVhad2xoUXBJUjF0WUJib2oxTGZxTGhIcTBtWFNiT2FRUGpPSTJsa2JaVFQ1dnFmaUpRSEZQUVE5OUJfd1JrZGJuM1NlWDgtekNaaXpNVTVtX3ZIekxwX21sRWR0cnZZdVN6VnJmbTEzQnk1c1IwLXJEY2lBSWpUcmlrNEpUQ1E2a2IwWEsxSlZ3?oc=5",
+   "source": "Prefeitura de Campina Grande",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T18:33:00.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "03a8f3c9",
+   "title": "Aversão a risco em NY leva Bitcoin ao menor valor em cinco meses",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNd2JHTVNRa3N4OGVNM01DNVpHeF9RekVibGdpVGlEdEE3WUNFVTBzQmJ3MWwyUVVmQmNuTmFUTW9KS3RFVXdKWFBzem9jTVNEdVlUYU5WUk8wU3BmRDBTMXNsLTNqbnpma25lZ25BQkZvcndkSnhJdjFaM1BVR0RFQnVQTnhyUzM2NnBobmRNYUZPVWw1T0szTkdGVFYzTlpWV05CUWhiTWo0SktVVnlfbUt3U0FJajZ2akoxb2czSnNQcEY5bU5STEJpd3EydlBrTVlMcEVXSktBNjBwQ2pFdtIB4AFBVV95cUxNd2JHTVNRa3N4OGVNM01DNVpHeF9RekVibGdpVGlEdEE3WUNFVTBzQmJ3MWwyUVVmQmNuTmFUTW9KS3RFVXdKWFBzem9jTVNEdVlUYU5WUk8wU3BmRDBTMXNsLTNqbnpma25lZ25BQkZvcndkSnhJdjFaM1BVR0RFQnVQTnhyUzM2NnBobmRNYUZPVWw1T0szTkdGVFYzTlpWV05CUWhiTWo0SktVVnlfbUt3U0FJajZ2akoxb2czSnNQcEY5bU5STEJpd3EydlBrTVlMcEVXSktBNjBwQ2pFdg?oc=5",
+   "source": "Valor Investe",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T17:56:47.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "de49ffae",
+   "title": "Operação prende suspeitos de extração ilegal de minério de ferro em MG",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOdEp2dmF1Z202S3cwLTZoZ0xHOFZ4algzei1kRUN6LW1tZW5VZ0xmWDU3SDJBZlF0QTZMVVk2d3pkLTcxTW9QaVNTcWo2NGZpVlliZ3JsQkFTQkJId2NzNk5pSlhNaUhyS3JRMVVCVXFiNHlTaXRveGVIQnBtMXZSbm11dy1UcFN1R0t5RzR2eEZiYTE1TjRzU1ZaRW1fWTlLallmNWNkdkY2eWZtRzdWWW9RbHAwZnQzR3BlMTJoaGRUOTJzOXAtcU1QUmI2Nm9MZ0FIWlFMTE9KTVRSZ2c?oc=5",
+   "source": "Agência Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T17:34:00.000Z",
+   "topics": [
+    "commodities"
+   ]
+  },
+  {
+   "id": "b88f14a3",
+   "title": "Bolsas dos EUA despencam com novo tarifaço de Trump e temores sobre investimentos em IA",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPZDU3TGhsQ2xqMEtuRGNFRENrTEQ0TVpWcUdRV3dvLW9TckRmUm1mbm51bWRGZzhkRU9MYmd0OFY0R0hHMkdMYVEybDNUWjBDMzVucjFRTzhxU0xRZUI0c2gyQkg1eFRVeWtRUHl2WWRtUmwtYXM4aEhtalFyTU1GX1hoaXFBMUdsdFRkeUdGT3pCYjMzT1BTdVpZTdIBqgFBVV95cUxNbGZPUzZPYUNiMXY0NHZTLVdRb3FkUFVRZFdzcWRuQmRHaWRTeGVSTUVqdzltSTFWR3FyR201X1I5UHl0aDBTYjZLS1h3YUR6T2l0dEFSYktSZVRNU2RoWDZMbmpjWnlDUndmMGJ3MWtyRzZhSHF2cVpnQWlvcEF2Mm9MRkFrVkh0eno1ZFQ1cFU4UW5VR0RtQmVDY2V4dDAySGN6TGJqNjlNQQ?oc=5",
+   "source": "G1",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T16:55:37.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "12fa72a6",
+   "title": "Bolsas dos EUA despencam e Nasdaq 100 chega a entrar em bear market",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBYUkJWWUZINENjRmdUVFliaFBsV3JDOVJMS2hpYmFMbXhQTENfVE85ajhzcVBHWTF1ZWQ5V2xZN0dMTzhhUjdWZ1laTVNGODNHS3ZaOW1RbGg?oc=5",
+   "source": "TradeMap",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T16:46:00.000Z",
+   "topics": [
+    "exterior"
+   ]
+  },
+  {
+   "id": "f7baabbc",
+   "title": "Bitcoin cai para US$ 57 mil com novas tarifas dos EUA e inflação ainda pressionada",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNUWxTZ2lVZmlpVGNNcUU1MUNwcld5SGJmTWFDYWVrSVB2Wjh5WTUzQ0ZaUXBOWmVhQlpYemZCeGJLemdRaHRZMmx6R25nV2ctNFFoSTFZaGlCUHRpdzNzTWRJXzh0OUlSNHc3VlZSMkRCX252MlJMQ3g4ZXJXbTFDaU9LTlYwajZ4YVJsZWROYmt3MkpWd3JKc2xPcFFadmw5Zjhad2NRSVNTb3J4S3pYMjQ0MFJmZ210ay1FZDhlX3E5aEYydnRZb00zOEZ4NVcySGkxLXQ3Q1ZQS3lacXlGVElpWEkteFHSAfYBQVVfeXFMUENuQ2V3Q18zZkJrcENscTRocERoRnFHODhMelVZaDBzRGtVZ0FDSExCSXdVcGw2blVObmhFN2cwaXQ2TEpBQVdvVXh1TEprbEg0OHByOHQyNjRLcnZSM0lFSXJVc3FGM0hfMmhaeXkxeXhfUkVLSE1kVk9xa09jMk5hQTlTekVXQmNpMmFZbV9oRkIybkduRkdvVUo3X1dHWVpHQVkzSHZ5NXJqek9QQUFCMVZkUjVhLWFJZlg0bm5XZFR4Z0xfcnBmZWxuOXlleUN1UjF0aTVzaHJCSnQ5cVNrRTB0TWF5YjdrOHJ5aVNzVGpXc05R?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T14:56:07.000Z",
+   "topics": [
+    "juros",
+    "exterior",
+    "cripto"
+   ]
+  },
+  {
+   "id": "4f39ddfe",
+   "title": "Da confiança empresarial ao Ibovespa: os indicadores que antecipam os rumos da economia",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOV1NxUTVlVC03bUpfMkhfMUg1YTRGVFRjX2FMc0ZaemJnZDV3SEJ5T1VRbmlvZFhMdFRvZmo5Nld0X0NBdEFWSlNNb0RhOFlGUE9pRTUwbTQyVUZiRUlqdzI4cEFzc1J6d0pzcDJYanJwX2lmVndibjNkNjM3RE10VkwyMENuckx6Z1V5bEQyMHFMS0IwZmhWRXF3TUMtTUNvTU9ZY3Z3MURoODlKdUt6MU5RZkhldmdVQXVwc3ZKX19JS29PbHdCT3FHU01wQ1lo?oc=5",
+   "source": "Bora Investir",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T14:24:00.000Z",
+   "topics": [
+    "bolsa"
+   ]
+  },
+  {
+   "id": "e00358ea",
+   "title": "Novo normal? Veja por que o Bitcoin caiu de US$ 80 mil para US$ 60 mil em um mês",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPMnctaDcwLU42alM0N0RPM0VyLTE2c2dGMUEyU1c4SXFoTkhMUC04WlcwS3NaOGxLcmJPWUY4blU0Qkk4emx4ZWM0TTYwZFV0UFp5Yi10M1JPR2pBaXJkWkxhT09JWEhzQlR3N3g2WWxXd1BNbzFCb0E2OTBOeElpT1llN2ZBdDVtQ0NWVlI3bFhnUnM1SnRUd0Jqa01FLWdiRUIwdlFQV0M1Q010MXpkOVpBTldSaFgtRHdsMGY4YnA?oc=5",
+   "source": "InvesTalk",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T13:56:00.000Z",
+   "topics": [
+    "cripto"
+   ]
+  },
+  {
+   "id": "b6407326",
+   "title": "Ibovespa dispara com expectativas sobre Lula 4, melhora em NY e montagem de opções em dia de menor liquidez",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNVkFLeFdnUUdrYXNNUmZTSnVmVmRqQmNyR09vRUM5WmtSQUp2XzF2YnVqMU81TXV5cExWRVF5UkYyQWdoTUtOZmMwRnVqMkdrN2ZyVXI3RWdyX2pibFkzVkJWV0IxdkQ5MXRaWmJ3MHlYWE94b0xFM0M4NUVCMVlKVDc0T1FTVGtZdlQ3ZkFKSEgtelczeDZyQmx2MmVOa1I1RlRiRTVmOWtLUmhjZGl1RG5DZzVURmPSAcYBQVVfeXFMTmwtbTV6V0NWVDJCdThoWm5jX0NMMlNaUGV0eHlmeHVibnJHWm9NRV84NG5ZdDd0QzNZWXVKbWtaX0hMN1hNbWJ6S0dMeFkwS1JqQXVVTHV2TndGVGptREhuMlA1SDhVNGhhcU5ZV1RRbUNIU0FGaUNkWHg5SHdwLUFkNmRjbWlpbXc1ZkxzOGxuM1Zyb010cExxbW1PTmNnUF9sOFJCWURaekFPUjFoa1lYQVk4cEQ4VWNIZlQyR3ZRSGRZZFF3?oc=5",
+   "source": "Valor Econômico",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T13:47:11.000Z",
+   "topics": [
+    "bolsa"
+   ]
+  },
+  {
+   "id": "3c1554af",
+   "title": "Disparada do dólar divide economistas sobre exagero do mercado",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNMjVxOXYtNG91dlgtbDlZaVFtVnc3YThtb05KX2JXM2JUa2wtcGI4cVpfOHQybl9oemV0ZkJGeDRHeFF2dWZuc3gwcEVVTmFya0k0dzhhenp3dGxwalI3YU1mNzRDbFNMN2FucERROF9GU0tiWEMtemlTSy1MTjlLRDVMZ3l3WVpQOUhLNWJSLWRqOE9fdjNIanQ1VzJNWExzRDdEUzBsLWJ4TG5OWHZGeXlQTzcwWi1DUmVQOU5YRQ?oc=5",
+   "source": "UOL Economia",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T13:30:00.000Z",
+   "topics": [
+    "cambio"
+   ]
+  },
+  {
+   "id": "e34ce5d7",
+   "title": "Dólar cai a R$ 5,82; Ibovespa fecha em alta firme na contramão de NY",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxOZnR2ckV0ODY4c19UcUVDZ2hxazlSc2V1UXlHb0ticjNILXIwcEJVb1ZPcXNLSUQyWTVuYTk4Y3NCWjUxMGZxSndXQm1EdEtnRjg2b1lrSEx0OEozYWMxbTFlRU5HTDdERHBXSlBkdnhXa3l5djhNaDF6V1F3cnJaZzZwczNQaDAyV0RBaDY0TmhyZGRudFFaT3FuNlhjWnBVM05Cd1Z3VlhHYWJYMFluOC1WTXNKNkVmWU5jWDFrY2pxdThkVEZDMHcwZ0pTRDJUWGxVcldROVpuMDlVQXNTLXRjZVVLeWJ3ZkgwMndJSGgxWU3SAYICQVVfeXFMUEVPcXhLUXFFWjdoWmltSU00LWw0M01kWGdvOVE0UGpaN2E0dlJCVUtEODVfZWo2OUtvT3R5RWV4M2s1N0hZYjBCNkxJTmdrQmJTM3VGQXg3elNJRzVKend0dTl6dVhPOUZNX0JJaFBvZlJMb3ZpQ0pOTTBIaFBMUzQtU0g0U3F0YllIX2RScFQxeU1DWFBUQkhqSFdKckoxWWUyTGduOFpFYmU3WlBpYlIwQ2RUakZlNjZnY3FYN3B2LU1vRTRfT1ZuUXF6R0ZnZUx6aVFSSUlrbHdRaENHeHBLa19FbFl3aVRoV1l3dWU5bHNzejRjRXBLMFpUOVl1S09n?oc=5",
+   "source": "Valor Investe",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T12:00:41.000Z",
+   "topics": [
+    "bolsa",
+    "cambio"
+   ]
+  },
+  {
+   "id": "e30b0448",
+   "title": "Dólar cai a R$ 5,81, com novas tarifas de Trump e medidas econômicas de Lula no radar; Ibovespa sobe",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5VSmdsNU51NWlvZS03eDR4U3FpZW4yV0VIMXZ4bWctcFc0N2dmcHJzMDdkN0FET1M2dUM2dFlRaVR5MG5sd3c5SURZcU0xRWkzdkdIVDN2MHVTUGZ3VGo5UXdkVk5kVXJFWUNCcDRWcU9uNjgyT191TdIBhwFBVV95cUxNUW1Qai1CQzE2bHphejdnZjR3MGg5LUE3eEhBVWVsNDluWEtnNnYxeVVPU1dsS1hNYzkyTFgxNUJpblhBZFpkbXZQbVA4dGR4SnZtRDhNVXNfMzM1dVFJdmRycGN1cGFjZkFjMWo2TE1NanZNS1B2aHNCQWw4Z2ZJSDd2MDJtakk?oc=5",
+   "source": "G1",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T12:00:33.000Z",
+   "topics": [
+    "bolsa",
+    "cambio",
+    "exterior"
+   ]
+  },
+  {
+   "id": "7001c7c2",
+   "title": "Bitcoin pode cair abaixo de US$ 53 mil se a história dos mercados de baixa se repetir",
+   "summary": "",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxON09CLV9ya29MRm5tTmhxZWNpcnJvTURncTlNZUNNd21SZlhCcS04NGRRMHhCbmNWMld4OGV3amxOenlBRWF3Uk5qZmNIdEtDdnMteXdKZ1pNTnJLVUJDSGtPVFFZRmYzbk5TcnZfeXhMZ3dqS09pYkRrbHk1WXRxbUU1MUY?oc=5",
+   "source": "Cointelegraph Brasil",
+   "via": "Google Notícias",
+   "publishedAt": "2026-11-25T11:18:17.000Z",
+   "topics": [
+    "cripto"
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "b3",
+   "label": "Ações B3 (brapi)",
+   "kind": "cotacoes",
+   "ok": true,
+   "count": 4,
+   "updatedAt": "2026-11-26T07:35:18.380Z"
+  },
+  {
+   "id": "ptax",
+   "label": "Dólar e euro PTAX (Banco Central)",
+   "kind": "cotacoes",
+   "ok": true,
+   "count": 2,
+   "updatedAt": "2026-11-26T07:35:19.058Z"
+  },
+  {
+   "id": "selic",
+   "label": "Selic (Banco Central)",
+   "kind": "cotacoes",
+   "ok": true,
+   "count": 1,
+   "updatedAt": "2026-11-26T07:35:19.050Z"
+  },
+  {
+   "id": "ecb",
+   "label": "Câmbio de referência (BCE)",
+   "kind": "cotacoes",
+   "ok": true,
+   "count": 4,
+   "updatedAt": "2026-11-26T07:35:18.244Z"
+  },
+  {
+   "id": "coingecko",
+   "label": "Cripto (CoinGecko)",
+   "kind": "cotacoes",
+   "ok": true,
+   "count": 10,
+   "updatedAt": "2026-11-26T07:35:18.306Z"
+  },
+  {
+   "id": "moneytimes",
+   "label": "Money Times",
+   "kind": "noticias",
+   "ok": true,
+   "count": 7,
+   "updatedAt": "2026-11-26T07:35:18.361Z"
+  },
+  {
+   "id": "infomoney",
+   "label": "InfoMoney",
+   "kind": "noticias",
+   "ok": true,
+   "count": 5,
+   "updatedAt": "2026-11-26T07:35:18.358Z"
+  },
+  {
+   "id": "investing",
+   "label": "Investing.com Brasil",
+   "kind": "noticias",
+   "ok": true,
+   "count": 4,
+   "updatedAt": "2026-11-26T07:35:18.382Z"
+  },
+  {
+   "id": "gnews-brasil",
+   "label": "Google Notícias · Brasil",
+   "kind": "noticias",
+   "ok": true,
+   "count": 30,
+   "updatedAt": "2026-11-26T07:35:18.241Z"
+  },
+  {
+   "id": "gnews-exterior",
+   "label": "Google Notícias · Exterior e commodities",
+   "kind": "noticias",
+   "ok": true,
+   "count": 20,
+   "updatedAt": "2026-11-26T07:35:18.517Z"
+  },
+  {
+   "id": "gnews-cripto",
+   "label": "Google Notícias · Cripto",
+   "kind": "noticias",
+   "ok": true,
+   "count": 15,
+   "updatedAt": "2026-11-26T07:35:18.555Z"
+  }
+ ],
+ "fetchedAt": "2026-11-26T07:35:19.059Z",
+ "mode": "live",
+ "aiAvailable": false,
+ "hints": [
+  "Para ver o Ibovespa, crie um token gratuito em brapi.dev e defina BRAPI_TOKEN no servidor.",
+  "Para a explicação com IA, defina ANTHROPIC_API_KEY no servidor."
+ ]
+}

@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 export const APP_ROUTES = [
   "dashboard",
   "monitoramento",
+  "mercado",
   "operacoes",
   "banca",
   "risco",

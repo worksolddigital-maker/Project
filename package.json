@@ -13,9 +13,11 @@
     "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
-    "demo:build": "vite build --config demo/vite.config.ts && node scripts/demo-artifact.mjs"
+    "demo:build": "tsx --conditions=react-server scripts/market-snapshot.ts demo/market-snapshot.json && vite build --config demo/vite.config.ts && node scripts/demo-artifact.mjs",
+    "market:snapshot": "tsx --conditions=react-server scripts/market-snapshot.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.14.0",
     "@electric-sql/pglite": "^0.6.0",
     "@gsap/react": "^2.1.2",
     "@tanstack/react-query": "^5.108.4",

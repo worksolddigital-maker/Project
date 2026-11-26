@@ -6,6 +6,8 @@
 import type { ZodType } from "zod";
 import { z } from "zod";
 import { todayKey } from "@/lib/domain/dates";
+import { buildStandalonePrompt, finalizeExplanation } from "@/lib/market/explain";
+import type { MarketSnapshot } from "@/lib/market/types";
 import { suggestMapping, tradeSignature } from "@/lib/domain/import-mapping";
 import { normalizeAsset, resolveFinancials } from "@/lib/domain/trade-calc";
 import { DEFAULT_SETTINGS, type CashMovement, type JournalEntry, type Strategy, type Trade, type UserSettings } from "@/lib/domain/types";
@@ -32,6 +34,7 @@ import {
   type TradeInput,
 } from "@/lib/validation/schemas";
 import { ApiClientError } from "./errors";
+import recordedMarket from "../market-snapshot.json";
 import { getState, initStore, mutate, type Account, type DemoState } from "./store";
 
 /* --------------------------------- helpers -------------------------------- */
@@ -177,6 +180,52 @@ function assertStrategy(s: DemoState, accountId: string, id: string | null) {
   }
 }
 
+/* ---------------------------------- market ---------------------------------- */
+
+/**
+ * The demo has no server to query the sources, so it shows real quotes and
+ * headlines recorded when it was built (scripts/market-snapshot.ts), labelled
+ * as such. "Explicar com IA" asks Claude through the viewer (`sample`).
+ */
+const marketSnapshot = (): MarketSnapshot => ({
+  ...(recordedMarket as unknown as MarketSnapshot),
+  mode: "snapshot",
+  aiAvailable: typeof window !== "undefined" && !!window.claude,
+  hints: ["O Ibovespa aparece na versão instalada depois de configurar o token gratuito da brapi."],
+});
+
+interface SampleError {
+  code?: string;
+}
+type SampleFn = { json<T = unknown>(input: string, options?: { modelTier?: "quick" | "default" | "complex" }): Promise<T> };
+
+let samplePromise: Promise<SampleFn | null> | null = null;
+const getSample = () =>
+  (samplePromise ??= window.claude?.use ? (window.claude.use("sample") as Promise<SampleFn | null>).catch(() => null) : Promise.resolve(null));
+
+async function explainInDemo(focus: string | null) {
+  const snap = marketSnapshot();
+  if (focus && !snap.quotes.some((q) => q.symbol === focus)) fail(404, "Ativo não acompanhado pelo painel.");
+  const sample = await getSample();
+  if (!sample) fail(503, "A explicação com IA só funciona com a página aberta dentro do Claude.");
+  const { prompt, headlines } = buildStandalonePrompt(snap, focus);
+  let raw: unknown;
+  try {
+    raw = await sample!.json(prompt, { modelTier: "default" });
+  } catch (err) {
+    const code = (err as SampleError)?.code;
+    if (code === "not_granted") fail(403, "O uso do Claude não foi autorizado nesta página.");
+    if (code === "rate_limited" || code === "queue_overflow") fail(429, "Muitas perguntas seguidas. Aguarde um pouco e tente de novo.");
+    if (code === "invalid_json" || code === "empty_completion") fail(502, "A resposta da IA veio incompleta. Tente novamente.");
+    fail(502, "Não foi possível gerar a explicação agora.");
+  }
+  try {
+    return finalizeExplanation(raw, headlines, "Claude (pela sua conta)");
+  } catch {
+    return fail(502, "A resposta da IA veio em formato inesperado. Tente novamente.");
+  }
+}
+
 /* ---------------------------------- routes --------------------------------- */
 
 type Init = RequestInit & { json?: unknown };
@@ -316,6 +365,16 @@ export async function handleRequest(path: string, init: Init = {}): Promise<unkn
       const a = requireAccount(s);
       mutate((st) => audit(st, a.id, "auth.sessions_revoked", { count: 0 }));
       return { ok: true, closedSessions: 0 };
+    }
+
+    /* ------------------------------- market ----------------------------- */
+    case "GET /market":
+      requireAccount(s);
+      return { market: marketSnapshot() };
+    case "POST /market/explain": {
+      requireAccount(s);
+      const { focus } = parse(z.object({ focus: z.string().max(20).nullable().default(null) }), body);
+      return { result: await explainInDemo(focus) };
     }
 
     /* ------------------------------- audit ------------------------------ */

@@ -4,6 +4,7 @@ import {
   CalendarDays,
   CandlestickChart,
   FileSpreadsheet,
+  Globe,
   LayoutDashboard,
   NotebookPen,
   Settings,
@@ -33,6 +34,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/dashboard", label: "Dashboard", short: "Dashboard", icon: LayoutDashboard, description: "Visão geral da conta e do desempenho" },
       { href: "/monitoramento", label: "Monitoramento", short: "Monitoramento", icon: Activity, description: "Sessão ao vivo, limites e atividade da conta" },
+      { href: "/mercado", label: "Mercado ao vivo", short: "Mercado", icon: Globe, description: "Bolsa, câmbio, cripto e as notícias que movem o mercado" },
     ],
   },
   {

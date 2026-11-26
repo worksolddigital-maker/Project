@@ -32,6 +32,7 @@ export default defineConfig({
     url: `http://localhost:${PORT}/api/health`,
     timeout: 300_000,
     reuseExistingServer: false,
-    env: { PGLITE_DATA_DIR: dataDir, NODE_ENV: "production" },
+    // The market page reads a recorded snapshot instead of live sources (deterministic, offline).
+    env: { PGLITE_DATA_DIR: dataDir, NODE_ENV: "production", MARKET_FIXTURE_FILE: path.resolve("e2e/fixtures/market.json"), ANTHROPIC_API_KEY: "" },
   },
 });

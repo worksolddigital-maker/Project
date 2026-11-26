@@ -326,3 +326,35 @@ test("bloqueio da conta após senhas incorretas", async ({ page, request }) => {
   await page.click('[data-testid="login-submit"]');
   await expect(page.getByText("Conta bloqueada por segurança")).toBeVisible();
 });
+
+test("mercado ao vivo: destaques, notícias com filtros e widget no dashboard", async ({ page }) => {
+  const errors = trackErrors(page);
+  await register(page, uniqueEmail("mercado"));
+  await expect(page.getByTestId("market-widget")).toBeVisible();
+  await page.getByRole("link", { name: "Abrir mercado" }).click();
+  await page.waitForURL("**/mercado");
+
+  await expect(page.getByTestId("market-live")).toBeVisible();
+  await expect(page.getByTestId("market-ticker")).toBeVisible();
+  await expect(page.getByTestId("highlight").first()).toBeVisible();
+  await expect(page.getByTestId("quote-BTC")).toContainText("US$");
+  await expect(page.getByTestId("quote-USD/BRL")).toContainText("Banco Central");
+
+  // Topic filter narrows the feed; every external link opens outside the app.
+  const feed = page.getByTestId("news-feed");
+  const all = await feed.getByTestId("news-item").count();
+  await page.getByRole("button", { name: /^Cripto/ }).click();
+  const crypto = await feed.getByTestId("news-item").count();
+  expect(crypto).toBeGreaterThan(0);
+  expect(crypto).toBeLessThanOrEqual(all);
+  const link = feed.getByTestId("news-item").first().locator("a").first();
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("href", /^https:\/\//);
+
+  // Without an API key the AI panel says so instead of failing.
+  await expect(page.getByTestId("market-ai")).toContainText("não está ativa");
+  await expect(page.getByTestId("market-sources")).toContainText("BRAPI_TOKEN");
+  const res = await page.request.post("/api/market/explain", { data: { focus: null }, headers: { Origin: new URL(page.url()).origin } });
+  expect(res.status()).toBe(503);
+  expect(errors.filter((e) => !e.includes("status of 503"))).toEqual([]);
+});
