@@ -10,18 +10,18 @@ COLOR="-colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv
 X264="-c:v libx264 -preset slow -profile:v high -level 4.2 -tune film $COLOR"
 AAC="-c:a aac -b:a 320k -ar 48000 -shortest -movflags +faststart"
 # 30 fps: mistura pares de quadros (motion blur) + grão fino temporal para evitar banding
-VF30="tmix=frames=2:weights='1 1',fps=30,noise=alls=3:allf=t,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p"
-VF60="noise=alls=3:allf=t,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p"
+VF30="tmix=frames=2:weights='1 1',fps=30,noise=alls=2:allf=t,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p"
+VF60="noise=alls=2:allf=t,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p"
 
 if [ "$FMT" = "9x16" ]; then
   ffmpeg -hide_banner -loglevel error -stats -y -framerate 60 -i "$FR/f_%05d.png" -i audio/final_mix.wav \
-    -vf "$VF30" $X264 -crf 16 $AAC out/worksold_reels_9x16_30fps.mp4
+    -vf "$VF30" $X264 -crf 18 $AAC out/worksold_reels_9x16_30fps.mp4
   ffmpeg -hide_banner -loglevel error -y -i "$FR/f_02400.png" -q:v 2 out/worksold_reels_capa.jpg
 else
   ffmpeg -hide_banner -loglevel error -stats -y -framerate 60 -i "$FR/f_%05d.png" -i audio/final_mix.wav \
-    -vf "$VF30" $X264 -crf 15 $AAC out/worksold_comercial_16x9_30fps.mp4
+    -vf "$VF30" $X264 -crf 18 $AAC out/worksold_comercial_16x9_30fps.mp4
   ffmpeg -hide_banner -loglevel error -stats -y -framerate 60 -i "$FR/f_%05d.png" -i audio/final_mix.wav \
-    -vf "$VF60" $X264 -crf 16 $AAC out/worksold_comercial_16x9_60fps.mp4
+    -vf "$VF60" $X264 -crf 18 $AAC out/worksold_comercial_16x9_60fps.mp4
   ffmpeg -hide_banner -loglevel error -y -i "$FR/f_02460.png" -q:v 2 out/worksold_thumbnail.jpg
 fi
 ls -la out/
