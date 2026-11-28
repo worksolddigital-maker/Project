@@ -24,9 +24,11 @@ function serve() {
 (async () => {
   const [mode, ...args] = process.argv.slice(2);
   const srv = await serve();
-  const url = `http://127.0.0.1:${srv.address().port}/scene/index.html${process.env.QS || ''}`;
+  const VERT = process.env.FMT === 'v';
+  const VW = VERT ? 1080 : 1920, VH = VERT ? 1920 : 1080;
+  const url = `http://127.0.0.1:${srv.address().port}/scene/index.html${process.env.QS || (VERT ? '?fmt=v' : '')}`;
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--disable-gpu-vsync'] });
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: VW, height: VH }, deviceScaleFactor: 1 });
   page.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') console.error('[page]', m.text()); });
   page.on('pageerror', e => console.error('[pageerror]', e.message));
   await page.goto(url);

@@ -1,6 +1,6 @@
 # Work Sold — vídeo publicitário 3D
 
-Filme de 43 s (16:9, 1920×1080) com narração em português, cenas 3D em tempo real e os sites do portfólio
+Filme de 43 s em duas versões — 16:9 (1920×1080) e 9:16 para Reels (1080×1920) — com narração em português, cenas 3D em tempo real e os sites do portfólio
 (Lucindo Café e Doceria, Sensuale Cosméticos, ProGym Fitness) exibidos em celulares 3D.
 
 ## Entregas (`out/`)
@@ -9,7 +9,9 @@ Filme de 43 s (16:9, 1920×1080) com narração em português, cenas 3D em tempo
 |---|---|
 | `worksold_comercial_16x9_30fps.mp4` | Versão principal (YouTube, site, WhatsApp, LinkedIn). H.264 + AAC, −14 LUFS, com motion blur. |
 | `worksold_comercial_16x9_60fps.mp4` | Mesma edição em 60 fps (movimento mais fluido em telas que suportam). |
-| `worksold_thumbnail.jpg` | Capa/miniatura (quadro do encerramento). |
+| `worksold_thumbnail.jpg` | Capa/miniatura 16:9 (quadro do encerramento). |
+| `worksold_reels_9x16_30fps.mp4` | Versão vertical para Reels/Stories/TikTok, com layout próprio (textos nas áreas seguras). |
+| `worksold_reels_capa.jpg` | Capa da versão vertical. |
 
 ## Roteiro e estrutura
 
@@ -26,7 +28,8 @@ Filme de 43 s (16:9, 1920×1080) com narração em português, cenas 3D em tempo
 ## Como foi feito
 
 - **3D**: Three.js (`scene/`), renderizado quadro a quadro no Chromium headless (`tools/render.js`).
-  Toda animação é função do tempo, então o render é determinístico.
+  Toda animação é função do tempo, então o render é determinístico. A versão 9:16 usa a mesma cena
+  com câmera, deslocamento de lente e disposição próprios (`scene/index.html?fmt=v`, `FMT=v` no render).
 - **Logo 3D**: as letras W e S foram vetorizadas do arquivo oficial do logo (`tools/vectorize_logo.py`, potrace)
   e extrudadas — não é um redesenho.
 - **Sites**: capturas enviadas pelo cliente, recortadas para a tela dos celulares (`tools/prep_images.py`).
@@ -41,8 +44,9 @@ Filme de 43 s (16:9, 1920×1080) com narração em português, cenas 3D em tempo
 npm install                                   # three, fontes Poppins, ícones Lucide
 python3 tools/prep_images.py && python3 tools/vectorize_logo.py
 NODE_PATH=$(npm root -g) node tools/render.js frames 60 0 2580 out/frames60
+NODE_PATH=$(npm root -g) FMT=v node tools/render.js frames 60 0 2580 out/frames60v
 python3 tools/audio.py && tools/mix.sh
-tools/encode.sh out/frames60
+tools/encode.sh 16x9 out/frames60 && tools/encode.sh 9x16 out/frames60v
 ```
 
 ## Licenças

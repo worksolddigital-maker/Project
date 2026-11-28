@@ -10,7 +10,10 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { Reflector } from 'three/addons/objects/Reflector.js';
 
-const W = 1920, H = 1080;
+// formato: 16:9 (padrão) ou 9:16 vertical para Reels (?fmt=v)
+const VERT = new URLSearchParams(location.search).get('fmt') === 'v';
+const W = VERT ? 1080 : 1920, H = VERT ? 1920 : 1080;
+if (VERT) document.documentElement.classList.add('v');
 const DURATION = 43.0;
 const GREEN = new THREE.Color('#6cff1a');
 
@@ -57,7 +60,7 @@ const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 scene.environmentIntensity = 0.55;
 
-const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 200);
+const camera = new THREE.PerspectiveCamera(VERT ? 50 : 35, W / H, 0.1, 200);
 scene.add(camera);
 
 // fundo: gradiente com brilho verde nas bordas (identidade da marca)
@@ -87,14 +90,14 @@ const reflector = new Reflector(new THREE.PlaneGeometry(220, 220), { textureWidt
 reflector.rotation.x = -Math.PI / 2; reflector.position.y = FLOOR_Y; scene.add(reflector);
 const floorMat = new THREE.ShaderMaterial({
   transparent: true, depthWrite: false,
-  uniforms: { uCam: { value: new THREE.Vector3() }, uFocus: { value: new THREE.Vector3() } },
+  uniforms: { uCam: { value: new THREE.Vector3() }, uFocus: { value: new THREE.Vector3() }, uHide: { value: 0 } },
   vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
-  fragmentShader: `varying vec3 vW; uniform vec3 uCam; uniform vec3 uFocus;
+  fragmentShader: `varying vec3 vW; uniform vec3 uCam; uniform vec3 uFocus; uniform float uHide;
     void main(){
       vec2 q = vW.xz - uFocus.xz;
       float f = length(q * vec2(0.55, 1.0));
       // reflexo visível junto aos objetos, desaparecendo suavemente
-      float a = mix(0.78, 1.0, smoothstep(1.0, 7.5, f));
+      float a = mix(mix(0.78, 1.0, smoothstep(1.0, 7.5, f)), 1.0, uHide);
       // leve piscina de luz neutra sob a cena, para o chão ler como superfície
       vec3 col = vec3(0.020, 0.026, 0.021) * exp(-f * f / 14.0);
       gl_FragColor = vec4(col, a);
@@ -326,6 +329,34 @@ const camTgt = [
   { t: 36.3, v: [V.x + 2.25, V.y, V.z], e: 'ioc' }, { t: 43, v: [V.x + 2.35, V.y, V.z], e: 'lin' },
 ];
 
+// ---- 9:16: câmera própria + deslocamento de lente (sem inclinar a câmera)
+const camPosV = [
+  { t: 0, v: [0, 0.5, 11.6] }, { t: 5.75, v: [0, 0.4, 10.2], e: 'ios' }, { t: 6.32, v: [0, 0.18, 1.6], e: 'ic' },
+  { t: 6.33, v: [0, 0.5, 8.3], e: 'lin' }, { t: 11.0, v: [0, 0.5, 8.3] }, { t: 16.0, v: [0, 0.42, 7.3], e: 'ios' },
+  { t: 16.95, v: [LX + 0.15, 0.25, 5.7] }, { t: 19.05, v: [LX + 0.2, 0.22, 5.4], e: 'ios' },
+  { t: 19.85, v: [SX + 0.15, 0.25, 5.7] }, { t: 21.95, v: [SX + 0.2, 0.22, 5.4], e: 'ios' },
+  { t: 22.75, v: [PX, 0.25, 5.5] }, { t: 24.2, v: [PX, 0.22, 5.2], e: 'ios' },
+  { t: 25.55, v: [PX, 0.55, 7.0] }, { t: 28.25, v: [PX, 0.5, 6.3], e: 'ios' },
+  { t: 29.05, v: [PX, 0.75, V.z + 9.6] }, { t: 33.65, v: [PX, 0.72, V.z + 9.1], e: 'lin' },
+  { t: 34.15, v: [PX, 0.1, V.z + 7.8], e: 'ioc' }, { t: 35.0, v: [PX, 0.1, V.z + 7.6], e: 'oc' },
+  { t: 36.3, v: [PX, 0.1, V.z + 8.8], e: 'ioc' }, { t: 43, v: [PX, 0.1, V.z + 8.3], e: 'lin' },
+];
+const camTgtV = [
+  { t: 0, v: [0, -0.1, 0] }, { t: 6.32, v: [0, -0.1, 0] }, { t: 6.33, v: [0, -0.2, 0], e: 'lin' }, { t: 16.0, v: [0, -0.2, 0] },
+  { t: 16.95, v: [LX + 0.15, 0.05, 0] }, { t: 19.05, v: [LX + 0.2, 0.05, 0], e: 'ios' },
+  { t: 19.85, v: [SX + 0.15, 0.05, 0] }, { t: 21.95, v: [SX + 0.2, 0.05, 0], e: 'ios' },
+  { t: 22.75, v: [PX, 0.05, 0] }, { t: 24.2, v: [PX, 0.05, 0], e: 'ios' },
+  { t: 25.55, v: [PX, 0.0, -1.8] }, { t: 28.25, v: [PX, 0.0, -1.8], e: 'ios' },
+  { t: 29.05, v: [PX, 0.72, V.z] }, { t: 33.65, v: [PX, 0.72, V.z], e: 'lin' },
+  { t: 34.15, v: [PX, 0.05, V.z], e: 'ioc' }, { t: 43, v: [PX, 0.05, V.z], e: 'lin' },
+];
+const shiftV = [
+  { t: 0, v: [-0.05] }, { t: 6.32, v: [-0.05] }, { t: 6.33, v: [-0.07], e: 'lin' }, { t: 16.0, v: [-0.07] },
+  { t: 16.95, v: [-0.13] }, { t: 24.2, v: [-0.13] }, { t: 25.55, v: [-0.1] }, { t: 28.25, v: [-0.1] },
+  { t: 29.05, v: [-0.03] }, { t: 33.65, v: [-0.03] }, { t: 34.15, v: [0.05] }, { t: 35.0, v: [0.05] },
+  { t: 36.3, v: [0.22] }, { t: 43, v: [0.22] },
+];
+
 // keyframes [x, y, z, rotY, scale] de cada celular até o anel
 const phoneKeys = [
   [ { t: 11.5, v: [-2.5, HIDE, 0, 0.7, 1] }, { t: 12.65, v: [-2.5, -0.42, 0, 0.32, 1], e: 'oc' }, { t: 15.9, v: [-2.5, -0.42, 0, 0.26, 1], e: 'ios' }, { t: 16.95, v: [LX + 0.15, 0, 0.3, -0.38, 1], e: 'ioc' } ],
@@ -334,15 +365,26 @@ const phoneKeys = [
   [ { t: 18.95, v: [SX + 2.7, HIDE, -0.8, -1.0, 1] }, { t: 20.05, v: [SX + 1.65, -0.12, -0.42, -0.52, 1], e: 'oc' } ],
   [ { t: 11.9, v: [2.5, HIDE, 0, -0.7, 1] }, { t: 13.05, v: [2.5, -0.42, 0, -0.32, 1], e: 'oc' }, { t: 15.9, v: [2.5, -0.42, 0, -0.26, 1], e: 'ios' }, { t: 16.95, v: [PX + 0.35, 0.02, 0.35, -0.42, 1.12], e: 'ioc' } ],
 ];
+const phoneKeysV = [
+  [ { t: 11.5, v: [-1.25, HIDE, -0.5, 0.7, 1] }, { t: 12.65, v: [-1.25, -0.42, -0.5, 0.35, 1], e: 'oc' }, { t: 15.9, v: [-1.25, -0.42, -0.5, 0.3, 1], e: 'ios' }, { t: 16.95, v: [LX - 0.35, -0.05, 0.3, -0.16, 1], e: 'ioc' } ],
+  [ { t: 16.05, v: [LX + 1.6, HIDE, -1.2, -1.0, 1] }, { t: 17.15, v: [LX + 0.66, 0.1, -0.75, -0.42, 1], e: 'oc' } ],
+  [ { t: 11.7, v: [0, HIDE, 0.45, 0, 1] }, { t: 12.85, v: [0, -0.48, 0.45, 0, 1], e: 'oc' }, { t: 15.9, v: [0, -0.48, 0.45, 0, 1] }, { t: 16.95, v: [SX - 0.35, -0.05, 0.3, -0.16, 1], e: 'ioc' } ],
+  [ { t: 18.95, v: [SX + 1.6, HIDE, -1.2, -1.0, 1] }, { t: 20.05, v: [SX + 0.66, 0.1, -0.75, -0.42, 1], e: 'oc' } ],
+  [ { t: 11.9, v: [1.25, HIDE, -0.5, -0.7, 1] }, { t: 13.05, v: [1.25, -0.42, -0.5, -0.35, 1], e: 'oc' }, { t: 15.9, v: [1.25, -0.42, -0.5, -0.3, 1], e: 'ios' }, { t: 16.95, v: [PX, 0.02, 0.35, -0.22, 1.12], e: 'ioc' } ],
+];
 const ringOrder = [-2, -1, 1, 2, 0]; // posição de cada celular no arco (P4 = ProGym ao centro)
 const ARC_C = new THREE.Vector3(PX, -0.12, -10.0), ARC_R = 7.4;
 const ringPose = (i, t) => {
   const a = ringOrder[i] * 0.275 + 0.035 * Math.sin((t - 24.25) * 0.5);
   const wave = 0.12 * Math.sin((t - 24.6) * 2.2 - ringOrder[i] * 0.9) * prog(t, 25.3, 25.9);
+  if (VERT) { // formação em "V": ProGym à frente, os outros em camadas atrás
+    const k = ringOrder[i];
+    return [PX + k * 0.98 + 0.03 * Math.sin((t - 24.25) * 0.5), -0.12 + wave, -1.6 - Math.abs(k) * 1.35, -k * 0.18, 1];
+  }
   return [ARC_C.x + Math.sin(a) * ARC_R, ARC_C.y + wave, ARC_C.z + Math.cos(a) * ARC_R, a, 1];
 };
 function phonePose(i, t) {
-  let p = track(phoneKeys[i], t);
+  let p = track((VERT ? phoneKeysV : phoneKeys)[i], t);
   const k0 = 24.25 + (i === 4 ? 0 : 0.07 * (2 - Math.abs(ringOrder[i])));
   if (t > k0) {
     const k = E.ioc(prog(t, k0, k0 + 1.25));
@@ -358,12 +400,13 @@ function phonePose(i, t) {
 }
 
 const valT = [28.9, 30.12, 31.42, 32.58];
-const valX = [-3, -1, 1, 3];
+const valX = VERT ? [-1, 1, -1, 1] : [-3, -1, 1, 3];
+const valY = VERT ? [1.8, 1.8, -0.3, -0.3] : [0, 0, 0, 0];
 function tilePose(i, t) {
   const w = valT[i];
   const k = E.oc(prog(t, w - 0.5, w + 0.08));
   const ex = E.ic(prog(t, 33.5 + 0.04 * i, 34.05 + 0.04 * i));
-  const x = V.x + valX[i] * (1 + ex * 1.6), y = V.y + Math.sin(t * 1.2 + i) * 0.04 * k;
+  const x = V.x + valX[i] * (1 + ex * 1.6), y = V.y + valY[i] * (1 + ex * 0.6) + Math.sin(t * 1.2 + i) * 0.04 * k;
   const z = lerp(V.z - 7, V.z, k) + ex * 3.5;
   return { pos: [x, y, z], rotY: (1 - k) * 1.9 + Math.sin(t * 0.8 + i) * 0.08 * k, rotX: (1 - k) * 0.6, s: lerp(0.55, 1, k) * (1 - ex), vis: k > 0.001 && ex < 0.999 };
 }
@@ -389,13 +432,15 @@ const tmpV = new THREE.Vector3();
 
 function update(t) {
   // câmera (+ tremor no impacto do logo)
-  const cp = track(camPos, t), ct = track(camTgt, t);
+  const cp = track(VERT ? camPosV : camPos, t), ct = track(VERT ? camTgtV : camTgt, t);
+  if (VERT) camera.setViewOffset(W, H, 0, track(shiftV, t)[0] * H, W, H);
   const sh = Math.exp(-(t - 34.16) * 7) * (t > 34.16 ? 1 : 0);
   camera.position.set(cp[0] + Math.sin(t * 71) * 0.05 * sh, cp[1] + Math.cos(t * 83) * 0.05 * sh, cp[2]);
   camera.lookAt(ct[0], ct[1], ct[2]);
   camera.updateMatrixWorld();
   floorMat.uniforms.uCam.value.copy(camera.position);
   floorMat.uniforms.uFocus.value.set(ct[0], ct[1], ct[2]);
+  floorMat.uniforms.uHide.value = VERT ? 0.9 * E.ios(prog(t, 35.0, 36.2)) : 0; // texto do final sobre o chão no 9:16
 
   // luzes seguem o alvo
   key.target.position.set(ct[0], ct[1], ct[2]); key.position.set(ct[0] + 3, 6, ct[2] + 8);
@@ -408,7 +453,7 @@ function update(t) {
   bar.g.visible = t < 6.4;
   bar.g.position.set(0, lerp(-0.6, -0.22, bk), 0);
   bar.g.rotation.x = lerp(-0.5, -0.1, bk) + 0.04 * prog(t, 1.7, 5.7);
-  bar.g.scale.setScalar(lerp(0.9, 1, bk));
+  bar.g.scale.setScalar(lerp(0.9, 1, bk) * (VERT ? 0.7 : 1));
   bar.glass.material.opacity = bk; bar.text.material.opacity = bk; bar.rim.material.uniforms.uOpacity.value = bk;
   if (bar.g.visible) drawBar(t);
 
