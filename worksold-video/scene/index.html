@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Work Sold — Filme 3D</title>
+<style>
+  @font-face { font-family: Poppins; font-weight: 400; font-style: normal; src: url(../node_modules/@fontsource/poppins/files/poppins-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 500; font-style: normal; src: url(../node_modules/@fontsource/poppins/files/poppins-latin-500-normal.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 600; font-style: normal; src: url(../node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 700; font-style: normal; src: url(../node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 800; font-style: italic; src: url(../node_modules/@fontsource/poppins/files/poppins-latin-800-italic.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 800; font-style: normal; src: url(../node_modules/@fontsource/poppins/files/poppins-latin-800-normal.woff2) format('woff2'); }
+  @font-face { font-family: Poppins; font-weight: 900; font-style: italic; src: url(../node_modules/@fontsource/poppins/files/poppins-latin-900-italic.woff2) format('woff2'); }
+
+  :root { --green: #6cff1a; --green-deep: #2fbf00; --ink: #f4f7f2; --muted: #b9c2b4; }
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: var(--W, 1920px); height: var(--H, 1080px); overflow: hidden; background: #000; font-family: Poppins, sans-serif; color: var(--ink); }
+  #gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .layer { position: absolute; inset: 0; pointer-events: none; }
+  .w { display: inline-block; will-change: transform, opacity, filter; opacity: 0; }
+  .g { color: var(--green); text-shadow: 0 0 28px rgba(108,255,26,.45), 0 0 6px rgba(108,255,26,.35); }
+  .head { font-weight: 800; font-style: italic; letter-spacing: -0.01em; line-height: 1.06; color: #f4f7f2;
+          text-shadow: 0 4px 24px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.08); }
+  .head .w.g { color: var(--green); text-shadow: 0 0 30px rgba(108,255,26,.45), 0 4px 24px rgba(0,0,0,.6); }
+
+  /* S1 — gancho */
+  #s1 { top: 150px; text-align: center; }
+  #s1 .l1, #s1 .l2 { font-size: 78px; }
+  #s1q { top: 170px; text-align: center; font-size: 112px; }
+
+  /* S2 — foto da marca */
+  #photo { overflow: hidden; }
+  #photo img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: 62% 50%; }
+  #photo .sweep { position: absolute; inset: -20% -40%; background: linear-gradient(105deg, transparent 42%, rgba(190,255,150,.10) 49%, rgba(255,255,255,.16) 50%, rgba(190,255,150,.10) 51%, transparent 58%); }
+  #photo .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.45) 38%, rgba(0,0,0,0) 60%); }
+  #s2 { left: 118px; top: 300px; width: 900px; }
+  .kicker { display: flex; align-items: center; gap: 22px; font-weight: 700; font-size: 30px; letter-spacing: .42em; }
+  .kicker .rule { height: 2px; width: 90px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75)); transform-origin: right center; }
+  .kicker .rule.r { background: linear-gradient(90deg, rgba(255,255,255,.75), rgba(255,255,255,0)); transform-origin: left center; }
+  #s2 .head { font-size: 92px; margin-top: 26px; }
+  .swoosh { display: block; overflow: visible; }
+  .swoosh path { fill: none; stroke: var(--green); stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 10px rgba(108,255,26,.8)); }
+
+  /* S3 — sites */
+  #s3 { top: 92px; text-align: center; }
+  #s3 .head { font-size: 82px; }
+  #s3 .sub { margin-top: 14px; font-size: 36px; font-weight: 500; color: var(--muted); }
+
+  /* S4 — portfólio */
+  #pf-kicker { left: 118px; top: 118px; font-size: 24px; font-weight: 600; letter-spacing: .5em; color: var(--muted); }
+  #pf-kicker .bar { display: inline-block; width: 46px; height: 3px; background: var(--green); vertical-align: middle; margin-right: 18px; box-shadow: 0 0 12px rgba(108,255,26,.8); }
+  .pf { position: absolute; left: 118px; top: 380px; width: 640px; }
+  .pf .idx { font-size: 34px; font-weight: 700; color: var(--green); letter-spacing: .22em; text-shadow: 0 0 18px rgba(108,255,26,.6); }
+  .pf .name { font-size: 112px; font-weight: 800; font-style: italic; line-height: 1.02; margin-top: 6px; }
+  .pf .line { width: 120px; height: 4px; background: var(--green); margin: 26px 0 24px; transform-origin: left center; box-shadow: 0 0 16px rgba(108,255,26,.7); }
+  .pf .desc { font-size: 34px; font-weight: 500; color: var(--muted); line-height: 1.4; }
+
+  /* S5 */
+  #s5 { top: 96px; text-align: center; }
+  #s5 .head { font-size: 80px; }
+
+  /* S6 — valores */
+  .val { position: absolute; transform: translate(-50%, 0); font-size: 36px; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+
+  /* S7 — encerramento */
+  #s7 { left: 930px; top: 250px; width: 900px; }
+  #s7 .head { font-size: 84px; margin-top: 28px; }
+  #cta { margin-top: 46px; display: inline-flex; align-items: center; gap: 20px; padding: 24px 44px 24px 34px; border-radius: 999px;
+         border: 2px solid var(--green); background: linear-gradient(180deg, rgba(108,255,26,.16), rgba(108,255,26,.04));
+         box-shadow: 0 0 34px rgba(108,255,26,.45), inset 0 0 22px rgba(108,255,26,.18); font-size: 40px; font-weight: 700; }
+  #cta svg { width: 44px; height: 44px; stroke: var(--green); }
+
+  #glow { mix-blend-mode: screen;
+          background: radial-gradient(ellipse 26% 75% at -4% 62%, rgba(70,210,10,.55) 0%, rgba(40,140,0,.22) 45%, rgba(0,0,0,0) 75%),
+                      radial-gradient(ellipse 22% 60% at 104% 24%, rgba(70,210,10,.42) 0%, rgba(40,140,0,.16) 45%, rgba(0,0,0,0) 75%); }
+  #vignette { background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%); }
+  #flash { background: radial-gradient(ellipse at 50% 50%, rgba(235,255,225,1) 0%, rgba(140,255,80,.85) 40%, rgba(20,80,0,.6) 100%); opacity: 0; }
+  #black { background: #000; opacity: 1; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl"></canvas>
+  <div class="layer" id="glow"></div>
+
+  <!-- S2: fotografia oficial da marca -->
+  <div id="photo" class="layer" style="opacity:0">
+    <img src="../assets/img/ws-hand-photo.jpg" alt="">
+    <div class="shade"></div>
+    <div class="sweep"></div>
+  </div>
+
+  <div class="layer" id="s1">
+    <div class="head l1"><span class="w" data-t="1.40">Seu</span> <span class="w" data-t="1.62">cliente</span> <span class="w" data-t="1.96">está</span> <span class="w" data-t="2.12">procurando</span></div>
+    <div class="head l2"><span class="w" data-t="2.64">por</span> <span class="w g" data-t="2.84">você</span> <span class="w" data-t="3.26">na</span> <span class="w" data-t="3.42">internet.</span></div>
+  </div>
+  <div class="layer head" id="s1q"><span class="w" data-t="4.65">O</span> <span class="w" data-t="4.91">que</span> <span class="w" data-t="5.03">ele</span> <span class="w g" data-t="5.13">encontra?</span></div>
+
+  <div class="layer" id="s2">
+    <div class="kicker"><span class="rule" id="s2r1"></span><span class="w" data-t="6.90">WORK&nbsp;<span class="g">SOLD</span></span><span class="rule r" id="s2r2"></span></div>
+    <div class="head">
+      <div><span class="w" data-t="7.88">Transforme</span> <span class="w" data-t="8.48">sua</span></div>
+      <div><span class="w g" data-t="8.72">presença</span> <span class="w g" data-t="9.16">digital</span></div>
+      <div><span class="w" data-t="9.70">em</span> <span class="w" data-t="9.98">resultados.</span></div>
+    </div>
+    <svg class="swoosh" id="s2sw" width="760" height="60" viewBox="0 0 760 60"><path d="M10 44 C 200 18, 480 10, 740 26"/></svg>
+  </div>
+
+  <div class="layer" id="s3">
+    <div class="head"><span class="w" data-t="11.62">Sites</span> <span class="w" data-t="11.88">profissionais,</span> <span class="w g" data-t="12.66">sob</span> <span class="w g" data-t="13.10">medida.</span></div>
+    <div class="sub"><span class="w" data-t="13.52">com</span> <span class="w" data-t="13.86">um</span> <span class="w" data-t="14.02">design</span> <span class="w" data-t="14.30">que</span> <span class="w" data-t="14.52">valoriza</span> <span class="w" data-t="15.20">a</span> <span class="w" data-t="15.40">sua</span> <span class="w" data-t="15.44">marca.</span></div>
+  </div>
+
+  <div class="layer" id="pf-kicker"><span class="bar"></span>PORTFÓLIO</div>
+  <div class="layer pf" id="pf0"><div class="idx">01</div><div class="name">Lucindo</div><div class="line"></div><div class="desc">Café e Doceria<br>Bento Gonçalves</div></div>
+  <div class="layer pf" id="pf1"><div class="idx">02</div><div class="name">Sensuale</div><div class="line"></div><div class="desc">Cosméticos</div></div>
+  <div class="layer pf" id="pf2"><div class="idx">03</div><div class="name">ProGym</div><div class="line"></div><div class="desc">Fitness · Academia 24 horas<br>Bento Gonçalves</div></div>
+
+  <div class="layer" id="s5">
+    <div class="head"><span class="w" data-t="24.74">Projetos</span> <span class="w" data-t="25.08">pensados</span> <span class="w" data-t="25.56">para</span> <span class="w g" data-t="25.80">cada</span> <span class="w g" data-t="26.20">tela</span></div>
+    <div class="head"><span class="w" data-t="26.62">e</span> <span class="w" data-t="27.00">para</span> <span class="w" data-t="27.20">o</span> <span class="w" data-t="27.30">seu</span> <span class="w g" data-t="27.40">público.</span></div>
+  </div>
+
+  <div class="layer" id="s6">
+    <div class="val" id="v0">Inovação</div><div class="val" id="v1">Resultados</div><div class="val" id="v2">Confiança</div><div class="val" id="v3">Parceria</div>
+  </div>
+
+  <div class="layer" id="s7">
+    <div class="kicker"><span class="w" data-t="35.30">WORK&nbsp;<span class="g">SOLD</span></span><span class="rule r" id="s7r"></span></div>
+    <div class="head">
+      <div><span class="w" data-t="35.70">Estratégia,</span> <span class="w" data-t="36.14">inovação</span></div>
+      <div><span class="w" data-t="36.58">e</span> <span class="w" data-t="36.72">tecnologia</span> <span class="w" data-t="37.44">para</span> <span class="w" data-t="37.72">o</span></div>
+      <div><span class="w" data-t="37.86">seu</span> <span class="w" data-t="38.04">negócio</span> <span class="w g" data-t="38.38">crescer.</span></div>
+    </div>
+    <svg class="swoosh" id="s7sw" width="720" height="50" viewBox="0 0 720 50"><path d="M10 36 C 190 14, 450 8, 700 20"/></svg>
+    <div id="cta" style="opacity:0">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+      <span>Fale com a gente</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="layer" id="vignette"></div>
+  <div class="layer" id="flash"></div>
+  <div class="layer" id="black"></div>
+</div>
+<script type="module" src="main.js"></script>
+</body>
+</html>

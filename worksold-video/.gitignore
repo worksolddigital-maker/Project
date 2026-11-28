@@ -1,0 +1,6 @@
+node_modules/
+audio/*.f32
+audio/vo48.wav
+audio/stem_*.wav
+audio/premaster.wav
+out/frames*/
