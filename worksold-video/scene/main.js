@@ -81,22 +81,22 @@ const bg = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), bgMat);
 bg.frustumCulled = false; bg.renderOrder = -1000;
 scene.add(bg);
 
-// chão refletivo + grade sutil
+// chão clean: preto acetinado, reflexo suave só perto dos objetos, some no horizonte
 const FLOOR_Y = -1.3;
-const reflector = new Reflector(new THREE.PlaneGeometry(220, 220), { textureWidth: W / 2, textureHeight: H / 2, color: 0x505050, clipBias: 0.003 });
+const reflector = new Reflector(new THREE.PlaneGeometry(220, 220), { textureWidth: W / 3, textureHeight: H / 3, color: 0x5a5a5a, clipBias: 0.003 });
 reflector.rotation.x = -Math.PI / 2; reflector.position.y = FLOOR_Y; scene.add(reflector);
 const floorMat = new THREE.ShaderMaterial({
   transparent: true, depthWrite: false,
-  uniforms: { uCam: { value: new THREE.Vector3() }, uGrid: { value: 1 } },
+  uniforms: { uCam: { value: new THREE.Vector3() }, uFocus: { value: new THREE.Vector3() } },
   vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
-  fragmentShader: `varying vec3 vW; uniform vec3 uCam; uniform float uGrid;
+  fragmentShader: `varying vec3 vW; uniform vec3 uCam; uniform vec3 uFocus;
     void main(){
-      float d = length(vW.xz - uCam.xz);
-      float a = mix(0.80, 0.99, smoothstep(2.0, 18.0, d));
-      vec2 gr = abs(fract(vW.xz * 0.5) - 0.5) / fwidth(vW.xz * 0.5);
-      float line = 1.0 - min(min(gr.x, gr.y), 1.0);
-      float fade = smoothstep(22.0, 4.0, d);
-      vec3 col = vec3(0.10, 0.9, 0.05) * line * 0.10 * fade * uGrid;
+      vec2 q = vW.xz - uFocus.xz;
+      float f = length(q * vec2(0.55, 1.0));
+      // reflexo visível junto aos objetos, desaparecendo suavemente
+      float a = mix(0.78, 1.0, smoothstep(1.0, 7.5, f));
+      // leve piscina de luz neutra sob a cena, para o chão ler como superfície
+      vec3 col = vec3(0.020, 0.026, 0.021) * exp(-f * f / 14.0);
       gl_FragColor = vec4(col, a);
     }`,
 });
@@ -260,40 +260,6 @@ async function build() {
   const shock = new THREE.Mesh(new THREE.RingGeometry(0.96, 1.0, 128), new THREE.MeshBasicMaterial({ color: new THREE.Color(0.5, 2.2, 0.2), transparent: true, opacity: 0, toneMapped: false, depthWrite: false, blending: THREE.AdditiveBlending }));
   scene.add(shock); state.shock = shock;
 
-  // partículas
-  const N = 900, r = rng(7);
-  const pos = new Float32Array(N * 3), seed = new Float32Array(N * 4);
-  for (let i = 0; i < N; i++) {
-    pos[i * 3] = lerp(-10, 36, r()); pos[i * 3 + 1] = lerp(-1.2, 6.5, r()); pos[i * 3 + 2] = lerp(-14, 7, r());
-    seed[i * 4] = r(); seed[i * 4 + 1] = r(); seed[i * 4 + 2] = r(); seed[i * 4 + 3] = r();
-  }
-  const pg = new THREE.BufferGeometry();
-  pg.setAttribute('position', new THREE.BufferAttribute(pos, 3)); pg.setAttribute('seed', new THREE.BufferAttribute(seed, 4));
-  const pm = new THREE.ShaderMaterial({
-    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-    uniforms: { uTime: { value: 0 }, uAmt: { value: 1 }, uBurst: { value: 0 }, uBurstC: { value: new THREE.Vector3() } },
-    vertexShader: `attribute vec4 seed; uniform float uTime; uniform float uBurst; uniform vec3 uBurstC; varying float vA; varying float vW;
-      void main(){
-        vec3 p = position;
-        p.x += sin(uTime * (0.15 + seed.x * 0.3) + seed.y * 6.28) * 0.45;
-        p.y = -1.2 + mod(position.y + 1.2 + uTime * (0.05 + seed.z * 0.12), 7.7);
-        p.z += cos(uTime * (0.12 + seed.y * 0.2) + seed.x * 6.28) * 0.35;
-        vec3 dir = normalize(p - uBurstC + 0.001);
-        p += dir * uBurst * (1.5 + seed.x * 3.0);
-        vec4 mv = modelViewMatrix * vec4(p, 1.0);
-        gl_Position = projectionMatrix * mv;
-        float s = 1.0 + seed.w * 3.2;
-        gl_PointSize = s * 120.0 / -mv.z;
-        vA = (0.35 + 0.65 * seed.z) * smoothstep(0.0, 0.5, fract(uTime * 0.07 + seed.x)) * (0.6 + 0.4 * sin(uTime * 1.3 + seed.y * 40.0));
-        vW = step(0.86, seed.x); vA *= smoothstep(2.0, 5.0, -mv.z);
-      }`,
-    fragmentShader: `uniform float uAmt; varying float vA; varying float vW;
-      void main(){ vec2 c = gl_PointCoord - 0.5; float d = length(c); float a = smoothstep(0.5, 0.0, d); a *= a;
-        vec3 col = mix(vec3(0.35, 1.0, 0.15), vec3(1.0), vW); gl_FragColor = vec4(col * a * vA * uAmt * 0.75, 1.0); }`,
-  });
-  const pts = new THREE.Points(pg, pm); pts.frustumCulled = false; scene.add(pts);
-  state.particles = pm;
-
   // pós-processamento
   const rt = new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType, samples: 4 });
   const composer = new EffectComposer(renderer, rt);
@@ -429,6 +395,7 @@ function update(t) {
   camera.lookAt(ct[0], ct[1], ct[2]);
   camera.updateMatrixWorld();
   floorMat.uniforms.uCam.value.copy(camera.position);
+  floorMat.uniforms.uFocus.value.set(ct[0], ct[1], ct[2]);
 
   // luzes seguem o alvo
   key.target.position.set(ct[0], ct[1], ct[2]); key.position.set(ct[0] + 3, 6, ct[2] + 8);
@@ -486,11 +453,7 @@ function update(t) {
   state.shock.scale.setScalar(lerp(1.2, 9, E.oc(sk)));
   state.shock.material.opacity = Math.pow(1 - sk, 1.5) * 0.6;
 
-  // partículas + bloom
-  state.particles.uniforms.uTime.value = t;
-  state.particles.uniforms.uAmt.value = 0.55 + 0.45 * prog(t, 0.2, 2.0);
-  state.particles.uniforms.uBurst.value = E.oc(prog(t, 34.16, 35.2)) * 0.6;
-  state.particles.uniforms.uBurstC.value.copy(V);
+  // bloom
   const impact = (t > 34.16 ? Math.exp(-(t - 34.16) * 4.5) : 0);
   state.bloom.strength = 0.55 + impact * 0.6 + Math.exp(-Math.pow((t - 6.25) / 0.12, 2)) * 1.2;
 
